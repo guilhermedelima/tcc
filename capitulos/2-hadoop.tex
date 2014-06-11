@@ -29,7 +29,7 @@ Um disco é dividido em vários blocos com tamanho fixo, os quais compõe a meno
 O HDFS também possui o conceito de blocos, porém estes possuem tamanho bem maior, por padrão ocupam 64MB de espaço. Cada arquivo criado no sistema é quebrado em blocos com estas características, no qual cada um é salvo como uma unidade independente, podendo estar localizado em qualquer nó do cluster. O HDFS foi projetado para armazenar arquivos que ocupam grande quantidade de espaço em disco, portanto com blocos de tamanho elevado o tempo de busca no disco é reduzido significativamente.
 
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[keepaspectratio=true,scale=0.45]
 	  {figuras/hdfs-blocos.eps}
@@ -45,7 +45,7 @@ Um cluster HDFS possui uma arquitetura baseada no modelo mestre/escravo, no qual
 
 O namenode é um servidor responsável por gerenciar o namespace do HDFS e também controlar o acesso de clientes aos arquivos contidos no sistema. Este componente mantém a árvore de diretórios e todos os metadados relacionados a ela. Como descrito anteriormente, o HDFS quebra um arquivo em vários blocos e os espalha pelos diversos datanodes do cluster, o namenode possui a tarefa de manter a localização de cada um desses blocos. Todas estas informações são armazenadas no disco local do servidor em dois arquivos: a imagem do sistema de arquivos e o registro de log (WHITE, 2012). O arquivo de imagem do sistema de arquivos também é mantido em memória e é constantemente atualizado.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	\centering
 	\includegraphics[keepaspectratio=true,scale=0.45]
 	  {figuras/hdfs-arquitetura.eps}
@@ -57,69 +57,118 @@ Os datanodes representam os nós escravos do HDFS. Eles são responsáveis por a
 
 \section{MapReduce}
 
-MapReduce pode ser definido como um paradigma de programação voltado para processar grandes volumes de dados ao longo de várias máquinas, no qual se utiliza o conceito de programação distribuída para resolver problemas, adotando a estratégia de dividi-los em problemas menores e independentes. O usuário deste modelo define uma função “map”, que deverá processar um par chave-valor e gerar conjuntos intermediários de pares chave-valor, e também uma função “reduce”, responsável por unir  todos os valores intermediários associados a uma mesma chave intermediária (DEAN e GHEMAWAT, 2004)4. Este modelo é baseado no paradigma adotado pela programação funcional e vários problemas reais podem ser resolvidos utilizando esta abordagem. 
+MapReduce pode ser definido como um paradigma de programação voltado para processamento em \textit{batch} de grande volume de dados ao longo de várias máquinas, obtendo resultados em tempo razoável \cite{white2012}. Utiliza-se o conceito de programação distribuída para resolver problemas, adotando a estratégia de dividi-los em problemas menores e independentes.
 
-Um programa MapReduce separa arquivos de entrada em diversas partes independentes que servem de entrada para as funções map, que executam a mesma tarefa paralelamente. As saídas destas funções são ordenadas por chave-valor e posteriormente transformadas em entradas para a função reduce, onde o resultado final será salvo em um arquivo de saída. Para utilizar este paradigma é necessário apenas se preocupar com as funções map e reduce. Todo gerenciamento dos processos, entre outras questões operacionais são de responsabilidade do framework.
+De acordo com \citeonline{ghemawatMapreduce2008}, o usuário deste modelo especifica uma função \textit{map}, que deverá processar um par \textit{\{chave, valor\}} gerando como produto conjuntos  intermediários de pares \textit{\{chave, valor\}}, e também define uma função \textit{reduce}, responsável por unir todos os valores intermediários associados a uma mesma chave.
 
-\begin{figure}[h!]
+Este modelo é baseado nas primitivas \textit{map} e \textit{reduce} presentes na linguagem \textit{Lisp} e também em muitas outras linguagens de programação funcional. Este paradigma foi adotado pois percebeu-se que vários problemas consistiam em realizar o agrupamento das entradas de acordo com uma chave identificadora, para então processar cada um destes conjuntos \cite{ghemawatMapreduce2008}.
+
+Um programa MapReduce separa arquivos de entrada em diversas partes independentes que servem de entrada para as funções \textit{map}. As saídas destas funções são ordenadas por \textit{\{chave, valor\}} e posteriormente transformadas em entradas do tipo \textit{\{chave, lista(valores)\}} para a função \textit{reduce}, onde o resultado final será salvo em um arquivo de saída. A figura \ref{fig-mapreduce-io} apresenta de maneira genérica as entradas e saídas das funções \textit{map} e \textit{reduce}.
+
+\begin{figure}[ht!]
 	\centering
-	\includegraphics[keepaspectratio=true,scale=0.45]
+	\includegraphics[keepaspectratio=true,scale=0.7]
+	  {figuras/mapreduce-io.eps}
+	\caption{Entradas e saídas das funções map e reduce, retirado de \cite{ghemawatMapreduce2008}}
+	\label{fig-mapreduce-io}
+\end{figure}
+
+A grande contribuição desta abordagem está em disponibilizar uma interface simples e poderosa que permite paralelizar e distribuir computação em larga escala de forma automática \cite{ghemawatMapreduce2008}. O desenvolvedor precisa apenas se preocupar com as funções \textit{map} e \textit{reduce}, todo esforço para dividir o trabalho computacional ao longo das máquinas, entre outras questões operacionais, são de responsabilidade do próprio \textit{framework}.
+
+A figura \ref{fig-mapreduce} ilustra um fluxo simplificado da execução de um programa MapReduce. As entradas são divididas em partes iguais denominadas \textit{input splits}, cada uma destas partes dão origem a uma \textit{map task}, responsável por gerar pares intermediários \textit{\{chave, valor\}}. Cada \textit{map task} realizada uma chamada a função \textit{map} definida pelo usuário.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.5]
 	  {figuras/mapreduce.eps}
-	\caption{MapReduce Job}
+	\caption{Fluxo de um programa MapReduce}
 	\label{fig-mapreduce}
 \end{figure}
 
-\subsection{Contador de Palavras}
+Nas fases \textit{shuffle} e \textit{sort} os pares intermediários são agrupados e ordenados de acordo com sua chave. Este processo é realizado pelo \textit{framework} e será detalhado nas seções seguintes, sendo uma das etapas mais complexas de todo fluxo. Por fim, as \textit{reduce tasks} recebem como entrada os valores resultantes das etapas \textit{shuffle} e \textit{sort}. Para cada entrada \textit{\{chave, lista(valores)\}} existente, uma \textit{reduce task} executa uma chamada a função \textit{reduce} especificada pelo desenvolvedor.
 
+\subsection{Contador de Palavras}
 
 Um exemplo simples da aplicabilidade do MapReduce pode ser observado em um problema definido como contador de palavras. Suponha que exista um arquivo de texto com várias palavras inseridas, onde o objetivo seja contar a quantidade de ocorrências de cada uma destas palavras ao longo de todo texto. A princípio parece ser uma atividade trivial, entretanto se o tamanho do arquivo estiver na ordem de gigabytes e aumentarmos a quantidade de arquivos a serem processados o tempo de execução aumentará consideravelmente, tornando-se inviável realizar esta análise.
 
-Uma alternativa para contornar este problema seria o uso da programação paralela, analisando os arquivos em diferentes processos, utilizando quantas threads fossem necessárias. Todavia esta solução não é a mais eficiente, já que os arquivos podem apresentar diferentes tamanhos, ou seja, alguns processos seriam finalizados em um intervalo de tempo menor, impossibilitando maximizar a capacidade de processamento. 
+Uma alternativa para contornar este problema seria o uso da programação paralela, analisando os arquivos em diferentes processos, utilizando quantas \textit{threads} fossem necessárias. Todavia esta solução não é a mais eficiente, já que os arquivos podem apresentar diferentes tamanhos, ou seja, alguns processos seriam finalizados em um intervalo de tempo menor, impossibilitando maximizar a capacidade de processamento. 
 
-Uma abordagem mais eficiente seria separar todos os arquivos em blocos pré definidos e então dividi-los em processos distintos. Esta solução requer um mecanismo de sincronização complexo e de difícil implementação. Seria necessário agrupar todas as palavras e suas respectivas ocorrências em cada uma das threads nos diferentes processos em execução. E mesmo assim a capacidade de processamento estaria limitada a apenas uma máquina.
+Uma abordagem mais eficiente seria separar todos os arquivos em blocos pré definidos e então dividi-los em processos distintos. Esta solução requer um mecanismo de sincronização complexo e de difícil implementação. Seria necessário agrupar todas as palavras e suas respectivas ocorrências em cada uma das \textit{threads} nos diferentes processos em execução. E mesmo assim a capacidade de processamento estaria limitada a apenas uma máquina.
 
-Este problema que se mostrou complexo possui uma solução simples e de fácil construção quando utiliza-se a abordagem apresentada pelo paradigma MapReduce. Nesta situação torna-se necessária apenas a definição de uma função map para realizar a contagem de cada palavra presente nos arquivos de entrada, e também de uma função reduce para agrupar cada uma destas palavras e realizar a contagem final dos registros de ocorrências. Todo o trabalho de divisão das entradas em tamanhos fixos e computação distribuída envolvida é realizado pelo framework.
+Este problema que se mostrou complexo possui uma solução simples e de fácil construção quando utiliza-se a abordagem apresentada pelo paradigma MapReduce. Nesta situação torna-se necessária apenas a definição de uma função \textit{map} para realizar a contagem de cada palavra presente nos arquivos de entrada, e também de uma função \textit{reduce} para agrupar cada uma destas palavras e realizar a contagem final dos registros de ocorrências. Um pseudo código com as funções map e reduce para este problema são apresentadas na figura \ref{fig-mapreduce-google-code}.
 
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	\centering
-	\includegraphics[keepaspectratio=true,scale=0.45]
+	\includegraphics[keepaspectratio=true,scale=0.8]
+	  {figuras/mapreduce-google-code.eps}
+	\caption{Pseudo código para contador de palavras, retirado de \cite{ghemawatMapreduce2008}}
+	\label{fig-mapreduce-google-code}
+\end{figure}
+
+Na figura \ref{fig-mapreduce-google-code} o programa MapReduce divide todos os arquivos de entrada em \textit{input splits}, na qual a chave do par \textit{\{chave, valor\}} é composta pelo número do respectivo \textit{input split}, enquanto o valor é o próprio conteúdo de sua parte no texto. Para cada par de entrada uma função \textit{map} será chamada e realizará quebra da linha em palavras. Cada um destes \textit{tokens} é associado ao valor 1, gerando pares de saída no formato \textit{\{palavra, 1\}}.
+
+O framework MapReduce realiza as etapas \textit{shuffle} e \textit{sort} para agrupar e ordenar os resultados das \textit{map tasks}. Em seguida para cada chave existente será realizada uma chamada a uma função \textit{reduce}, na qual é responsável por percorrer uma lista efetuando a soma dos valores encontrados. O resultado obtido é registrado em um arquivo de saída. A figura \ref{fig-mapreduce-word-count} apresenta o fluxo completo da execução de um programa MapReduce para o problema da contagem de palavras.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.4]
 	  {figuras/mapreduce-word-count.eps}
-	\caption{Fluxograma para o job contador de palavras}
+	\caption{Fluxo de atividades para o contador de palavras}
 	\label{fig-mapreduce-word-count}
 \end{figure}
 
-Neste exemplo o programa MapReduce irá dividir todos os arquivos de entrada (armazenados em um sistema de arquivos distribuídos) em um conjunto de linhas, onde cada uma delas será o insumo de uma função map, executada paralelamente em um processo próprio e independente. Esta função é definida pelo usuário e possui apenas o objetivo de registrar uma palavra e atribuir a sua ocorrência o valor 1 (um). Ao término da execução de todas as funções map o framework irá ordenar e agrupar todos os resultados de acordo com as palavras registradas. Cada conjunto agrupado será a entrada para uma função reduce (também definida pelo usário), onde a ocorrência de cada palavra é somada e o resultado final é obtido.
-
 \subsection{Arquitetura}
 
-O framework MapReduce constitui a segunda camada do sistema Hadoop. Para que se realize o processamento de um volume elevado de dados aplicando o conceito de computação distribuída é necessário que os arquivos a serem analisados sejam persistidos em um sistema de arquivos distribuídos. Neste contexto o Hadoop utiliza o HDFS, tornando possível a divisão do trabalho computacional realizado pelo MapReduce ao longo dos nós que armazenam diferentes blocos de arquivos.
+O modelo MapReduce foi criado pela Google para que os programas escritos neste estilo funcional fossem automaticamente paralelizados e executados em um \textit{cluster} composto por hardwares de baixo custo \cite{ghemawatMapreduce2008}. As responsabilidades do \textit{framework} consistem em particionar as entradas em \textit{input splits}, gerenciar a execução e comunicação entre os processos do programa ao longo das máquinas e também tratar as falhas que podem ocorrer em cada nó da rede. De acordo com \citeonline{ghemawatMapreduce2008}, com este cenário um desenvolvedor sem nenhuma experiência em computação paralela seria capaz de desenvolver soluções aplicadas para este contexto. 
 
-Um Mapreduce job é a unidade de trabalho a ser executada por usuários deste modelo e consiste nos arquivos de entrada, no próprio programa MapReduce e também nas informações de configurações. O Hadoop executa este job através de sua divisão em atividades, as quais podem ser do tipo map ou reduce2. A execução destes jobs é realizada por dois tipos de nós: um jobtracker e um conjunto de tasktrackers. 
+Este modelo pode ser aplicado em diversas plataformas, mas o foi projetado principalmente para ser executado sobre o sistema de arquivos distribuídos GFS. Na figura \ref{fig-mapreduce-google} é apresentada a arquitetura do MapReduce, através dela é possível visualizar que um \textit{cluster} é composto por dois tipos de nós: um \textit{master} e diversos \textit{workers}.
 
-O jobtracker tem a responsabilidade de coordenar todos os jobs do sistema e também de realizar o agendamento e monitoramento das tarefas a serem executadas pelos tasktrackers. Cada tasktracker executa um conjunto de tarefas determinado pelo jobtracker, o mantendo informado sobre o progresso destas atividades. Caso uma tarefa falhe o jobtracker realizará o reagendamento da mesma para um outro tasktracker, provendo um mecanismo de tolerância a falhas.
+Inicialmente os arquivos de entrada são divididos em \textit{input splits} de aproximadamente 64MB, assim como o tamanho dos blocos de arquivos no GFS e também no HDFS. Segundo \citeonline{ghemawatMapreduce2008}, as \textit{map tasks} criadas para cada uma destas entradas são espalhadas pelo \textit{cluster} e executadas em paralelo nos nós do tipo \textit{worker}. As \textit{reduce tasks} criadas para computar os valores intermediários também são processadas em \textit{workers}.
 
-Assim como no HDFS a arquitetura do MapReduce é baseada no modelo mestre/escravo, e sua implementação também foi concebida através da linguagem de programação java. Geralmente o namenode e o jobtracker estão localizados no mesmo nó do cluster Hadoop, enquanto cada datanode possui um tasktracker.
-
-\begin{figure}[h!]
+\begin{figure}[ht!]
 	\centering
-	\includegraphics[keepaspectratio=true,scale=0.35]
+	\includegraphics[keepaspectratio=true,scale=0.5]
+	  {figuras/mapreduce-google.eps}
+	\caption{Arquitetura MapReduce – Google, retirado de \cite{ghemawatMapreduce2008}}
+	\label{fig-mapreduce-google}
+\end{figure}
+
+O \textit{MapReduce job} submetido pelo usuário faz o cálculo de quantas \textit{map tasks} serão necessárias para realizar o processamento dos \textit{input splits}. O nó \textit{master} então possui a tarefa de distribuir as \textit{map tasks} e também as \textit{reduce tasks} para os \textit{workers} disponíveis na rede. De acordo com \citeonline{ghemawatMapreduce2008}, o nó \textit{master} também é responsável por manter o estado de todas as funções \textit{map} e \textit{reduce} que são executadas no \textit{cluster}. Estes dados informam se uma determinada tarefa está inativa, em progresso ou finalizada. 
+
+A máquina \textit{master} também monitora os \textit{workers} através de pings que são realizados periodicamente. Caso um \textit{worker} não responda será declarado como indisponível, todas as tarefas deste nó serão reagendadas para serem executadas por outro \textit{worker}. Esta preocupação em monitorar os nós ao longo do \textit{cluster} ocorre porque segundo \citeonline{ghemawatMapreduce2008}, o MapReduce é uma biblioteca projetada para auxiliar no processamento de dados em larga escala ao longo de milhares de máquinas, portanto precisa prover um mecanismo eficiente para tolerar as falhas que ocorrem em computadores da rede.
+
+A largura de banda da rede pode ser considerada um recurso crítico mediante ao contexto apresentado até o momento, a utilização da rede para transportar dados deve ser otimizada ao máximo para que este fator não prejudique o desempenho de um programa MapReduce. Em virtude disso o MapReduce procura tirar vantagem do fato de que os arquivos de entrada são persistidos no disco local dos \textit{workers}. Portanto o \textit{master} obtém a localização de cada \textit{input split} e procura executar as \textit{map tasks} exatamente nestas máquinas \cite{ghemawatMapreduce2008}. Desta forma a execução da fase de mapeamento é realizada localmente, sem consumir os recursos da rede. Segundo \citeonline{white2012}, este processo pode ser definido como \textit{data locality optimization}.
+
+Por sua vez, as \textit{reduce tasks} não possuem a vantagem de serem executadas localmente, pois sua entrada pode estar relacionada às saídas de um conjunto de diferentes \textit{map tasks}. Portanto os valores intermediários gerados pelas funções \textit{map} devem ser transportados pela rede até a máquina onde a função \textit{reduce} está sendo processada.
+
+O Hadoop MapReduce apresenta uma implementação \textit{open-source} consolidada para o modelo MapReduce, na qual é construída a partir da linguagem de programação Java \cite{hadoopSiteMapReduce}, diferentemente do \textit{framework} original desenvolvido em C++ pela Google. A arquitetura do MapReduce pode ser facilmente associada ao paradigma mestre/escravo. A máquina \textit{master} representa o mestre do sistema, enquanto os \textit{workers} simbolizam os escravos. No contexto proposto pelo Hadoop estes elementos são identificados como \textit{jobtracker} e os \textit{tasktrackers}, respectivamente. A figura \ref{fig-mapreduce-arquitetura} ilustra a arquitetura do Hadoop MapReduce.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.6]
 	  {figuras/mapreduce-arquitetura.eps}
-	\caption{Arquitetura MapReduce}
+	\caption{Arquitetura de um cluster Hadoop}
 	\label{fig-mapreduce-arquitetura}
 \end{figure}
 
-Para realizar a execução de um MapReduce job o Hadoop primeiramente divide os arquivos de entrada em blocos de aproximadamente 64MB, assim como a abordagem utilizada pelo HDFS. Em seguida cada um destes blocos dará origem a uma atividade map, que por sua vez executará a função map (definida pelo usuário) para cada um dos registros presentes em seu respectivo bloco. 
+Assim como no ambiente proposto pela Google, o Hadoop MapReduce também é executado sobre um sistema de arquivos distribuídos em larga escala, no caso o HDFS. Segundo \citeonline{venner2009} É comum o \textit{jobtracker} e o \textit{namenode} estarem localizados na mesma máquina do \textit{cluster}, especialmente em instalações reduzidas.
 
-O Hadoop procura executar uma atividade map na mesma máquina onde seu arquivo de entrada está localizado no HDFS. Desta maneira o trabalho computacional é dividido ao longo dos nós do cluster evitando a utilização da rede durante este passo. Cada atividade map escreve seu resultado no próprio disco da máquina e não no HDFS, pois estes arquivos temporários são apenas valores intermediários.
+\subsection{Shuffle e Sort}
 
-\begin{figure}[h!]
+Uma das responsabilidades do \textit{framework} MapReduce é garantir que os pares intermediários \textit{\{chave, valor\}} resultantes das funções \textit{maps} sejam ordenados, agrupados e passados como parâmetro para as funções de redução. Esta fase é classificada como \textit{shuffle} e \textit{sort}. De acordo com \citeonline{white2012} esta é a área do código base do Hadoop que está em contínua evolução, podendo ser classificada como o núcleo do MapReduce. A \ref{fig-shuffle} ilustra os processos de \textit{shuffle} e \textit{sort} que ocorrem entre a execução das funções \textit{map} e \textit{reduce}.
+
+\begin{figure}[ht!]
 	\centering
-	\includegraphics[keepaspectratio=true,scale=0.45]
-	  {figuras/mapreduce-job.eps}
-	\caption{Fluxograma MapReduce job}
-	\label{fig-mapreduce-job}
+	\includegraphics[keepaspectratio=true,scale=0.6]
+	  {figuras/shuffle.eps}
+	\caption{Fluxograma das etapas Shuffle e Sort, extraído de \cite{white2012}}
+	\label{fig-shuffle}
 \end{figure}
 
-As atividades do tipo reduce recebem como entrada os valores intermediários gerados pelas atividades map. Isso significa que estas informações devem ser trasportadas pela rede até a máquina onde estas tarefas reduce serão executadas. Após chegarem ao destino estes dados são agrupados em conjuntos e processadas em atividades reduce distintas, as quais executam a função reduce especificada pelo usuário. O resultado final é salvo em um arquivo no HDFS.
+Durante a execução de uma função \textit{map} os pares \textit{\{chave, valor\}} resultantes são escritos em um \textit{buffer} na memória na medida em que são gerados. Os registros são divididos em R partições, na qual R representa a quantidade de funções \textit{reduce} que seriam necessárias para processar os resultados. Em seguida as partições são ordenadas de acordo com as chaves e escritas no disco local. Segundo \citeonline{white2012}, Os resultados das \textit{map tasks} são escritos no próprio disco da máquina porque se tratam de arquivos intermediários, não há necessidade de armazená-los no sistema de arquivos distribuídos. Esta etapa de particionamento e ordenação é denominada \textit{shuffle}.
+
+Após o término de uma \textit{map task} ocorre a fase de cópia. Nesta etapa as máquinas onde serão executadas as \textit{reduce tasks} são informadas pelo \textit{master} sobre a localização das partições a elas destinadas. As partições geradas pelas \textit{map tasks} são ordenadas localmente justamente para auxiliar neste procedimento. Ao término da cópia de todas as partições ocorre a fase \textit{sort}, onde os resultados são agrupados por chave, mantendo-se a ordenação pela mesma. Desta forma as entradas para as funções de redução estão prontas para serem computadas.
+
+
 
 
