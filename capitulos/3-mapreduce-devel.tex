@@ -1,0 +1,73 @@
+\chapter{MapReduce na Prática}
+\label{cap:mapreduce-devel}
+
+Neste capítulo discutimos sobre a construção de aplicações baseadas no modelo MapReduce. Anteriormente foi apresentada uma introdução a este novo paradigma, porém o foco desta sessão é deixar claro quais são os passos necessários para o desenvolvimento neste ambiente. Será utilizada uma abordagem técnica para descrever os recursos disponibilizados por este \textit{framework}, originalmente criado para linguagem Java.
+
+Hadoop provém uma API para MapReduce que permite a construção das funções \textit{map} e \textit{reduce} em outras linguagens de programação \cite{white2012}. É possível realizar o desenvolvimento de aplicações MapReduce em linguagens de \textit{script}, como por exemplo, Python e Ruby, usando o utilitário \textit{Hadoop Stream}. Para a implementação em C++ é utilizada uma interface denominada \textit{Hadoop Pipe}.
+
+De acordo com a pesquisa realizada \citeonline{ding2011}, a implementação em outras linguagens pode ocasionar uma perda de performance, pois a chamada do programa ocasiona \textit{overhead}. Porém quando um job necessita de alto trabalho computacional o uso de linguagens mais eficientes que Java pode trazer benefícios no tempo de execução. O foco deste capítulo será na implementação do MapReduce para a linguagem Java.
+
+Para demonstrar sua implementação será utilizado o exemplo do contador de palavras, também abordado na sessão \ref{sec-wc}. Este problema consiste em realizar a contagem de ocorrências das diferentes palavras que aparecem ao longo de um arquivo de texto. Primeiramente será adotada uma solução convencional para sua resolução, posteriormente esta abordagem será adaptada para o modelo MapReduce.
+
+A implementação para este contador de palavras pode ser realizada de diversas maneiras. Um algoritmo que pode ser usado para solucionar esta questão é mostrado no código \ref{cod-wc-hash}.
+
+A construção deste algoritmo consiste na utilização de um \textit{HashMap\footnote{\url{http://docs.oracle.com/javase/7/docs/api/java/util/HashMap.html}}} para relacionar cada String encontrada a um valor inteiro, incrementado a cada ocorrência no texto, representando sua frequência. A utilização desta estrutura de dados permite uma simples implementação, entretanto para análise de arquivos em larga escala esta estratégia convencional pode se tornar inviável.
+
+\begin{center}
+\lstinputlisting[frame=single,
+		breaklines=true,
+		label=cod-wc-hash,
+		style=abnt,
+		caption={Algoritmo convencional para contador de palavras}]
+		{codigos/wordcount-hash}
+\end{center}
+
+A classe \textit{HashMap} compõe uma das implementações da interface \textit{Map}, que por sua vez faz parte dos tipos de coleções disponibilizados pela linguagem Java. O aumento excessivo da quantidade de elementos desta estrutura pode elevar significativamente o uso de memória e também ocasionar uma brusca queda de performance \cite{oaks2014}.
+
+A solução adequada para o contexto Big Data, na qual são analisados arquivos extremamente volumosos, consiste na construção de um algoritmo baseado em computação distribuída. A grande vantagem de utilizar o modelo MapReduce é que o desenvolvedor precisa apenas adaptar o problema para ser resolvido com as funções \textit{map} e \textit{reduce}. Toda a complexidade envolvida em paralelizar o processamento é realizada pelo \textit{framework}.
+
+O MapReduce é um paradigma que permite uma implementação flexível e simples para esta situação, para tal é necessário apenas três coisas: Uma função \textit{map}, uma função \textit{reduce} e um pedaço de código para execução do \textit{job} \cite{white2012}. Na tabela \ref{tab-mapreduce-job} estão as atividades que ocorrem em um MapReduce \textit{job} e quem é o responsável por cada uma delas.
+
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|p{5cm}|p{5cm}|}
+	\hline
+	Atividade & Responsável	
+	\\ \hline
+	Configurar Job & Desenvolvedor
+	\\ \hline
+	Dividir arquivos de entrada em input splits & Hadoop Framework
+	\\ \hline
+	Iniciar map tasks com seus respectivos input splits & Hadoop Framework
+	\\ \hline
+	Definir função map utilizada pelas map tasks & Desenvolvedor
+	\\ \hline
+	Shuffle, onde as saídas de cada map task são divididas e ordenadas & Hadoop Framework
+	\\ \hline
+	Sort, onde os valores de cada uma das chaves geradas pelas map tasks são agrupados & Hadoop Framework
+	\\ \hline
+	Iniciar reduce tasks com suas respectivas entradas & Hadoop Framework
+	\\ \hline
+	Definir função reduce, na qual é chamada uma vez para cada chave existente & Desenvolvedor
+	\\ \hline
+	Escrever os resultados das reduce tasks em N partes no diretório de saída definido nas configurações do job, onde N é o número de reduce tasks & Hadoop Framework
+	\\ \hline
+  \end{tabular}
+  \caption{Atividades de um MapReduce job, extraída de 
+  \citeonline{venner2009}}
+\label{tab-mapreduce-job}
+\end{center}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+

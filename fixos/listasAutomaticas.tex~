@@ -6,11 +6,3 @@
 \listoftables*
 \cleardoublepage
 \end{comment}
-
-% inserir lista de listings
-% ---
-\pdfbookmark[0]{\lstlistlistingname}{lol}
-\begin{KeepFromToc}
-\lstlistoflistings
-\end{KeepFromToc}
-\cleardoublepage
