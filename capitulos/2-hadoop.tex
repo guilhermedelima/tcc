@@ -1,7 +1,7 @@
 \chapter{Hadoop}
 \label{cap:hadoop}
 
-Este capítulo irá discutir sobre o software Hadoop.
+Uma das soluções mais conhecidas para análise de dados em larga escala é o projeto Apache Hadoop, concebido por Doug Cutting, o mesmo criador da biblioteca de busca textual Apache Lucene\footnote{\url{http://lucene.apache.org/core/}} \cite{white2012}. Os componentes principais desta ferramenta consistem em um sistema de arquivos distribuídos para ser executado em \textit{clusters}\footnote{Um \textit{cluster} pode ser classificado como um aglomerado de computadores que simulam o comportamento de uma única máquina. Segundo \citeonline{tanenbaum2003}, são CPUs fortemente acopladas que não compartilham memória.} compostos por máquinas de baixo custo, e também pelo \textit{framework} de programação paralela MapReduce. Ambos foram inspirados nos trabalhos publicados por \citeonline{ghemawatGfs2003} e \citeonline{ghemawatMapreduce2008}, e são objetos de estudo deste capítulo. O manual de instalação pode ser encontrado no apêncice \ref{apd-hadoop}.
 
 \section{Hadoop Distributed File System}
 
@@ -13,7 +13,7 @@ De acordo com \citeonline{white2012} seu funcionamento depende dos protocolos de
 
 No contexto Big Data, que engloba um volume muito grande de dados, a utilização de um mecanismo para armazenar informações ao longo de várias máquinas é indispensável. Neste sentido a camada mais baixa do Hadoop é composta por um sistema de arquivos distribuídos chamado Hadoop Distributed File System, ou HDFS.
 
-O HDFS foi projetado para executar MapReduce \textit{jobs}, que por sua vez, realizam leitura, processamento e escrita de arquivos extremamente grandes \cite{venner2009}. Apesar de apresentar semelhanças com os sistemas de arquivos distribuídos existentes seu grande diferencial está na alta capacidade de tolerância a falhas, no baixo custo de hardware que é requerido e também na escalabilidade linear.
+O HDFS foi projetado para executar MapReduce \textit{jobs}\footnote{Um \textit{job} pode ser interpretado como uma unidade de trabalho a ser executada pelo sistema, ou seja, o próprio programa MapReduce.}, que por sua vez, realizam leitura, processamento e escrita de arquivos extremamente grandes \cite{venner2009}. Apesar de apresentar semelhanças com os sistemas de arquivos distribuídos existentes seu grande diferencial está na alta capacidade de tolerância a falhas, no baixo custo de hardware que é requerido e também na escalabilidade linear.
 
 \subsection{Características Principais}
 
@@ -21,7 +21,7 @@ O HDFS foi projetado para armazenar arquivos muito grandes a uma taxa de transmi
 
 \begin{enumerate}
 
-\item \textbf{Arquivos muito grandes:} Este sistema de arquivos distribuídos é capaz de armazenar arquivos que chegam a ocupar terabytes de espaço, portanto é utilizado por aplicações que necessitam de uma base de dados extremamente volumosa. Segundo \citeonline{shvachko2010}, os \textit{clusters} do Hadoop utilizados pela Yahoo chegam a armazenar 25 petabytes de dados.
+\item \textbf{Arquivos muito grandes:} Este sistema de arquivos distribuídos é capaz de armazenar arquivos que chegam a ocupar terabytes de espaço, portanto é utilizado por aplicações que necessitam de uma base de dados extremamente volumosa. Segundo \citeonline{shvachko2010}, os \textit{clusters} do Hadoop utilizados pela Yahoo\footnote{http://pt.wikipedia.org/wiki/Yahoo!} chegam a armazenar 25 petabytes de dados.
 
 \item \textit{\textbf{Streaming data access:}} Operações de leitura podem ser realizadas nos arquivos quantas vezes forem necessárias, porém um arquivo pode ser escrito apenas uma única vez. Esta abordagem pode ser descrita como \textit{write-once}, \textit{read-many-times} \cite{white2012}. Este sistema de arquivos distribuídos foi construído partindo da ideia que este modelo é o mais eficiente para processar os dados. O HDFS também realiza a leitura de qualquer arquivo a uma taxa constante, ou seja, a prioridade é garantir vazão na leitura e não minimizar a latência ou prover interatividade com aplicações em tempo real, como é realizado em sistemas de arquivos com propósito geral.
 
@@ -38,7 +38,7 @@ O HDFS foi projetado para armazenar arquivos muito grandes a uma taxa de transmi
 	2 quad-core de 2 a 2,5 GHz & 16 a 24 GB & 4 discos SATA de 1 Terabyte & Red Hat Enterprise Linux Server
 	\\ \hline
   \end{tabular}
-  \caption{Configurações das máquinas Yahoo, extraída de 
+  \caption{Configurações - Yahoo, extraída de 
   \citeonline{white2012}, \citeonline{shvachko2010}}
 \label{tab-hardware}
 \end{center}
@@ -65,7 +65,7 @@ A utilização de blocos permite simplificar o processo de gerenciamento do arma
 \subsection{Arquitetura}
 \label{sec-hdfs-arquitetura}
 
-Para compreender a arquitetura do HDFS é necessário uma introdução ao GFS, o sistema de arquivos distribuídos proposto pela Google, no qual foi projetado para atender a alta e crescente demanda de processamento de dados em larga escada encontrada na empresa. O GFS possui os mesmos objetivos de um sistema de arquivos distribuídos convencional: performance, escalabilidade, confiabilidade e disponibilidade \cite{ghemawatGfs2003}. Porém as soluções dos sistemas existentes foram revistas e muitas questões de design foram alteradas radicalmente. Desta forma foi possível garantir escalabilidade linear, utilização de hardwares de baixo custo e também escrita e leitura de arquivos na ordem de multi gigabytes através do padrão \textit{write-once}, \textit{read-many-times}. 
+Para compreender a arquitetura do HDFS é necessário uma introdução ao GFS, o sistema de arquivos distribuídos proposto pela Google\footnote{http://pt.wikipedia.org/wiki/Google}, no qual foi projetado para atender a alta e crescente demanda de processamento de dados em larga escada encontrada na empresa. O GFS possui os mesmos objetivos de um sistema de arquivos distribuídos convencional: performance, escalabilidade, confiabilidade e disponibilidade \cite{ghemawatGfs2003}. Porém as soluções dos sistemas existentes foram revistas e muitas questões de design foram alteradas radicalmente. Desta forma foi possível garantir escalabilidade linear, utilização de hardwares de baixo custo e também escrita e leitura de arquivos na ordem de multi gigabytes através do padrão \textit{write-once}, \textit{read-many-times}. 
 
 Um \textit{cluster} GFS é composto por um único \textit{master} e múltiplos \textit{chunkservers}, os quais são acessados por múltiplos clientes \cite{ghemawatGfs2003}. Esta abordagem é baseada no tipo de arquitetura mestre/escravo. Ambos são executados como aplicações a nível de usuário em máquinas com sistema operacional GNU/Linux. A figura \ref{fig-gfs} ilustra a arquitetura do GFS.
 
@@ -77,7 +77,7 @@ Um \textit{cluster} GFS é composto por um único \textit{master} e múltiplos \
 	\label{fig-gfs}
 \end{figure}
 
-O HDFS foi construído a partir deste modelo proposto por \citeonline{ghemawatGfs2003}. Todas as características abordadas nas sessões anteriores, referentes ao HDFS, foram definidas com base neste trabalho. O HDFS apresenta uma alternativa \textit{open-source} implementada em Java para o GFS.
+O HDFS foi construído a partir deste modelo proposto por \citeonline{ghemawatGfs2003}. Todas as características abordadas nas sessões anteriores, referentes ao HDFS, foram definidas com base neste trabalho. O HDFS apresenta uma alternativa \textit{open-source}\footnote{\textit{Open-source} são projetos de software que seguem o padrão para código aberto determindo pela OSI.} implementada em Java para o GFS.
 
 Na solução apresentada pelo HDFS o nó mestre é identificado como \textit{namenode}. Seu papel consiste em gerenciar o \textit{namespace} do sistema de arquivos e também em controlar as requisições de clientes para acesso aos arquivos armazenados. Este componente mantém a árvore de diretórios e todos os metadados relacionados. Como descrito anteriormente, o HDFS quebra um arquivo em vários blocos e os espalha pelos diversos \textit{datanodes} do \textit{cluster}, o \textit{namenode} possui a tarefa de manter a localização de cada um destes blocos. Todas estas informações são armazenadas no disco local do servidor em dois arquivos: a imagem do sistema de arquivos e o registro de log \cite{white2012}. A imagem do sistema também é mantida em memória enquanto o \textit{cluster} está ativo, sendo constantemente atualizada.
 
@@ -113,7 +113,7 @@ Para cada bloco do arquivo é realizado este processo de \textit{pipeline}. Na f
 
 \section{MapReduce}
 
-MapReduce pode ser definido como um paradigma de programação voltado para processamento em \textit{batch} de grande volume de dados ao longo de várias máquinas, obtendo resultados em tempo razoável \cite{white2012}. Utiliza-se o conceito de programação distribuída para resolver problemas, adotando a estratégia de dividi-los em problemas menores e independentes.
+MapReduce pode ser definido como um paradigma de programação voltado para processamento em \textit{batch\footnote{Processamento em batch (lotes) ocorre quando as entradas são lidas para posterior precessamento sequencial, sem interação com o usuário.}} de grande volume de dados ao longo de várias máquinas, obtendo resultados em tempo razoável \cite{white2012}. Utiliza-se o conceito de programação distribuída para resolver problemas, adotando a estratégia de dividi-los em problemas menores e independentes.
 
 De acordo com \citeonline{ghemawatMapreduce2008}, o usuário deste modelo especifica uma função \textit{map}, que deverá processar um par \textit{\{chave, valor\}} gerando como produto conjuntos  intermediários de pares \textit{\{chave, valor\}}, e também define uma função \textit{reduce}, responsável por unir todos os valores intermediários associados a uma mesma chave.
 
@@ -185,7 +185,7 @@ Inicialmente os arquivos de entrada são divididos em \textit{input splits} de a
 	\centering
 	\includegraphics[keepaspectratio=true,scale=0.5]
 	  {figuras/mapreduce-google.eps}
-	\caption{Arquitetura MapReduce, retirado de \cite{ghemawatMapreduce2008}}
+	\caption{Arquitetura MapReduce, retirado de \citeonline{ghemawatMapreduce2008}}
 	\label{fig-mapreduce-google}
 \end{figure}
 
@@ -217,7 +217,7 @@ Uma das responsabilidades do \textit{framework} MapReduce é garantir que os par
 	\centering
 	\includegraphics[keepaspectratio=true,scale=0.6]
 	  {figuras/shuffle.eps}
-	\caption{Fluxograma das etapas Shuffle e Sort, extraído de \cite{white2012}}
+	\caption{Fluxograma das etapas Shuffle e Sort, extraído de \citeonline{white2012}}
 	\label{fig-shuffle}
 \end{figure}
 

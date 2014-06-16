@@ -1,32 +1,11 @@
 \begin{resumo}[Abstract]
-  \begin{otherlanguage*}{english}  
+ \begin{otherlanguage*}{english}
 
-  This course conclusion work presents the results of a study to enable the
-  deployment of a collaborative network for the University of
-  Brasilia (UNB), which acts as a virtual environment for the creation and
-  sharing of knowledge in a collaborative and horizontal way.
-  %
-  For this, we choose to use a Brazilian free social networks platform
-  Noosfero, understanding that it satisfies the immediate needs of this
-  proposal, according to studies from University of São Paulo, when it
-  adopted the same.
-  %  
-  Besides the implementation itself at UNB, this study includes a requirements
-  elicitation and the implementation of a set of features and enhancements to
-  the proposed platform, so that it would meet the basic needs for us to perform
-  case studies with students from UnB Gama.
-  %
-  Also, we pointed out steps that will enable the continuity and the
-  officialisation of the Comunidade.UnB network and it's constant evolution.
-  %
-  Additionally, our efforts and knowledge acquired in this work were transferred
-  to a team of developers at UNB Gama, which will provide continuity to the
-  deployment and implementation of this network in UNB, in 2014.
-   
+The storage of information in digital format has grown considerably in recent years. Not only people are responsible for producing data, electronic equipment have also become major generators of records, as an example, we have servers, GPS devices, computers scattered in various contexts, among a multitude of applications. The term Big Data refers to all this amount of data that is on the order of petabytes and can not be analyzed by traditional methods This work presents a study on one of the most known architectures to solve these problems, Hadoop software. The development MapReduce paradigm is discussed together with the projects that are built on top of Hadoop system, providing services at a higher level of abstraction.
 
-  \vspace{\onelineskip}
+   \vspace{\onelineskip}
  
-  \noindent 
-  \textbf{Key-words}: social networking. open-source software. functional requirements. agile methods. distributed software development.
-  \end{otherlanguage*}
+   \noindent 
+   \textbf{Key-words}: Big Data. Hadoop. Distributed Computing.
+ \end{otherlanguage*}
 \end{resumo}

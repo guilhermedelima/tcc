@@ -1,15 +1,16 @@
 \chapter{Introdução}
  
-Fazer introdução. Escrever sobre:
+A tecnologia nunca foi tão presente na sociedade como nos dias atuais. Não apenas pessoas são responsáveis por produzir informações, equipamentos eletrônicos também tornaram-se grandes criadores de dados, como por exemplo, registros de logs de servidores, sensores que são instalados nos mais variados contextos, entre uma infinidade aplicações. Mensurar o volume de todos estes registros eletrônicos não é uma tarefa fácil. \citeonline{white2012} apresenta alguns exemplos de como grandes empresas geram quantidades extremamente grandes de dados. O Facebook\footnote{Umas das redes sociais de maior sucesso no mundo.} chega a armazenar 10 bilhões de fotos, totalizando 1 petabyte, já a organização Internet Archive\footnote{Organização sem fins lucrativos responável por armazenar recursos multimídia.} contém cerca de 2 petabytes de dados, com uma taxa de crescimento de 20 terabytes por mês.
 
-\begin{enumerate}
-  \item BigData
-  \item Hadoop
-  \item Nosql
-  \item Redes Sociais
-\end{enumerate}
+Segundo levantamento feito pela IDC~\cite{gantz2011}, a quantidade de informações capturadas, criadas, ou replicadas no universo digital ultrapassou a barreira de 1 zettabyte, equivalente a 1 trilhão de gigabytes. Entre o período de 2006 a 2011 a volume total de registros se multiplicava por nove a cada ano. O número de bits de todos estes dados pode ser comparado ao número de estrelas contidas no universo físico.
 
-Escrever um conclusão com estes tópicos e fazendo boa referência
+O grande problema consiste tornar processável toda esta gama de informações, que podem estar persistidas de forma estruturada, semi estruturada, ou sem nenhuma organização. De acordo com \citeonline{ibm2011}, o termo Big Data se aplica a todo este potencial de dados que não são passíveis de análise ou processamento através dos métodos e ferramentas tradicionais. Por muito tempo várias empresas tinham a liberdade de ignorar o uso de grande parte deste volume de informações, pois não havia como armazenar estes dados a um custo benefício aceitável. Todavia com o avanço das tecnologias relacionadas a Big Data percebeu-se que a análise da maioria destas informações pode trazer benefícios consideráveis, agregando novas percepções jamais imaginadas.
+
+A análise realizada sobre petabytes de informações pode ser um fator determinante para a tomadas de decisões em vários contextos. A utilização desta tecnologia associada a algoritmos de aprendizagem de máquinas, como por exemplo, pode revelar tendências de usuários, necessidades em determinadas áreas que não se imaginaria sem uso desta abordagem. Com isso fica claro que o termo Big Data não está relacionado a apenas o armazenamento em grande escala, mas também ao processamento destes dados para agregar valor ao contexto em que for aplicado.
+
+As tecnologias de Big Data descrevem uma nova geração de arquiteturas, projetadas para economicamente extrair valor de um grande volume, sobre uma grande variedade de dados, permitindo alta velocidade de captura, e/ou análise \cite{gantz2011}. Nesta definição é possível identificar os três pilares deste novo movimento: velocidade, volume e variedade. De acordo com \citeonline{ibm2011}, isto pode ser caracterizado com os três Vs presentes nas tecnologias Big Data.
+
+O projeto Apache Hadoop\footnote{\url{http://hadoop.apache.org/}} é uma das soluções mais conhecidas para Big Data atualmente. Sua finalidade é oferecer uma infraestrutura para armazenamento e processamento de grande volume de dados, provendo escalabilidade linear e tolerância a falhas. Segundo \citeonline{white2012}, em abril de 2008 o Hadoop quebrou o recorde mundial e se tornou o sistema mais rápido a ordenar 1 terabyte, utilizando 910 máquinas essa marca foi atingida em 209 segundos. Em 2009 este valor foi reduzido para 62 segundos. Neste trabalho será apresentado um estudo sobre a arquitetura e o modelo proposto por este software.
 
 %------------------------------------------------------------------------------%
  
@@ -17,22 +18,34 @@ Escrever um conclusão com estes tópicos e fazendo boa referência
 
 \subsection{Objetivos Gerais}
  
-Neste trabalho de conclusão de curso, Descrever Objetivo Geral
+Para este trabalho de conclusão de curso, o principal objetivo é compreender as tecnologias que envolvem o projeto Hadoop, uma das principais soluções existentes para análise de dados dentro do contexto de Big Data.
  
  
 %------------------------------------------------------------------------------%
  
 \subsection{Específicos}
  
-Os objetivos específicos desse trabalho foram:
+Os objetivos específicos desse trabalho são apresentados a seguir:
  
 \begin{enumerate}
-  \item objetivo específico 1
-  \item objetivo específico 2 
+  \item Analisar a arquitetura e funcionamento do núcleo do Hadoop.
+  \item Descrever os passos necessários para o desenvolvimento de aplicações utilizando o paradigma MapReduce.
+  \item Analisar as ferramentas que fazem parte do ecossistema Hadoop e oferecem serviços executados no topo desta arquitetura.
+  \item Construção de senso crítico para análise dos cenários Big Data e as soluções possíveis para estes diferentes contextos.
 \end{enumerate}
  
 %------------------------------------------------------------------------------%
  
 \section{Organização do Trabalho}
  
-Explicar Organização do Trabalho
+O primeiro passo para a construção deste trabalho ocorreu através de uma revisão bibliográfica sobre as tecnologias que se encaixam nesta nova abordagem Big Data. Com as pesquisas realizadas o Hadoop se apresentou como uma das ferramentas mais utilizadas e consolidadas para este contexto. Portanto a próxima etapa consistiu em uma pesquisa para compreender e detalhar sua arquitetura e funcionamento. Em seguida foi realizada uma descrição dos passos necessários para o desenvolvimento para aplicações MapReduce e também dos projetos que compõe o ecossistema Hadoop.
+
+Os capítulos subsequentes estão estruturados de acordo com a seguinte organização. O capítulo 2 apresenta uma descrição detalhada sobre o Hadoop, onde o foco está no sistema de arquivos distribuídos HDFS e também no \textit{framework} para computação paralela MapReduce. 
+
+No capítulo 3 são discutidos os passos necessários para o desenvolvimento de software utilizando o \textit{framework} MapReduce, onde são abordados aspectos técnicos e práticos que envolvem esta abordagem.
+
+O capítulo 4 apresenta os projetos que fazem parte do ecossistema Hadoop. O foco desta sessão está nas ferramentes construídas no topo da arquitetura Hadoop, em específico o banco de dados NoSQL HBase e também o \textit{data warehouse} distribuído Hive.
+
+No capítulo 5 são discutidos os resultados obtidos após o término deste trabalho, onde são apresentados os próximos passos para a conclusão do TCC 2.
+
+

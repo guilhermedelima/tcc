@@ -55,3 +55,51 @@
   \end{capa}
 }
 
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+% --------------- Listing ------------- %
+
+
+\renewcommand{\lstlistingname}{Código}
+\renewcommand{\lstlistlistingname}{Lista de códigos}
+
+% Configura a ``Lista de Códigos'' conforme as regras da ABNT (para abnTeX2)
+\begingroup\makeatletter
+\let\newcounter\@gobble\let\setcounter\@gobbletwo
+  \globaldefs\@ne \let\c@loldepth\@ne
+  \newlistof{listings}{lol}{\lstlistlistingname}
+  \newlistentry{lstlisting}{lol}{0}
+\endgroup
+
+\renewcommand{\cftlstlistingaftersnum}{\hfill--\hfill}
+
+\let\oldlstlistoflistings\lstlistoflistings
+\renewcommand{\lstlistoflistings}{%
+   \begingroup%
+   \let\oldnumberline\numberline%
+   \renewcommand{\numberline}{\lstlistingname\space\oldnumberline}%
+   \oldlstlistoflistings%
+   \endgroup}
+
+
+%Customizacao
+\lstdefinestyle{abnt}{
+  alsoother={0123456789_},
+  backgroundcolor=\color{white},
+  basicstyle=\ttfamily\ABNTEXfontereduzida,
+  breakatwhitespace=false,
+  breaklines=true,                 
+  captionpos=b,
+  escapeinside={\%*}{*)},
+  extendedchars=true,  
+  frame=single,             
+  inputencoding=utf8,
+  keepspaces=true,
+  numberbychapter=false,
+  showtabs=false,
+  stepnumber=4,
+  tabsize=2,
+  aboveskip=14pt,
+  framexleftmargin=10pt,
+  framexleftmargin=15pt
+}

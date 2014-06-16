@@ -1,0 +1,70 @@
+\chapter{Ecossistema Hadoop}
+\label{cap:eco}
+
+Os capítulos anteriores abordaram os principais componentes do Hadoop: o sistema de arquivos distribuídos HDFS e o framework MapReduce. Estes podem ser considerados o núcleo de todo o sistema, porém o software Hadoop também é composto por um conglomerado de projetos que fornecem serviços relacionados a computação distribuída em larga escala, formando o ecossistema Hadoop. A tabela \ref{tab-eco} apresenta alguns projetos que estão envolvidos neste contexto.
+
+\begin{savenotes}
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|p{3cm}|p{7cm}|}
+	\hline
+	Projeto & Descrição
+	\\ \hline
+	Common & Conjunto de componentes e interfaces para sistemas de arquivos distribuídos e operações de Entrada/Saída.
+	\\ \hline
+	Avro\footnote{\url{http://avro.apache.org/}} & Sistema para serialização de dados.
+	\\ \hline
+	HDFS & Sistema de arquivos distribuídos executado sobre clusters com máquinas de baixo custo
+	\\ \hline
+	MapReduce & Framework para processamento distribuído de dados, aplicado em clusters com máquinas de baixo custo.
+	\\ \hline
+	Pig\footnote{\url{http://pig.apache.org/}} & Linguagem de procedimentos de alto nível para grandes bases de dados. Executada em clusters HDFS e MapReduce.
+	\\ \hline
+	Hive\footnote{\url{http://hive.apache.org/}} & Um data warehouse distribuído. Gerencia arquivos no HDFS e provê linguagem de consulta baseada em SQL.
+	\\ \hline
+	HBase\footnote{\url{http://hbase.apache.org/}} & Banco de dados distribuído orientado a colunas. Utiliza o HDFS para armazenamento dos dados.
+	\\ \hline
+	ZooKeeper\footnote{\url{http://zookeeper.apache.org/}} & Coordenador de serviços distribuídos.
+	\\ \hline
+	Sqoop\footnote{\url{http://sqoop.apache.org/}} & Ferramenta para mover dados entre banco relacionais e o HDFS.
+	\\ \hline
+  \end{tabular}
+  \caption{Ecossistema Hadoop, retirado de 
+  \citeonline{white2012}, \citeonline{shvachko2010}}
+\label{tab-eco}
+\end{center}
+\end{table}
+\end{savenotes}
+
+Apesar do Hadoop apresentar uma boa alternativa para processamento em larga escala, ainda existem algumas limitações em seu uso. Como discutido anteriormente o HDFS foi projetado de acordo com o padrão \textit{write-once}, \textit{read-many-times}, desta forma não há acesso randômico para operações de leitura e escrita. Outro aspecto negativo se dá pelo baixo nível requerido para o desenvolvimento neste tipo de ambiente. Segundo \citeonline{thusoo2009}, a utilização do \textit{framework} MapReduce faz com que programadores implementem aplicações difíceis de realizar manutenção e reuso de código,
+
+Alguns dos projetos do ecossistema citado na tabela \ref{tab-eco} foram criados justamente para resolver estes problemas, desta forma utilizam-se do Hadoop para prover serviços com um nível de abstração maior para o usuário. Neste capítulo discutimos sobre o banco de dados orientado a colunas HBase e também sobre a ferramenta de data warehouse distribuído Hive.
+
+\section{HBase}
+
+Os bancos de dados relacionais sempre desempenharam um papel importante no design e implementação dos negócios da maioria das empresas. As necessidades para este contexto sempre envolveram o registro de informações de usuários, produtos, entre inúmeros exemplos. Este tipo de arquitetura oferecida pelos SGBDs foram construídas de acordo com o modelo de transações definido pelas propriedades ACID. Segundo \citeonline{george2011}, desta forma é possível garantir que os dados sejam fortemente consistentes, o que parece ser um requisito bastante favorável. Esta abordagem funciona bem enquanto os dados armazenados são relativamente pequenos, porém o crescimento desta demanda pode ocasionar sérios problemas estruturais.
+
+De acordo com \citeonline{george2011}, os bancos de dados relacionais não estão preparados para análise de grande volume de dados caracterizados pelo contexto Big Data. É possível encontrar soluções que se adaptem a esta necessidade, porém na maioria das vezes envolvem mudanças drásticas e complexas na arquitetura e também possuem um custo muito alto, já que em muitos casos a resposta está ligada diretamente ao uso de escalabilidade vertical, ou seja, ocorre com a compra de máquinas caras e computacionalmente poderosas. Contudo não há garantias de que com um aumento ainda maior da quantidade de dados todos os problemas inicias não voltem a acontecer, isso porque a relação entre o uso de transações e o volume de informações processadas não é linear.
+
+\subsection{NoSQL}
+
+Um novo movimento denominado NoSQL surgiu com propósito de solucionar os problemas  descritos na sessão anterior. Segundo \citeonline{cattell2011}, não há um consenso sobre o significado deste termo, esta nomenclatura pode ser interpretada como not only SQL (do inglês, não apenas SQL), ou também como uma forma de explicitar o não uso da abordagem relacionada aos bancos de dados relacionais. De acordo com \citeonline{george2011}, as tecnologias NoSQL devem ser compreendidas como um complemento ao uso dos SGBDs tradicionais, ou seja, esta abordagem não é revolucionária e sim evolucionária. Uma das principais características destes sistemas é descrita por \citeonline{cattell2011} como a habilidade em prover escalabilidade horizontal para operações e armazenamento de dados ao longo de vários servidores, ou seja, permitir de maneira eficiente a inclusão de novas máquinas no sistema para melhora de performance, ao invés do uso da escalabilidade vertical, na qual procura-se aumentar a capacidade de processamento através do compartilhamento de memória RAM entre os computadores ou com a compra de máquinas de alto custo financeiro.
+
+Ao contrário dos bancos de dados relacionais, os novos sistemas NoSQL diferem entre si quanto aos tipos de dados que são suportados, não havendo uma terminologia padrão. A pesquisa realizada por \citeonline{cattell2011} classifica estas novas tecnologias de acordo o modelo de dados utilizados por cada uma delas. As principais categorias são definidas a seguir:
+
+\begin{itemize}
+
+  \item{Armazenamento chave/valor: este tipo de sistema NoSQL armazena valores e um índice para encontrá-los, no qual é baseado em uma chave definida pelo programador. Exemplos: Voldemort\footnote{\url{http://www.project-voldemort.com/voldemort/}}, Riak\footnote{\url{http://basho.com/riak/}};}
+  \item{Registro de Documentos: sistemas que armazenam documentos indexados, provendo uma linguagem simples para consulta. Documentos, ao contrário de tuplas, não são definidos por um esquema fixo, podendo ser associados a diferentes valores. Exemplos: CouchDB\footnote{\url{http://couchdb.apache.org/}}, MongoDB\footnote{\url{http://www.mongodb.org/}};}
+  \item{Armazenamento orientado a colunas: sistemas que armazenam os dados em formato de tabelas, porém as colunas são agrupadas em famílias e espalhadas horizontalmente ao longo das máquinas da rede. Exemplos: Google Bigtable, HBase;}
+  \item{Bancos de dados de grafos: sistemas que permitem uma eficiente distribuição e consulta dos dados armazenados em forma de grafos. Exemplo: Neo4J\footnote{\url{http://www.neo4j.org/}};}
+
+\end{itemize}
+
+
+
+
+
+
+
+

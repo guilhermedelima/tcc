@@ -1,9 +1,10 @@
 \begin{siglas}
 
+  \item[IDC] International Data Corporation
   \item[HDFS] Hadoop Distributed File System
   \item[GFS] Google File System
   \item[TCC] Trabalho de Conclusão de Curso
-  \item[HTTP] Hipertext Transfer
+  \item[XML] Extensible Markup Language
   \item[JVM] Java Virtual Machine
   \item[API] Application Programming Interface
   \item[RPC] Remote Procedure Call
@@ -11,5 +12,9 @@
   \item[IP] Internet Protocol
   \item[RAM] Random Access Memory
   \item[CPU] Central Processing Unit
-
+  \item[SQL] Structured Query Language
+  \item[POSIX] Portable Operating System Interface
+  \item[ACID] Atomicity Consistency Isolation Durability
+  \item[SGBD] Sistema de Gerenciamento de Banco de Dados
+  \item[OSI] Open Source Iniciative
 \end{siglas}
