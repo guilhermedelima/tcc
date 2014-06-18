@@ -43,6 +43,7 @@ O HDFS foi projetado para armazenar arquivos muito grandes a uma taxa de transmi
 \label{tab-hardware}
 \end{center}
 \end{table}
+\FloatBarrier
 
 \subsection{Divisão em Blocos}
 
@@ -59,6 +60,7 @@ A figura \ref{fig-hdfs-blocos} ilustra como ocorre o armazenamento no \textit{cl
 	\caption{Divisão de Arquivos em Blocos}
 	\label{fig-hdfs-blocos}
 \end{figure}
+\FloatBarrier
 
 A utilização de blocos permite simplificar o processo de gerenciamento do armazenamento dos dados. Uma vez que possuem tamanho fixo a tarefa de calcular a quantidade de blocos necessária para todo disco torna-se uma tarefa mais simples. Segundo \cite{white2012}, esta abordagem também permite que blocos sejam replicados pelo sistema de arquivos, provendo tolerância a falhas e uma maior disponibilidade dos dados. No exemplo abordado pela figura \ref{fig-hdfs-blocos} é possível perceber que o fator de replicação aplicado ao HDFS possui valor três. Desta forma cada bloco é copiado para três máquinas diferentes ao longo do \textit{cluster}.
 
@@ -76,6 +78,7 @@ Um \textit{cluster} GFS é composto por um único \textit{master} e múltiplos \
 	\caption{Arquitetura GFS, retirado de \citeonline{ghemawatGfs2003}}
 	\label{fig-gfs}
 \end{figure}
+\FloatBarrier
 
 O HDFS foi construído a partir deste modelo proposto por \citeonline{ghemawatGfs2003}. Todas as características abordadas nas sessões anteriores, referentes ao HDFS, foram definidas com base neste trabalho. O HDFS apresenta uma alternativa \textit{open-source}\footnote{\textit{Open-source} são projetos de software que seguem o padrão para código aberto determindo pela OSI.} implementada em Java para o GFS.
 
@@ -90,6 +93,7 @@ Os \textit{datanodes} representam os nós escravos do HDFS. Eles são responsáv
 	\caption{Arquitetura HDFS, retirado de \citeonline{hadoopSiteHDFS}}
 	\label{fig-hdfs-arquitetura}
 \end{figure}
+\FloatBarrier
 
 Assim como o GFS, o HDFS foi projetado para ser executado em distribuições GNU/Linux,  portanto para que uma máquina seja um namenode ou datanode é necessário apenas que possua uma JVM disponível juntamente com o sistema operacional adequado \cite{hadoopSiteHDFS}.
 
@@ -108,6 +112,7 @@ O cliente realiza a escrita nos \textit{datanodes} através de um \textit{pipeli
 	\caption{Operação de escrita, extraído de \citeonline{shvachko2010}}
 	\label{fig-hdfs-escrita}
 \end{figure}
+\FloatBarrier
 
 Para cada bloco do arquivo é realizado este processo de \textit{pipeline}. Na figura \ref{fig-hdfs-escrita} é possível perceber que o fator de replicação do exemplo apresentado é igual a três, ou seja, cada bloco será repassado para três \textit{datanodes} diferentes. De acordo com \citeonline{shvachko2010}, para realizar o processo de leitura o cliente solicita ao \textit{namenode} a localização dos blocos que compõe o arquivo desejado, em seguida contacta diretamente os respectivos \textit{datanodes} para recuperar estes dados.
 
@@ -128,6 +133,7 @@ Um programa MapReduce separa arquivos de entrada em diversas partes independente
 map     (k1,v1)         -> list(k2,v2)
 reduce  (k2,list(v2))   -> list(v2)
 \end{lstlisting}
+\FloatBarrier
 
 A grande contribuição desta abordagem está em disponibilizar uma interface simples e poderosa que permite paralelizar e distribuir computação em larga escala de forma automática \cite{ghemawatMapreduce2008}. O desenvolvedor precisa apenas se preocupar com as funções \textit{map} e \textit{reduce}, todo esforço para dividir o trabalho computacional ao longo das máquinas, entre outras questões operacionais, são de responsabilidade do próprio \textit{framework}.
 
@@ -140,6 +146,7 @@ A figura \ref{fig-mapreduce} ilustra um fluxo simplificado da execução de um p
 	\caption{Fluxo de um programa MapReduce}
 	\label{fig-mapreduce}
 \end{figure}
+\FloatBarrier
 
 Nas fases \textit{shuffle} e \textit{sort} os pares intermediários são agrupados e ordenados de acordo com sua chave. Este processo é realizado pelo \textit{framework} e será detalhado nas seções seguintes, sendo uma das etapas mais complexas de todo fluxo. Por fim, as \textit{reduce tasks} recebem como entrada os valores resultantes das etapas \textit{shuffle} e \textit{sort}. Para cada entrada \textit{\{chave, lista(valores)\}} existente, uma \textit{reduce task} executa uma chamada a função \textit{reduce} especificada pelo desenvolvedor.
 
@@ -154,12 +161,14 @@ Uma abordagem mais eficiente seria separar todos os arquivos em blocos pré defi
 
 Este problema que se mostrou complexo possui uma solução simples e de fácil construção quando utiliza-se a abordagem apresentada pelo paradigma MapReduce. Nesta situação torna-se necessária apenas a definição de uma função \textit{map} para realizar a contagem de cada palavra presente nos arquivos de entrada, e também de uma função \textit{reduce} para agrupar cada uma destas palavras e realizar a contagem final dos registros de ocorrências. Um pseudo código com as funções map e reduce para este problema são apresentadas no código \ref{cod-mapreduce-google}.
 
-\lstinputlisting[frame=single,
+\lstinputlisting[float,
+		frame=single,
 		label=cod-mapreduce-google,
 		style=abnt,
 		caption={Pseudo código MapReduce, retirado de 
 		\citeonline{ghemawatMapreduce2008}}]
 		{codigos/mapreduce-pseudo}
+\FloatBarrier
 
 No código \ref{cod-mapreduce-google} o programa MapReduce divide todos os arquivos de entrada em \textit{input splits}, na qual a chave do par \textit{\{chave, valor\}} é composta pelo número do respectivo \textit{input split}, enquanto o valor é o próprio conteúdo de sua parte no texto. Para cada par de entrada uma função \textit{map} será chamada e realizará quebra da linha em palavras. Cada um destes \textit{tokens} é associado ao valor 1, gerando pares de saída no formato \textit{\{palavra, 1\}}.
 
@@ -172,6 +181,7 @@ O framework MapReduce realiza as etapas \textit{shuffle} e \textit{sort} para ag
 	\caption{Fluxo de atividades para o contador de palavras}
 	\label{fig-mapreduce-word-count}
 \end{figure}
+\FloatBarrier
 
 \subsection{Arquitetura}
 
@@ -188,6 +198,7 @@ Inicialmente os arquivos de entrada são divididos em \textit{input splits} de a
 	\caption{Arquitetura MapReduce, retirado de \citeonline{ghemawatMapreduce2008}}
 	\label{fig-mapreduce-google}
 \end{figure}
+\FloatBarrier
 
 O \textit{MapReduce job} submetido pelo usuário faz o cálculo de quantas \textit{map tasks} serão necessárias para realizar o processamento dos \textit{input splits}. O nó \textit{master} então possui a tarefa de distribuir as \textit{map tasks} e também as \textit{reduce tasks} para os \textit{workers} disponíveis na rede. De acordo com \citeonline{ghemawatMapreduce2008}, o nó \textit{master} também é responsável por manter o estado de todas as funções \textit{map} e \textit{reduce} que são executadas no \textit{cluster}. Estes dados informam se uma determinada tarefa está inativa, em progresso ou finalizada. 
 
@@ -206,12 +217,13 @@ O Hadoop MapReduce apresenta uma implementação \textit{open-source} consolidad
 	\caption{Arquitetura de um cluster Hadoop}
 	\label{fig-mapreduce-arquitetura}
 \end{figure}
+\FloatBarrier
 
 Assim como no ambiente proposto pela Google, o Hadoop MapReduce também é executado sobre um sistema de arquivos distribuídos em larga escala, no caso o HDFS. Segundo \citeonline{venner2009}, é comum o \textit{jobtracker} e o \textit{namenode} estarem localizados na mesma máquina do \textit{cluster}, especialmente em instalações reduzidas.
 
 \subsection{Shuffle e Sort}
 
-Uma das responsabilidades do \textit{framework} MapReduce é garantir que os pares intermediários \textit{\{chave, valor\}} resultantes das funções \textit{maps} sejam ordenados, agrupados e passados como parâmetro para as funções de redução. Esta fase é classificada como \textit{shuffle} e \textit{sort}. De acordo com \citeonline{white2012} esta é a área do código base do Hadoop que está em contínua evolução, podendo ser classificada como o núcleo do MapReduce. A \ref{fig-shuffle} ilustra os processos de \textit{shuffle} e \textit{sort} que ocorrem entre a execução das funções \textit{map} e \textit{reduce}.
+Uma das responsabilidades do \textit{framework} MapReduce é garantir que os pares intermediários \textit{\{chave, valor\}} resultantes das funções \textit{maps} sejam ordenados, agrupados e passados como parâmetro para as funções de redução. Esta fase é classificada como \textit{shuffle} e \textit{sort}. De acordo com \citeonline{white2012} esta é a área do código base do Hadoop que está em contínua evolução, podendo ser classificada como o núcleo do MapReduce. A figura \ref{fig-shuffle} ilustra os processos de \textit{shuffle} e \textit{sort} que ocorrem entre a execução das funções \textit{map} e \textit{reduce}.
 
 \begin{figure}[ht!]
 	\centering
@@ -220,6 +232,7 @@ Uma das responsabilidades do \textit{framework} MapReduce é garantir que os par
 	\caption{Fluxograma das etapas Shuffle e Sort, extraído de \citeonline{white2012}}
 	\label{fig-shuffle}
 \end{figure}
+\FloatBarrier
 
 Durante a execução de uma função \textit{map} os pares \textit{\{chave, valor\}} resultantes são escritos em um \textit{buffer} na memória na medida em que são gerados. Os registros são divididos em R partições, na qual R representa a quantidade de funções \textit{reduce} que seriam necessárias para processar os resultados. Em seguida as partições são ordenadas de acordo com as chaves e escritas no disco local. Segundo \citeonline{white2012}, Os resultados das \textit{map tasks} são escritos no próprio disco da máquina porque se tratam de arquivos intermediários, não há necessidade de armazená-los no sistema de arquivos distribuídos. Esta etapa de particionamento e ordenação é denominada \textit{shuffle}.
 

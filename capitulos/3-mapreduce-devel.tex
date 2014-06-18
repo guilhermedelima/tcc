@@ -1,4 +1,4 @@
-\chapter{Desenvolvimento para MapReduce}
+\chapter{Desenvolvimento MapReduce}
 \label{cap:mapreduce-devel}
 
 Neste capítulo discutimos sobre a construção de aplicações baseadas no modelo MapReduce. Anteriormente foi apresentada uma introdução a este novo paradigma, porém o foco desta sessão é deixar claro quais são os passos necessários para o desenvolvimento neste ambiente. Será utilizada uma abordagem técnica para descrever os recursos disponibilizados por este \textit{framework}, originalmente criado para linguagem Java. O manual de instalação do plugin Hadoop para a ferramenta Eclipse\footnote{\url{http://eclipse.org/}} pode ser encontrado no apêncice \ref{apd-eclipse}.
@@ -15,7 +15,8 @@ A construção deste algoritmo consiste na utilização de um \textit{HashMap\fo
 
 A classe \textit{HashMap} compõe uma das implementações da interface \textit{Map}, que por sua vez faz parte dos tipos de coleções disponibilizados pela linguagem Java. O aumento excessivo da quantidade de elementos desta estrutura pode elevar significativamente o uso de memória e também ocasionar uma brusca queda de performance \cite{oaks2014}.
 
-\lstinputlisting[frame=single,
+\lstinputlisting[float,
+		frame=single,
 		breaklines=true,
 		label=cod-wc-hash,
 		style=abnt,
@@ -56,6 +57,7 @@ O MapReduce é um paradigma que permite uma implementação flexível e simples 
 \label{tab-mapreduce-job}
 \end{center}
 \end{table}
+\FloatBarrier
 
 No código \ref{cod-wc-hash} a leitura dos arquivos de entrada é realizada pelo próprio programador, na qual utiliza-se um \textit{BufferedReader} para efetuar o processamento da \textit{stream} dos dados. Para o desenvolvimento no paradigma MapReduce as entradas são obtidas pelo próprio \textit{framework}. O programador deve informar a localização dos arquivos e especificar uma classe que implemente a interface \textit{InputFormat}. 
 
@@ -79,6 +81,7 @@ Desta forma todas as entradas serão convertidas em \textit{input splits} com pa
 \label{tab-inputformat}
 \end{center}
 \end{table}
+\FloatBarrier
 
 \section{Mapper}
 
@@ -104,6 +107,7 @@ O Hadoop permite que o desenvolvedor implemente seu próprio tipo primitivo, par
 	\caption{Hierarquia Writable, extraído de \citeonline{white2012}}
 	\label{fig-writable}
 \end{figure}
+\FloatBarrier
 
 A função \textit{map} definida no código \ref{cod-mapper} é executada para cada \textit{input split} existente. Seus parâmetros representam os pares \textit{\{chave, valor\}} de entrada, e um objeto da classe \textit{Context}, onde os resultados intermediários são armazenados. Dentro da função é possível converter os tipos de dados do Hadoop para os equivalentes em Java, utilizando os recursos disponibilizados pela linguagem normalmente. De acordo com \citeonline{venner2009}, os objetos da classe \textit{Writable} usados para a escrita dos resultados na classe \textit{Context} devem ser reutilizados, evitando a criação de novas instâncias desnecessárias.
 
@@ -147,8 +151,6 @@ Desta forma os resultados transmitidos pela rede podem ser reduzidos significati
 \section{Configuração do Programa}
 
 O último passo para finalizar a construção do programa MapReduce consiste em definir as configurações do \textit{job} e utilizar uma classe principal para executá-lo. A classe \textit{Job} representa o programa MapReduce em questão, através dos métodos \textit{setMapperClass}(), \textit{setCombinerClass}() e \textit{setReducerClass}() é possível especificar as classes utilizadas para as funções \textit{map}, \textit{combine} e \textit{reduce}, respectivamente. A classe \textit{WordCount} apresentada no código \ref{cod-job} é responsável pela execução do \textit{job}, assim como especificado pelo método \textit{setJarByClass}().
-
-
 
 A localização dos arquivos de entrada que serão utilizados pelo programa são indicados pelo método \textit{addInputPath}(). No código \ref{cod-wc-hash} a escrita dos resultados do programa é realizada pelo próprio programador percorrendo os valores do \textit{HashMap}, já no modelo MapReduce o desenvolvedor apenas especifica o formato de saída do arquivo através dos métodos \textit{setOutputKeyClass}() e \textit{setOutputValueClass}().
 

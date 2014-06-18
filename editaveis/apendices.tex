@@ -21,7 +21,7 @@ $ mkdir /opt/hadoop-hdfs/tmp
 
 É recomendável a criação de um usuário e um grupo próprio para a utilização do Hadoop pelas máquinas do cluster. Esta abordagem facilita a administração dos diretórios e arquivos criados e gerenciados pelo Hadoop.
 
-\begin{lstlisting}[style=abnt,frame=single]
+\begin{lstlisting}[float, style=abnt,frame=single]
 $ addgroup hadoop
 $ sudo adduser --shell /bin/bash --ingroup hadoop hduser
 \end{lstlisting}
@@ -76,6 +76,7 @@ O próximo passo é no diretório \$HADOOP\_CONF\_DIR editar os arquivos de conf
 		caption={Arquivo core-site.xml}]
 		{codigos/core-site.xml}
 
+\newpage
 \lstinputlisting[frame=single,
 		breaklines=true,
 		label=xml-hdfs,
@@ -92,6 +93,7 @@ O próximo passo é no diretório \$HADOOP\_CONF\_DIR editar os arquivos de conf
 
 O Hadoop 2.2.0 é constituído por uma versão mais atual do framework MapReduce denominada MapReduce 2.0, também conhecida como YARN. A principal diferença está no jobtracker, que foi dividido em dois daemons distintos: resource manager e application master. O antigo tasktracker foi substituído pelo node manager. O resource manager está presente no nó mestre e cada um dos escravos possui um node manager. A configuração do YARN é descrita nas imagens a seguir.
 
+\newpage
 \lstinputlisting[frame=single,
 		breaklines=true,
 		label=xml-yarn-master,
@@ -99,6 +101,7 @@ O Hadoop 2.2.0 é constituído por uma versão mais atual do framework MapReduce
 		caption={Arquivo yarn-site.xml para nó mestre}]
 		{codigos/yarn-site-master.xml}
 
+\newpage
 \lstinputlisting[frame=single,
 		breaklines=true,
 		label=xml-yarn-master,
@@ -117,6 +120,7 @@ $ hadoop namenode -format
 
 Nesta etapa todos os nós do cluster estão configurados e o HDFS está pronto para uso. Para iniciar o Hadoop os comandos a seguir devem ser executados.
 
+\newpage
 \begin{lstlisting}[style=abnt,frame=single]
 $ hadoop-daemon.sh start namenode 
 $ hadoop-daemons.sh start datanode 
@@ -125,7 +129,7 @@ $ yarn-daemons.sh start nodemanager
 $ mr-jobhistory-daemon.sh start historyserver
 \end{lstlisting}
 
-Com o comando \textbf{\$ jps} é possível verificar se os daemons ao longo do cluster foram iniciados com sucesso. A máquina mestre deve apresentar os seguintes processos: ResourceManager, DataNode, JobHistotyServer, Namenode e NodeManager. Para a máquina escrava os processos são: NodeManager e DataNode. O Hadoop também oferece algumas interfaces que podem ser acessadas pelos endereços abaixo.
+Com o comando \textbf{\$ jps} é possível verificar se os daemons ao longo do cluster foram iniciados com sucesso. A máquina mestre deve apresentar os seguintes processos: ResourceManager, DataNode, JobHistotyServer, Namenode e NodeManager. Para a máquina escrava os processos são: NodeManager e DataNode. O Hadoop também oferece alguns serviços HTTP que podem ser acessadas pelos endereços abaixo.
 
 \begin{lstlisting}[style=abnt,frame=single]
 <http://master:50070/dfshealth.jsp>

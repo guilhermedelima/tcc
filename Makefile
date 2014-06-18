@@ -24,7 +24,7 @@ EDITAVEIS_SOURCES = informacoes.tex errata.tex dedicatoria.tex \
 EDITAVEIS_FILES = $(addprefix $(EDITAVEIS_DIR)/, $(EDITAVEIS_SOURCES))
 
 CHAPTERS_DIR = capitulos
-CHAPTERS_SOURCES = 1-introducao.tex 2-hadoop.tex 3-mapreduce-devel.tex 5-conclusao.tex
+CHAPTERS_SOURCES = 1-introducao.tex 2-hadoop.tex 3-mapreduce-devel.tex 4-eco-hadoop.tex 5-conclusao.tex
 
 CHAPTERS_FILES = $(addprefix $(CHAPTERS_DIR)/, $(CHAPTERS_SOURCES))
 
