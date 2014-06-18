@@ -1,9 +1,0 @@
-\begin{resumo}
-
-O armazenamento de informações em formato digital tem crescido consideravelmente nos últimos anos. Não apenas pessoas são responsáveis por produzir dados, equipamentos eletrônicos também se tornaram grandes geradores de registros, como exemplo, temos servidores, aparelhos de GPS, microcomputadores espalhados nos mais variados contextos, entre uma infinidade de aplicações. O termo Big Data se refere a toda esta quantidade de dados que se encontra na ordem de petabytes e não pode ser analisada pelos métodos tradicionais Este trabalho tem como objetivo realizar um estudo sobre uma das arquiteturas mais conhecidas para solucionar estes problemas, o software  Hadoop. O desenvolvimento para o paradigma MapReduce é abordado juntamente com os projetos que são construídos no topo do sistema Hadoop, provendo serviços em um nível de abstração maior.
-
- \vspace{\onelineskip}
-    
- \noindent
- \textbf{Palavras-chaves}: Big Data. Hadoop. Computação Distribuída.
-\end{resumo}
