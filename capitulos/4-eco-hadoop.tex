@@ -48,7 +48,7 @@ De acordo com \citeonline{kimball2013}, um dos principais objetivos de um \texti
 
 O Apache Hive é uma ferramenta \textit{open-source} para \textit{data warehousing} construída no topo da arquitetura  Hadoop \cite{thusoo2009}. Este projeto foi desenvolvido pela equipe do Facebook para atender as necessidades de análise do grande volume de informações geradas diariamente pelos usuários desta rede social. A motivação encontrada para a criação deste projeto se deu pelo crescimento exponencial da quantidade de dados processados pelas aplicações de BI, tornando as soluções tradicionais para \textit{data warehouse} inviáveis, tanto no aspecto financeiro, como computacional.
 
-Além das aplicações de BI utilizadas internamente pelo Facebook, muitas funcionalidades providas pela empresa utilizam processos de análise de dados. Até o ano de 2008 a arquitetura para este requisito era composta por um \textit{data warehouse} que utilizava uma versão comercial de um banco de dados relacional. Entre os anos de 2008 e 2009 a quantidade de dados armazenados cresceu de forma absurda, passando de 17 terabytes para 700 terabytes. Alguns processos de análise chegavam a demorar dias, quando executados nestas condições.
+Além das aplicações de BI utilizadas internamente pelo Facebook, muitas funcionalidades providas pela empresa utilizam processos de análise de dados. Até o ano de 2009 a arquitetura para este requisito era composta por um \textit{data warehouse} que utilizava uma versão comercial de um banco de dados relacional. Entre os anos de 2007 e 2009 a quantidade de dados armazenados cresceu de forma absurda, passando de 17 terabytes para 700 terabytes. Alguns processos de análise chegavam a demorar dias, quando executados nestas condições.
 
 Segundo \citeonline{thusoo2009}, para resolver este grave problema a equipe do Facebook resolver adotar o Hadoop como solução. A escalabilidade linear, capacidade de processamento distribuído e habilidade de ser executado em \textit{clusters} compostos por hardwares de baixo custo motivaram a migração de toda antiga infraestrutura para esta plataforma. O tempo de execução dos processos de análise que antes podiam levar dias foi reduzido para apenas algumas horas.
 
@@ -140,17 +140,101 @@ De acordo com \citeonline{george2011}, os bancos de dados relacionais não estã
 
 \subsection{NoSQL}
 
-Um novo movimento denominado NoSQL surgiu com propósito de solucionar os problemas  descritos na sessão anterior. Segundo \citeonline{cattell2011}, não há um consenso sobre o significado deste termo, esta nomenclatura pode ser interpretada como not only SQL (do inglês, não apenas SQL), ou também como uma forma de explicitar o não uso da abordagem relacionada aos bancos de dados relacionais. De acordo com \citeonline{george2011}, as tecnologias NoSQL devem ser compreendidas como um complemento ao uso dos SGBDs tradicionais, ou seja, esta abordagem não é revolucionária e sim evolucionária. Uma das principais características destes sistemas é descrita por \citeonline{cattell2011} como a habilidade em prover escalabilidade horizontal para operações e armazenamento de dados ao longo de vários servidores, ou seja, permitir de maneira eficiente a inclusão de novas máquinas no sistema para melhora de performance, ao invés do uso da escalabilidade vertical, na qual procura-se aumentar a capacidade de processamento através do compartilhamento de memória RAM entre os computadores ou com a compra de máquinas de alto custo financeiro.
+Um novo movimento denominado NoSQL surgiu com propósito de solucionar os problemas  descritos na sessão anterior. Segundo \citeonline{cattell2011}, não há um consenso sobre o significado deste termo, esta nomenclatura pode ser interpretada como \textit{not only} SQL (do inglês, não apenas SQL), ou também como uma forma de explicitar o não uso da abordagem relacionada aos bancos de dados relacionais. De acordo com \citeonline{george2011}, as tecnologias NoSQL devem ser compreendidas como um complemento ao uso dos SGBDs tradicionais, ou seja, esta abordagem não é revolucionária e sim evolucionária. 
+
+Uma das principais características destes sistemas é descrita por \citeonline{cattell2011} como a habilidade em prover escalabilidade horizontal para operações e armazenamento de dados ao longo de vários servidores, ou seja, permitir de maneira eficiente a inclusão de novas máquinas no sistema para melhora de performance, ao invés do uso da escalabilidade vertical, na qual procura-se aumentar a capacidade de processamento através do compartilhamento de memória RAM entre os computadores ou com a compra de máquinas de alto custo financeiro.
+
+De acordo com o trabalho realizado por \citeonline{cattell2011}, os bancos de dados NoSQL abrem mão das restrições impostas pelas propriedades ACID para proporcionar ganhos em performance e escalabilidade. Entretanto as soluções existentes diferem-se quanto ao nível de desistência na utilização deste modelo de transações.
 
 Ao contrário dos bancos de dados relacionais, os novos sistemas NoSQL diferem entre si quanto aos tipos de dados que são suportados, não havendo uma terminologia padrão. A pesquisa realizada por \citeonline{cattell2011} classifica estas novas tecnologias de acordo o modelo de dados utilizados por cada uma delas. As principais categorias são definidas a seguir:
 
 \begin{itemize}
 
-  \item{Armazenamento chave/valor: este tipo de sistema NoSQL armazena valores e um índice para encontrá-los, no qual é baseado em uma chave definida pelo programador. Exemplos: Voldemort\footnote{\url{http://www.project-voldemort.com/voldemort/}}, Riak\footnote{\url{http://basho.com/riak/}};}
-  \item{Registro de Documentos: sistemas que armazenam documentos indexados, provendo uma linguagem simples para consulta. Documentos, ao contrário de tuplas, não são definidos por um esquema fixo, podendo ser associados a diferentes valores. Exemplos: CouchDB\footnote{\url{http://couchdb.apache.org/}}, MongoDB\footnote{\url{http://www.mongodb.org/}};}
-  \item{Armazenamento orientado a colunas: sistemas que armazenam os dados em formato de tabelas, porém as colunas são agrupadas em famílias e espalhadas horizontalmente ao longo das máquinas da rede. Exemplos: Google Bigtable, HBase;}
-  \item{Bancos de dados de grafos: sistemas que permitem uma eficiente distribuição e consulta dos dados armazenados em forma de grafos. Exemplo: Neo4J\footnote{\url{http://www.neo4j.org/}};}
+  \item{Armazenamento chave/valor: este tipo de sistema NoSQL armazena valores e um índice para encontrá-los, no qual é baseado em uma chave definida pelo programador.}
+  \item{Registro de Documentos: sistemas que armazenam documentos indexados, provendo uma linguagem simples para consulta. Documentos, ao contrário de tuplas, não são definidos por um esquema fixo, podendo ser associados a diferentes valores.}
+  \item{Armazenamento orientado a colunas: sistemas que armazenam os dados em formato de tabelas, porém as colunas são agrupadas em famílias e espalhadas horizontalmente ao longo das máquinas da rede. Este é um modelo híbrido entre as tuplas utilizadas em banco de dados relacionais e a abordagem de documentos.}
+  \item{Bancos de dados de grafos: sistemas que permitem uma eficiente distribuição e consulta dos dados armazenados em forma de grafos.}
 
 \end{itemize}
 
+A tabela \ref{tab-nosql} apresenta alguns exemplos de bancos de dados NoSQL de acordo com as categorias citadas acima. Na próxima sessão será discutido o banco de dados HBase.
+
+\begin{savenotes}
+\begin{table}[!ht]
+\begin{center}
+  \begin{tabular}{|p{5cm}|p{3cm}|}
+	\hline
+	Categoria & Exemplos
+	\\ \hline
+	Chave/Valor & Voldemort\footnote{\url{http://www.project-voldemort.com/voldemort/}}, Riak\footnote{\url{http://basho.com/riak/}}
+	\\ \hline
+	Documentos & CouchDB\footnote{\url{http://couchdb.apache.org/}}, MongoDB\footnote{\url{http://www.mongodb.org/}}
+	\\ \hline
+	Orientado a colunas & Google Bigtable, HBase
+	\\ \hline
+	Grafos & Neo4J\footnote{\url{http://www.neo4j.org/}}
+	\\ \hline
+  \end{tabular}
+  \caption{Exemplos de bancos de dados NoSQL}
+\label{tab-nosql}
+\end{center}
+\end{table}
+\end{savenotes}
+\FloatBarrier
+
+\subsection{Hadoop Database}
+
+O HBase é um banco de dados orientado a colunas que foi desenvolvido para oferecer aos usuários do Hadoop uma solução para aplicações em tempo real, na qual os requisitos consistem em acesso randômico para operações de leitura e escrita em larga escala \cite{white2012}. O propósito desta ferramenta apresenta diferenças se comparado ao modelo MapReduce, e por consequência ao próprio Hive, onde o objetivo é realizar processamento em \textit{batch} sem a preocupação com latência.
+
+Este projeto é uma solução \textit{open-source} para o Google BigTable, um sistema de armazenamento distribuído para dados estruturados publicado por \citeonline{chang2006}. Apesar de ser um banco de dados, o HBase não utiliza abordagem relacional e não tem suporte para linguagens de consulta SQL. Entretanto, de acordo com \citeonline{white2012}, oferece uma solução ao problema de espaço físico encontrado pelos SGBDs convencionais, estando apto a armazenar tabelas extremamente grandes, populadas ao longo de \textit{clusters} compostos por máquinas de baixo custo.
+
+As colunas compõe a menor unidade lógica representada pelo HBase. Uma ou mais colunas podem formar uma linha, que é endereçada por uma chave única. Uma tabela é constituída por um conjunto de linhas, onde cada célula está sob controle versão, sendo representada por várias instâncias ao longo do tempo. Segundo \citeonline{george2011}, o HBase sempre mantém as células ordenadas de acordo com seu tipo dado, o que pode ser comparado com os índices de chave primária utilizados pelos bancos de dados relacionais.
+
+O HBase permite que as linhas de uma tabela sejam agrupadas por famílias de colunas. Este processo deve ser declarado pelo usuário durante a criação da tabela e é recomendável que esta informação não seja alterada posteriormente. Todas as colunas que fazem parte de uma mesma família devem ser declaradas com um prefixo comum, que deve obedecer o formato \textit{família:qualificador}, onde o termo qualificador se refere ao tipo de dado que representa a coluna \cite{white2012}. De acordo com \citeonline{george2011}, todas as colunas de uma mesma família são armazenadas fisicamente no HDFS em um arquivo chamado \textit{HFile}. Utilizando esta abstração o HBase é capaz de prover acesso randômico para escrita e leitura de arquivos no Hadoop. Utilizando estes conceitos os dados podem ser expressos da seguinte forma:
+
+\begin{lstlisting}[style=abnt,frame=none]
+(Table, RowKey, Family, Column, Timestamp) -> Value
+\end{lstlisting}
+
+Esta representação pode ser traduzida para o contexto de linguagens de programação, como mostrado a seguir:
+
+\begin{lstlisting}[style=abnt,frame=none]
+SortedMap<RowKey, List<SortedMap<Column, List<Value, Timestamp>>>>
+\end{lstlisting}
+
+De acordo com esta representação uma tabela pode ser interpretada como um mapa ordenado, o qual é composto por uma lista de famílias de colunas associadas a uma chave única de uma linha específica. As famílias de colunas também são identificadas como um mapa ordenado, que representa as colunas e seus valores associados: o tipo de dado armazenado pela coluna e um \textit{timestamp} para identificar sua versão temporal. A figura \ref{fig-hbase-row} ilustra um exemplo desta representação. 
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.4]
+	  {figuras/hbase-row.eps}
+	\caption{Linha armazenada no HBase, extraído de 
+	\citeonline{george2011}}
+	\label{fig-hbase-row}
+\end{figure}
+\FloatBarrier
+
+A figura \ref{fig-hbase-row} apresenta como uma linha está organizada em uma tabela composta por três colunas, duas delas agrupadas em uma família nomeada como \textit{meta}. Cada célula possui um identificador \textit{ti}, onde \textit{i} significa o tempo em que a célula foi escrita na tabela. A figura \ref{fig-hbase-table} ilustra este mesmo exemplo, porém representado em uma tabela.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.4]
+	  {figuras/hbase-table.eps}
+	\caption{Tabela HBase, extraído de 
+	\citeonline{george2011}}
+	\label{fig-hbase-table}
+\end{figure}
+\FloatBarrier
+
+Uma das principais características do HBase pode ser identificada na sua capacidade para auto gerenciar sua base de dados. Segundo \citeonline{white2012} e \citeonline{george2011}, O conteúdo de todas as tabelas é automaticamente particionado e espalhado pelo \textit{cluster} em regiões distintas. Cada região é composta por um servidor que fica responsável por armazenar um intervalo de valores de uma determinada tabela. A figura \ref{fig-hbase-region} apresenta como uma tabela é dividida ao longo de regiões pelo HBase.
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[keepaspectratio=true,scale=0.5]
+	  {figuras/hbase-region.eps}
+	\caption{Regiões HBase, extraído de 
+	\citeonline{george2011}}
+	\label{fig-hbase-region}
+\end{figure}
+\FloatBarrier
 
