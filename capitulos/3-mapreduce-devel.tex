@@ -1,13 +1,13 @@
 \chapter{Desenvolvimento MapReduce}
 \label{cap:mapreduce-devel}
 
-Neste capítulo discutimos sobre a construção de aplicações baseadas no modelo MapReduce. Anteriormente foi apresentada uma introdução a este novo paradigma, porém o foco desta sessão é deixar claro quais são os passos necessários para o desenvolvimento neste ambiente. Será utilizada uma abordagem técnica para descrever os recursos disponibilizados por este \textit{framework}, originalmente criado para linguagem Java. O manual de instalação do plugin Hadoop para a ferramenta Eclipse\footnote{\url{http://eclipse.org/}} pode ser encontrado no apêncice \ref{apd-eclipse}.
+Neste capítulo discutimos sobre a construção de aplicações baseadas no modelo MapReduce. Anteriormente foi apresentada uma introdução a este novo paradigma, porém o foco desta seção é deixar claro quais são os passos necessários para o desenvolvimento neste ambiente. Será utilizada uma abordagem técnica para descrever os recursos disponibilizados por este \textit{framework}, originalmente criado para linguagem Java. O manual de instalação do plugin Hadoop para a ferramenta Eclipse\footnote{\url{http://eclipse.org/}} pode ser encontrado no apêndice \ref{apd-eclipse}.
 
-Hadoop provê uma API para MapReduce que permite a construção das funções \textit{map} e \textit{reduce} em outras linguagens de programação \cite{white2012}. É possível realizar o desenvolvimento de aplicações MapReduce em linguagens de \textit{script}, como por exemplo, Python e Ruby, usando o utilitário \textit{Hadoop Stream}. Para a implementação em C++ é utilizada uma interface denominada \textit{Hadoop Pipe}.
+Hadoop provê uma API para MapReduce que permite a construção das funções \textit{map} e \textit{reduce} em outras linguagens de programação \cite{white2012}. É possível realizar o desenvolvimento de aplicações MapReduce em linguagens de \textit{script}, por exemplo, Python e Ruby, usando o utilitário \textit{Hadoop Stream}. Para a implementação em C++ é utilizada uma interface denominada \textit{Hadoop Pipe}.
 
 De acordo com a pesquisa realizada por \citeonline{ding2011}, a implementação em outras linguagens pode ocasionar uma perda de performance, pois a chamada do programa ocasiona \textit{overhead}. Porém quando um job necessita de alto trabalho computacional o uso de linguagens mais eficientes que Java pode trazer benefícios no tempo de execução. O foco deste capítulo será na implementação do MapReduce para a linguagem Java.
 
-Para demonstrar sua implementação será utilizado o exemplo do contador de palavras, também abordado na sessão \ref{sec-wc}. Este problema consiste em realizar a contagem de ocorrências das diferentes palavras que aparecem ao longo de um arquivo de texto. Primeiramente será adotada uma solução convencional para sua resolução, posteriormente esta abordagem será adaptada para o modelo MapReduce.
+Para demonstrar sua implementação será utilizado o exemplo do contador de palavras, também abordado na seção \ref{sec-wc}. Este problema consiste em realizar a contagem de ocorrências das diferentes palavras que aparecem ao longo de um arquivo de texto. Primeiramente será adotada uma solução convencional para sua resolução, posteriormente esta abordagem será adaptada para o modelo MapReduce.
 
 A implementação para este contador de palavras pode ser realizada de diversas maneiras. Um algoritmo que pode ser usado para solucionar esta questão é mostrado no código \ref{cod-wc-hash}.
 
@@ -61,7 +61,7 @@ O MapReduce é um paradigma que permite uma implementação flexível e simples 
 
 No código \ref{cod-wc-hash} a leitura dos arquivos de entrada é realizada pelo próprio programador, na qual utiliza-se um \textit{BufferedReader} para efetuar o processamento da \textit{stream} dos dados. Para o desenvolvimento no paradigma MapReduce as entradas são obtidas pelo próprio \textit{framework}. O programador deve informar a localização dos arquivos e especificar uma classe que implemente a interface \textit{InputFormat}. 
 
-Desta forma todas as entradas serão convertidas em \textit{input splits} com pares \textit{\{chave, valor\}} especificados pelo \textit{InputFormat} escolhido. O desenvolvedor pode criar sua própria implementação, porém o Hadoop disponibiliza alguns formatos pré-definidos. Algumas destas classes são apresentados na tabela \ref{tab-inputformat}. Segundo \citeonline{white2012}, por padrão o Hadoop adota a classe \textit{TextInputFormat}, a mesma utilizada pelo exemplo que será apresentado na próxima sessão.
+Desta forma todas as entradas serão convertidas em \textit{input splits} com pares \textit{\{chave, valor\}} especificados pelo \textit{InputFormat} escolhido. O desenvolvedor pode criar sua própria implementação, porém o Hadoop disponibiliza alguns formatos pré-definidos. Algumas destas classes são apresentados na tabela \ref{tab-inputformat}. Segundo \citeonline{white2012}, por padrão o Hadoop adota a classe \textit{TextInputFormat}, a mesma utilizada pelo exemplo que será apresentado na próxima seção.
 
 \begin{table}[!ht]
 \begin{center}
@@ -98,13 +98,14 @@ Os parâmetros presentes na assinatura da classe representam os tipos \textit{\{
 
 O Hadoop utiliza suas próprias variáveis primitivas, elas foram criadas para maximizar a serialização\footnote{Serialização é a habilidade de converter objetos em memória para uma forma externa em que possa ser transmitida (byte a byte) e recuperada posteriormente \cite{darwin2014}.} dos objetos transmitidos pela rede \cite{white2012}. Os tipos \textit{LongWritable}, \textit{IntWritable} e \textit{Text} representam respectivamente os tipos básicos \textit{Long}, \textit{Integer} e \textit{String}. Segundo \citeonline{white2012}, o mecanismo de serialização disponibilizado pela linguagem Java não é utilizado, pois não atende os seguintes critérios: compacto, rápido, extensível e interoperável.
 
-O Hadoop permite que o desenvolvedor implemente seu próprio tipo primitivo, para isto basta criar um objeto que implemente a interface \textit{Writable}. Na maioria das situações isto não é necessário, pois são disponibilizados objetos para arrays, mapas, e também para todos os tipos primitivos da linguagem Java (com exceção ao char). A figura \ref{fig-writable} ilustra todas as implementações do Hadoop para a interface \textit{Writable}.
+O Hadoop permite que o desenvolvedor implemente seu próprio tipo primitivo e, para isto, basta criar um objeto que implemente a interface \textit{Writable}. Na maioria das situações isto não é necessário, pois são disponibilizados objetos para \textit{arrays}, mapas, e também para todos os tipos primitivos da linguagem Java (com exceção ao \textit{char}). A figura \ref{fig-writable} ilustra todas as implementações do Hadoop para a interface \textit{Writable}.
 
 \begin{figure}[ht!]
 	\centering
 	\includegraphics[keepaspectratio=true,scale=0.5]
 	  {figuras/hadoop-writable.eps}
-	\caption{Hierarquia Writable, extraído de \citeonline{white2012}}
+	\caption[Hierarquia Writable]{Hierarquia Writable
+	\protect\linebreak Fonte: \cite{white2012}}
 	\label{fig-writable}
 \end{figure}
 \FloatBarrier
@@ -126,7 +127,7 @@ O primeiro parâmetro da função reduce indica a chave do tipo \textit{Text}, q
 
 Após a leitura do capítulo \ref{cap:hadoop} fica claro que o MapReduce procura otimizar a quantidade de dados que são transmitidos pelo rede, desta forma o ideal é realizar o máximo de operações locais possíveis. As \textit{map tasks} podem gerar uma grande quantidade de resultados intermediários, que posteriormente serão copiados para as máquinas onde são executadas as \textit{reduce tasks}. Muitos destes valores podem ser simplificados antes de serem enviados para a rede. O Hadoop permite que o desenvolvedor especifique uma função chamada \textit{combine} a fim de reduzir as saídas geradas pelas funções \textit{map} \cite{white2012}.
 
-Esta função pode ser interpretada como uma pequena fase reduce que ocorre logo após uma \textit{map task} produzir seus resultados. De acordo com \citeonline{ghemawatMapreduce2008}, em muitas situações o código utilizado para a função \textit{combine} é o mesmo para a função \textit{reduce}. Considere os seguintes resultados gerados por uma \textit{map task} para o exemplo de contagem de palavras:
+Esta função pode ser interpretada como uma pequena fase \textit{reduce} que ocorre logo após uma \textit{map task} produzir seus resultados. De acordo com \citeonline{ghemawatMapreduce2008}, em muitas situações o código utilizado para a função \textit{combine} é o mesmo para a função \textit{reduce}. Considere os seguintes resultados gerados por uma \textit{map task} para o exemplo de contagem de palavras:
 
 \begin{lstlisting}[style=abnt,frame=none]
 (the, 1)
@@ -150,7 +151,7 @@ Desta forma os resultados transmitidos pela rede podem ser reduzidos significati
 
 \section{Configuração do Programa}
 
-O último passo para finalizar a construção do programa MapReduce consiste em definir as configurações do \textit{job} e utilizar uma classe principal para executá-lo. A classe \textit{Job} representa o programa MapReduce em questão, através dos métodos \textit{setMapperClass}(), \textit{setCombinerClass}() e \textit{setReducerClass}() é possível especificar as classes utilizadas para as funções \textit{map}, \textit{combine} e \textit{reduce}, respectivamente. A classe \textit{WordCount} apresentada no código \ref{cod-job} é responsável pela execução do \textit{job}, assim como especificado pelo método \textit{setJarByClass}().
+O último passo para finalizar a construção do programa MapReduce consiste em definir as configurações do \textit{job} e utilizar uma classe principal para executá-lo. A classe \textit{Job} representa o programa MapReduce em questão. Através dos métodos \textit{setMapperClass}(), \textit{setCombinerClass}() e \textit{setReducerClass}() é possível especificar as classes utilizadas para as funções \textit{map}, \textit{combine} e \textit{reduce}, respectivamente. A classe \textit{WordCount} apresentada no código \ref{cod-job} é responsável pela execução do \textit{job}, assim como especificado pelo método \textit{setJarByClass}().
 
 A localização dos arquivos de entrada que serão utilizados pelo programa são indicados pelo método \textit{addInputPath}(). No código \ref{cod-wc-hash} a escrita dos resultados do programa é realizada pelo próprio programador percorrendo os valores do \textit{HashMap}, já no modelo MapReduce o desenvolvedor apenas especifica o formato de saída do arquivo através dos métodos \textit{setOutputKeyClass}() e \textit{setOutputValueClass}().
 
@@ -161,6 +162,6 @@ A localização dos arquivos de entrada que serão utilizados pelo programa são
 		caption={Classe para execução do programa MapReduce}]
 		{codigos/jobrunner}
 
-Após a execução das reduce tasks o framework será responsável por escrever os resultados registrados no objeto da classe \textit{Context} em um diretório  especificado pelo método \textit{setOutputPath}(). Este ficheiro não deve existir no HDFS, segundo \citeonline{white2012}, isto evita que informações sejam sobrescritas acidentalmente. O método \textit{waitForCompletion}() submete o \textit{job} para ser executado e aguarda o término do processo. O parâmetro booleano indica a escrita das informações do programa no console durante a execução.
+Após a execução das reduce tasks o \textit{framework} será responsável por escrever os resultados registrados no objeto da classe \textit{Context} em um diretório  especificado pelo método \textit{setOutputPath}(). Este ficheiro não deve existir no HDFS, segundo \citeonline{white2012}, isto evita que informações sejam sobrescritas acidentalmente. O método \textit{waitForCompletion}() submete o \textit{job} para ser executado e aguarda o término do processo. O parâmetro booleano indica a escrita das informações do programa no \textit{console} durante a execução.
 
 
