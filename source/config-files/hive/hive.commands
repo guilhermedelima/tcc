@@ -1,0 +1,32 @@
+#Criar Tabela
+create table test(
+ name STRING,
+ age INT
+)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE ;
+
+#Carregar arquivo local para a tabela
+LOAD DATA LOCAL INPATH '/home/guilherme/Desktop/p.json' INTO TABLE test;
+
+#Carregar mysql com sqoop
+sqoop export --connect jdbc:mysql://localhost/social_network --username root --password root --table test --export-dir /guilherme/test.txt --columns name,age --fields-terminated-by ','
+
+
+
+create table social_messages(
+  timestamp STRING,
+  message STRING,
+  author STRING,
+  politician STRING,
+  classification STRING,
+  type STRING
+)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE;
+
+LOAD DATA INPATH '/guilherme/flume/social/' INTO TABLE test;
+
+select politician, classification, count(*) 
+from social_messages
+group by politician, classification;
