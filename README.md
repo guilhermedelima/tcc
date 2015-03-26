@@ -1,6 +1,7 @@
 #TCC de Guilherme de Lima Bernardes FGA-UnB
 
 Aluno: Guilherme de Lima Bernardes
+
 Orientador: Prof. Dr. Fernando William Cruz
 
 Título: Desenvolvimento de Software no Contexto Big Data
@@ -17,4 +18,6 @@ Para compilar o texto através do Makefile digite:
 	$ make clean
 	$ make
 
+## Código Fonte
 
+Código fonte e arquivos de configuração estão no diretório "source".

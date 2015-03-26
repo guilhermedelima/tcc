@@ -56,6 +56,7 @@ clean:
 	rm -f tcc.pdf TCC_Guilherme.pdf
 	rm -f *.synctex.gz
 	rm -f capitulos/*~
+	rm -f ./**/*~
 	
 dist: clean
 	tar vczf tcc-fga-latex-$(VERSION).tar.gz *
