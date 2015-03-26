@@ -3,9 +3,9 @@
 \chapter{Manual de Instalação – Hadoop}
 \label{apd-hadoop}
 
-Este documento tem como objetivo apresentar os passos necessários para a instalação de um cluster Hadoop versão 2.2.0. Este ambiente será constituído de uma máquina mestre, na qual estará localizado o namenode do HDFS e o resource manager do framework MapReduce, e também de máquinas escravas representando os datanodes e node managers. O Hadoop pode ser instalado em sistemas operacionais Unix ou Windows. Neste manual o foco será a instalação em uma distribuição Linux, todas as máquinas utilizadas possuem Ubuntu versão 12.04 LTS.
+Este documento tem como objetivo apresentar os passos necessários para a instalação de um \textit{cluster} Hadoop versão 2.2.0. Este ambiente será constituído de uma máquina mestre, na qual estará localizado o \textit{namenode} do HDFS e o \textit{resource manager} do \textit{framework} MapReduce, e também de máquinas escravas representando os \textit{datanodes} e \textit{node managers}. O Hadoop pode ser instalado em sistemas operacionais Unix ou Windows. Neste manual o foco será a instalação em uma distribuição Linux, todas as máquinas utilizadas possuem Ubuntu versão 12.04 LTS.
 
-O Hadoop foi construído utilizando a linguagem de programação java, portanto o primeiro pré requisito consiste na instalação e configuração de uma JVM (Java Virtual Machine), versão 6 ou superior, em todas as máquinas. Segundo \citeonline{white2012}, a utilização da implementação da Sun é a mais comum neste contexto, portanto todas as máquinas foram configuradas com a JDK 7 da própria Sun.
+O Hadoop foi construído utilizando a linguagem de programação java, portanto o primeiro pré requisito consiste na instalação e configuração de uma JVM, versão 6 ou superior, em todas as máquinas. Segundo \citeonline{white2012}, a utilização da implementação da Sun é a mais comum neste contexto, portanto todas as máquinas foram configuradas com a JDK 7 da própria Sun.
 
 O próximo passo é realizar o download do software Hadoop. A versão utilizada nesta instalação será a 2.2.0, caracterizada como uma versão estável. O programa pode ser obtido a partir do seguinte link disponibilizado pela documentação oficial \cite{hadoopSite}: \url{http://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-2.2.0/hadoop-2.2.0.tar.gz}. O arquivo compactado contendo o Hadoop deve ser extraído para o local de sua preferência, neste caso foi escolhido o diretório /opt.
 
@@ -13,13 +13,13 @@ O próximo passo é realizar o download do software Hadoop. A versão utilizada 
 $ tar xzvf hadoop-2.2.0.tar.gz -C /opt
 \end{lstlisting}
 
-Para cada nó no cluster o Hadoop necessita de um diretório para armazenar suas informações. O namenode registra os metadados de todo o sistema, já um datanode utiliza este diretório para armazenar os blocos de arquivos. Diversos arquivos temporários também podem ser criados quando o cluster estiver em funcionamento, por isso o conteúdo deste ficheiro não deve ser alterado. O diretório especificado para este ambiente pode ser identificado no comando a seguir.
+Para cada nó no \textit{cluster} o Hadoop necessita de um diretório para armazenar suas informações. O \textit{namenode} registra os metadados de todo o sistema, já um \textit{datanode} utiliza este diretório para armazenar os blocos de arquivos. Diversos arquivos temporários também podem ser criados quando o \textit{cluster} estiver em funcionamento, por isso o conteúdo deste ficheiro não deve ser alterado. O diretório especificado para este ambiente pode ser identificado no comando a seguir.
 
 \begin{lstlisting}[style=abnt,frame=single]
 $ mkdir /opt/hadoop-hdfs/tmp
 \end{lstlisting}
 
-É recomendável a criação de um usuário e um grupo próprio para a utilização do Hadoop pelas máquinas do cluster. Esta abordagem facilita a administração dos diretórios e arquivos criados e gerenciados pelo Hadoop.
+É recomendável a criação de um usuário e um grupo próprio para a utilização do Hadoop pelas máquinas do \textit{cluster}. Esta abordagem facilita a administração dos diretórios e arquivos criados e gerenciados pelo Hadoop.
 
 \begin{lstlisting}[float, style=abnt,frame=single]
 $ addgroup hadoop
@@ -47,7 +47,7 @@ export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 export PATH=$PATH:$HADOOP_HOME/bin/:$HADOOP_HOME/sbin/
 \end{lstlisting}
 
-O arquivo hadoop-env.sh está localizado em \$HADOOP\_CONF\_DIR e também deve ser alterado. A variável JAVA\_HOME deve ser inclusa juntamente com a flag para desabilitar o protocolo IPV6, pois o Hadoop não tem suporte para tal recurso. As linhas a seguir devem ser inclusas no arquivo (a variável JAVA\_HOME deve ser a mesma citada no arquivo ~/.bashrc).
+O arquivo hadoop-env.sh está localizado em \$HADOOP\_CONF\_DIR e também deve ser alterado. A variável JAVA\_HOME deve ser inclusa juntamente com a \textit{flag} para desabilitar o protocolo IPV6, pois o Hadoop não tem suporte para tal recurso. As linhas a seguir devem ser inclusas no arquivo (a variável JAVA\_HOME deve ser a mesma citada no arquivo ~/.bashrc).
 
 \begin{lstlisting}[style=abnt,frame=single]
 export JAVA_HOME=/usr/lib/jvm/java-7-oracle
@@ -55,17 +55,17 @@ export HADOOP_OPTS=-Djava.net.preferIPv4Stack=true
 \end{lstlisting}
 
 
-O próximo passo é garantir que todas as máquinas da rede estejam realmente interconectadas. O cluster montado neste roteiro é composto por duas máquinas: um nó mestre (namenode e resource manager) e dois nós escravos (datanode e node manager), onde a máquina mestre também possui um nó escravo. O endereço IP da máquina mestre é representado pelo nome “master”, enquanto o endereço do escravo possui o nome “slave”.
+O próximo passo é garantir que todas as máquinas da rede estejam realmente interconectadas. O \textit{cluster} montado neste roteiro é composto por duas máquinas: um nó mestre (\textit{namenode} e \textit{resource manager}) e dois nós escravos (\textit{datanode} e \textit{node manager}), onde a máquina mestre também possui um nó escravo. O endereço IP da máquina mestre é representado pelo nome \textit{master}, enquanto o endereço do escravo possui o nome \textit{slave}.
 
-Para que o cluster seja iniciado ou desligado o Hadoop executa um script que realiza chamadas SSH em todas as máquinas para então inicializar ou parar o serviço que cada uma delas executam. Portanto todos os nós do cluster devem ter um serviço de SSH disponível.
+Para que o \textit{cluster} seja iniciado ou desligado o Hadoop executa um \textit{script} que realiza chamadas SSH em todas as máquinas para então inicializar ou parar o serviço que cada uma delas executam. Portanto todos os nós do \textit{cluster} devem ter um serviço de SSH disponível.
 
-As chamadas SSH realizadas pelo Hadoop devem realizar autenticação por criptografia assimétrica e não por senha. Para isso é necessário gerar um par de chaves pública/privada para o nó mestre, que será responsável por inicializar e interromper o cluster Hadoop. O comando a seguir é utilizado para criar um par de chaves RSA e deve ser aplicado ao nó mestre.
+As chamadas SSH realizadas pelo Hadoop devem realizar autenticação por criptografia assimétrica e não por senha. Para isso é necessário gerar um par de chaves pública/privada para o nó mestre, que será responsável por inicializar e interromper o \textit{cluster} Hadoop. O comando a seguir é utilizado para criar um par de chaves RSA\footnote{\url{http://pt.wikipedia.org/wiki/RSA}} e deve ser aplicado ao nó mestre.
 
 \begin{lstlisting}[style=abnt,frame=single]
 $ ssh-keygen -t rsa -P ""
 \end{lstlisting}
 
-A chave pública é registrada no arquivo ~/.ssh/id\_rsa.pub e deve ser copiada para o arquivo ~/.ssh/authorized\_keys de todos os nós da rede. Desta forma a máquina mestre estará apta a realizar chamadas SSH sem autenticação por senha em todos os nós do cluster.
+A chave pública é registrada no arquivo ~/.ssh/id\_rsa.pub e deve ser copiada para o arquivo ~/.ssh/authorized\_keys de todos os nós da rede. Desta forma a máquina mestre estará apta a realizar chamadas SSH sem autenticação por senha em todos os nós do \textit{cluster}.
 
 O próximo passo é no diretório \$HADOOP\_CONF\_DIR editar os arquivos de configuração. As imagens a seguir ilustram o conteúdo que estes arquivos devem apresentar para todos os nós da rede.
 
@@ -91,7 +91,7 @@ O próximo passo é no diretório \$HADOOP\_CONF\_DIR editar os arquivos de conf
 		caption={Arquivo mapred-site.xml}]
 		{codigos/mapred-site.xml}
 
-O Hadoop 2.2.0 é constituído por uma versão mais atual do framework MapReduce denominada MapReduce 2.0, também conhecida como YARN. A principal diferença está no jobtracker, que foi dividido em dois daemons distintos: resource manager e application master. O antigo tasktracker foi substituído pelo node manager. O resource manager está presente no nó mestre e cada um dos escravos possui um node manager. A configuração do YARN é descrita nas imagens a seguir.
+O Hadoop 2.2.0 é constituído por uma versão mais atual do \textit{framework} MapReduce denominada MapReduce 2.0, também conhecida como YARN. A principal diferença está no \textit{jobtracker}, que foi dividido em dois \textit{daemons} distintos: \textit{resource manager} e \textit{application master}. O antigo \textit{tasktracker} foi substituído pelo \textit{node manager}. O \textit{resource manager} está presente no nó mestre e cada um dos escravos possui um \textit{node manager}. A configuração do YARN é descrita nas imagens a seguir.
 
 \newpage
 \lstinputlisting[frame=single,
@@ -110,15 +110,15 @@ O Hadoop 2.2.0 é constituído por uma versão mais atual do framework MapReduce
 		{codigos/yarn-site-slave.xml}
 
 
-O arquivo slaves do nó mestre é a última configuração a ser editada, ele está localizado no diretório \$HADOOP\_CONF\_DIR. Deve ser incluso o endereço IP de todas as máquinas escravas do cluster. No ambiente montado para este manual a máquina mestre também é um escravo, portanto são inseridos os endereços “master” e “slave”.
+O arquivo slaves do nó mestre é a última configuração a ser editada, ele está localizado no diretório \$HADOOP\_CONF\_DIR. Deve ser incluso o endereço IP de todas as máquinas escravas do \textit{cluster}. No ambiente montado para este manual a máquina mestre também é um escravo, portanto são inseridos os endereços \textit{master} e \textit{slave}.
 
-Após toda a configuração do cluster Hadoop é necessário formatar o HDFS pela primeira vez. Este é o última passo da instalação e deve ser executado com o comando a seguir.
+Após toda a configuração do \textit{cluster} Hadoop é necessário formatar o HDFS pela primeira vez. Este é o última passo da instalação e deve ser executado com o comando a seguir.
 
 \begin{lstlisting}[style=abnt,frame=single]
 $ hadoop namenode -format
 \end{lstlisting}
 
-Nesta etapa todos os nós do cluster estão configurados e o HDFS está pronto para uso. Para iniciar o Hadoop os comandos a seguir devem ser executados.
+Nesta etapa todos os nós do \textit{cluster} estão configurados e o HDFS está pronto para uso. Para iniciar o Hadoop os comandos a seguir devem ser executados.
 
 \newpage
 \begin{lstlisting}[style=abnt,frame=single]
@@ -129,7 +129,7 @@ $ yarn-daemons.sh start nodemanager
 $ mr-jobhistory-daemon.sh start historyserver
 \end{lstlisting}
 
-Com o comando \textbf{\$ jps} é possível verificar se os daemons ao longo do cluster foram iniciados com sucesso. A máquina mestre deve apresentar os seguintes processos: ResourceManager, DataNode, JobHistotyServer, Namenode e NodeManager. Para a máquina escrava os processos são: NodeManager e DataNode. O Hadoop também oferece alguns serviços HTTP que podem ser acessadas pelos endereços abaixo.
+Com o comando \textbf{\$ jps} é possível verificar se os \textit{daemons} ao longo do \textit{cluster} foram iniciados com sucesso. A máquina mestre deve apresentar os seguintes processos: ResourceManager, DataNode, JobHistotyServer, Namenode e NodeManager. Para a máquina escrava os processos são: NodeManager e DataNode. O Hadoop também oferece alguns serviços HTTP que podem ser acessadas pelos endereços abaixo.
 
 \begin{lstlisting}[style=abnt,frame=single]
 <http://master:50070/dfshealth.jsp>
@@ -137,7 +137,7 @@ Com o comando \textbf{\$ jps} é possível verificar se os daemons ao longo do c
 <http://master:19888/jobhistory>
 \end{lstlisting}
 
-Para que o cluster Hadoop seja desligado corretamente os comandos a seguir devem ser executados na ordem apresentada.
+Para que o \textit{cluster} Hadoop seja desligado corretamente os comandos a seguir devem ser executados na ordem apresentada.
 
 \begin{lstlisting}[style=abnt,frame=single]
 $ mr-jobhistory-daemon.sh stop historyserver 
@@ -147,14 +147,14 @@ $ hadoop-daemons.sh stop datanode
 $ hadoop-daemon.sh stop namenode
 \end{lstlisting}
 
-\chapter{Manual de Instalação – Plugin Hadoop}
+\chapter{Manual de Instalação – \textit{Plugin} Hadoop}
 \label{apd-eclipse}
 
-A utilização de ferramentas de desenvolvimento é um fator que pode ser muito importante para prover uma maior produtividade e agilidade durante a construção de um software. O eclipse é uma das IDEs mais conhecidas entre os programadores java, uma das suas principais vantagens é a flexibilidade para adição de plugins, os quais podem ser desenvolvidos por qualquer pessoa e compartilhados com a comunidade de desenvolvedores.
+A utilização de ferramentas de desenvolvimento é um fator que pode ser muito importante para prover uma maior produtividade e agilidade durante a construção de um software. O eclipse é uma das IDEs mais conhecidas entre os programadores java, uma das suas principais vantagens é a flexibilidade para adição de \textit{plugins}, os quais podem ser desenvolvidos por qualquer pessoa e compartilhados com a comunidade de desenvolvedores.
 
-A implementação de aplicações MapReduces pode ser facilitada com a utilização de um plugin disponível em um dos repositórios da ferramenta github. Para sua instalação é necessário realizar o download do código fonte no seguinte endereço: \url{https://github.com/winghc/hadoop2x-eclipse-plugin}.
+A implementação de aplicações MapReduces pode ser facilitada com a utilização de um \textit{plugin} disponível em um dos repositórios da ferramenta github. Para sua instalação é necessário realizar o download do código fonte no seguinte endereço: \url{https://github.com/winghc/hadoop2x-eclipse-plugin}.
 
-Após efetuar o download os arquivos devem ser extraídos e o código fonte compilado. Desta forma será gerado um arquivo jar que contém o plugin para o Hadoop. Este arquivo deve ser inserido na pasta plugins/ dentro do diretório raiz do eclipse a ser instalado. Os comandos para compilar o código fonte são descritos a seguir.
+Após efetuar o download os arquivos devem ser extraídos e o código fonte compilado. Desta forma será gerado um arquivo jar que contém o \textit{plugin} para o Hadoop. Este arquivo deve ser inserido na pasta plugins/ dentro do diretório raiz do eclipse a ser instalado. Os comandos para compilar o código fonte são descritos a seguir.
 
 \begin{lstlisting}[style=abnt,frame=single]
 $ unzip hadoop2x-eclipse-plugin-master.zip
@@ -162,6 +162,6 @@ $ cd  hadoop2x-eclipse-plugin-master/src/contrib/eclipse-plugin/
 $ ant jar -Dversion=2.2.0 -Declipse.home=/opt/eclipse/ -Dhadoop.home=/opt/hadoop-2.2.0/
 \end{lstlisting}
 
-As diretivas “-Declipse.home” e “-Dhadoop.home” indicam a localização do eclipse e Hadoop, respectivamente. Após a compilação o arquivo jar referente ao plugin é gerado no diretório  build/contrib/eclipse-plugin.
+As diretivas “-Declipse.home” e “-Dhadoop.home” indicam a localização do eclipse e Hadoop, respectivamente. Após a compilação o arquivo jar referente ao \textit{plugin} é gerado no diretório  build/contrib/eclipse-plugin.
 
 \end{apendicesenv}

@@ -63,8 +63,8 @@
 %Espaçamento Tabela
 \setlength{\tabcolsep}{1.4em}
 
-\renewcommand{\lstlistingname}{Código}
-\renewcommand{\lstlistlistingname}{Lista de códigos}
+\renewcommand{\lstlistingname}{Quadro}
+\renewcommand{\lstlistlistingname}{Lista de quadros}
 
 % Configura a ``Lista de Códigos'' conforme as regras da ABNT (para abnTeX2)
 \begingroup\makeatletter
@@ -83,6 +83,13 @@
    \renewcommand{\numberline}{\lstlistingname\space\oldnumberline}%
    \oldlstlistoflistings%
    \endgroup}
+
+%Cores
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+\definecolor{Gray}{gray}{0.9}
 
 
 %Customizacao
@@ -106,5 +113,29 @@
   framexleftmargin=10pt,
   framexleftmargin=15pt
 }
+ 
+\lstdefinestyle{java}{
+  alsoother={0123456789_},
+  language=Java,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{javapurple}\bfseries,
+  stringstyle=\color{javared},
+  commentstyle=\color{javagreen},
+  morecomment=[s][\color{javadocblue}]{/**}{*/},
+  breaklines=true,
+  captionpos=b,
+  numberbychapter=false,
+  numbers=left,
+  numberstyle=\tiny\color{black},
+  stepnumber=1,
+  showtabs=false,
+  numbersep=10pt,
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false,
+  frame=single,
+  aboveskip=14pt,
+  framexleftmargin=5pt
+}
 
-\definecolor{Gray}{gray}{0.9}
+

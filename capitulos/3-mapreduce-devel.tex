@@ -1,7 +1,7 @@
 \chapter{Desenvolvimento MapReduce}
 \label{cap:mapreduce-devel}
 
-Neste capítulo discutimos sobre a construção de aplicações baseadas no modelo MapReduce. Anteriormente foi apresentada uma introdução a este novo paradigma, porém o foco desta seção é deixar claro quais são os passos necessários para o desenvolvimento neste ambiente. Será utilizada uma abordagem técnica para descrever os recursos disponibilizados por este \textit{framework}, originalmente criado para linguagem Java. O manual de instalação do plugin Hadoop para a ferramenta Eclipse\footnote{\url{http://eclipse.org/}} pode ser encontrado no apêndice \ref{apd-eclipse}.
+Neste capítulo discutimos sobre a construção de aplicações baseadas no modelo MapReduce. Anteriormente foi apresentada uma introdução a este novo paradigma, porém o foco desta seção é deixar claro quais são os passos necessários para o desenvolvimento neste ambiente. Será utilizada uma abordagem técnica para descrever os recursos disponibilizados por este \textit{framework}, originalmente criado para linguagem Java. O manual de instalação do \textit{plugin} Hadoop para a ferramenta Eclipse\footnote{\url{http://eclipse.org/}} pode ser encontrado no apêndice \ref{apd-eclipse}.
 
 Hadoop provê uma API para MapReduce que permite a construção das funções \textit{map} e \textit{reduce} em outras linguagens de programação \cite{white2012}. É possível realizar o desenvolvimento de aplicações MapReduce em linguagens de \textit{script}, por exemplo, Python e Ruby, usando o utilitário \textit{Hadoop Stream}. Para a implementação em C++ é utilizada uma interface denominada \textit{Hadoop Pipe}.
 
@@ -20,7 +20,9 @@ A classe \textit{HashMap} compõe uma das implementações da interface \textit{
 		breaklines=true,
 		label=cod-wc-hash,
 		style=abnt,
-		caption={Algoritmo convencional para contador de palavras}]
+		caption={[Algoritmo convencional para contador de palavras]
+		Algoritmo convencional para contador de palavras
+		\protect\linebreak Fonte: Autor}]
 		{codigos/wordcount-hash}
 
 A solução adequada para o contexto Big Data, na qual são analisados arquivos extremamente volumosos, consiste na construção de um algoritmo baseado em computação distribuída. A grande vantagem de utilizar o modelo MapReduce é que o desenvolvedor precisa apenas adaptar o problema para ser resolvido com as funções \textit{map} e \textit{reduce}. Toda a complexidade envolvida em paralelizar o processamento é realizada pelo \textit{framework}.
@@ -93,7 +95,8 @@ No código \ref{cod-mapreduce-google} foi apresentado um algoritmo para resolver
 		breaklines=true,
 		label=cod-mapper,
 		style=abnt,
-		caption={Classe Mapper}]
+		caption={[Classe Mapper]Classe Mapper
+		\protect\linebreak Fonte: Autor}]
 		{codigos/mapper}
 
 Os parâmetros presentes na assinatura da classe representam os tipos \textit{\{chave, valor\}} de entrada e saída referentes a função \textit{map}. No código \ref{cod-mapper} é possível identificar que as entradas são compostas por uma chave do tipo \textit{LongWritable} e por valores da classe \textit{Text}. Isso significa que cada um dos \textit{input splits} são identificados com um inteiro longo e passados em forma de texto para as funções \textit{map}. As saídas de cada função \textit{map} possuem chaves do tipo \textit{Text} que representam as palavras encontradas em cada \textit{input split}, na qual estão associadas a um valor inteiro \textit{IntWritable} indicando uma ocorrência no texto.
@@ -124,7 +127,8 @@ O primeiro parâmetro da função reduce indica a chave do tipo \textit{Text}, q
 		breaklines=true,
 		label=cod-reducer,
 		style=abnt,
-		caption={Classe Reducer}]
+		caption={[Classe Reducer]Classe Reducer
+		\protect\linebreak Fonte: Autor}]
 		{codigos/reducer}
 
 Após a leitura do capítulo \ref{cap:hadoop} fica claro que o MapReduce procura otimizar a quantidade de dados que são transmitidos pelo rede, desta forma o ideal é realizar o máximo de operações locais possíveis. As \textit{map tasks} podem gerar uma grande quantidade de resultados intermediários, que posteriormente serão copiados para as máquinas onde são executadas as \textit{reduce tasks}. Muitos destes valores podem ser simplificados antes de serem enviados para a rede. O Hadoop permite que o desenvolvedor especifique uma função chamada \textit{combine} a fim de reduzir as saídas geradas pelas funções \textit{map} \cite{white2012}.
@@ -161,7 +165,8 @@ A localização dos arquivos de entrada que serão utilizados pelo programa são
 		breaklines=true,
 		label=cod-job,
 		style=abnt,
-		caption={Classe para execução do programa MapReduce}]
+		caption={[Classe para executar MapReduce job]Classe para executar MapReduce job
+		\protect\linebreak Fonte: Autor}]
 		{codigos/jobrunner}
 
 Após a execução das reduce tasks o \textit{framework} será responsável por escrever os resultados registrados no objeto da classe \textit{Context} em um diretório  especificado pelo método \textit{setOutputPath}(). Este ficheiro não deve existir no HDFS, segundo \citeonline{white2012}, isto evita que informações sejam sobrescritas acidentalmente. O método \textit{waitForCompletion}() submete o \textit{job} para ser executado e aguarda o término do processo. O parâmetro booleano indica a escrita das informações do programa no \textit{console} durante a execução.

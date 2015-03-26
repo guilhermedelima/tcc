@@ -101,6 +101,8 @@ Os \textit{datanodes} representam os nós escravos do HDFS. Eles são responsáv
 \end{figure}
 \FloatBarrier
 
+Na figura \ref{fig-hdfs-arquitetura} é possível perceber a semelhança do HDFS com a arquitetura do GFS. A ilustração apresenta um \textit{namenode} de um \textit{cluster} Hadoop, que mantém o \textit{namespace} do sistema de arquivos e recebe solicitações de aplicações clientes para escrita e leitura de arquivos. Posteriormente estas aplicações acessam os \textit{datanodes} diretamente para realizar estas operações sobre os blocos de arquivos, que estão persistidos e replicados ao longo do \textit{cluster}.
+
 Assim como o GFS, o HDFS foi projetado para ser executado em distribuições GNU/Linux,  portanto para que uma máquina seja um namenode ou datanode é necessário apenas que possua uma JVM disponível juntamente com o sistema operacional adequado \cite{hadoopSiteHDFS}.
 
 \subsection{Leitura e escrita}
@@ -134,8 +136,8 @@ Este modelo é baseado nas primitivas \textit{map} e \textit{reduce} presentes n
 Um programa MapReduce separa arquivos de entrada em diversas partes independentes que servem de entrada para as funções \textit{map}. As saídas destas funções são ordenadas por \textit{\{chave, valor\}} e posteriormente transformadas em entradas do tipo \textit{\{chave, lista(valores)\}} para a função \textit{reduce}, onde o resultado final será salvo em um arquivo de saída. A código \ref{cod-mapreduce-io} apresenta de maneira genérica as entradas e saídas das funções \textit{map} e \textit{reduce}.
 
 \begin{lstlisting}[style=abnt,frame=single, 
-		caption={Entradas e saídas - MapReduce, extraído de 
-		\citeonline{ghemawatMapreduce2008}}, 
+		caption={[Entradas e saídas - MapReduce]Entradas e saídas - MapReduce
+		\protect\linebreak Fonte: \cite{ghemawatMapreduce2008}},
 		label=cod-mapreduce-io]
 map     (k1,v1)         -> list(k2,v2)
 reduce  (k2,list(v2))   -> list(v2)
@@ -173,8 +175,8 @@ Este problema que se mostrou complexo possui uma solução simples e de fácil c
 		frame=single,
 		label=cod-mapreduce-google,
 		style=abnt,
-		caption={Pseudo código MapReduce, retirado de 
-		\citeonline{ghemawatMapreduce2008}}]
+		caption={[Pseudo código MapReduce]Pseudo código MapReduce
+		\protect\linebreak Fonte: \cite{ghemawatMapreduce2008}}]
 		{codigos/mapreduce-pseudo}
 \FloatBarrier
 
