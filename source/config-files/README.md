@@ -13,4 +13,4 @@ Neste diretório estão os arquivos de configuração das ferramentas utilizadas
 
 Para utilizar o Hive foi necessário o download do driver de conexão com MySQL e uma implementação JSON de um SerDE:
 
-* [SDADA](https://github.com/rcongiu/Hive-JSON-Serde)
+* [JSON-SerDe](https://github.com/rcongiu/Hive-JSON-Serde)
