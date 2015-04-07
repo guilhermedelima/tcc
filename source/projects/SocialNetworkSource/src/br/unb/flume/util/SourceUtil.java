@@ -2,6 +2,7 @@ package br.unb.flume.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -17,6 +18,9 @@ public class SourceUtil {
 	
 	private static final String AUTHOR = "author";
 	private static final String TIMESTAMP = "timestamp";
+	private static final String YEAR = "year";
+	private static final String MONTH = "month";
+	private static final String DAY = "day";
 	private static final String SOURCE = "type";
 	private static final String MESSAGE = "message";
 	private static final String POLITICIAN = "politician";
@@ -47,10 +51,17 @@ public class SourceUtil {
 			PoliticianType politician, MessageType classification){
 		
 		HashMap<String, String> obj;
+		Calendar calendar;
+		
+		calendar = Calendar.getInstance();
+		calendar.setTime(date);
 		
 		obj = new HashMap<String, String>();
 		obj.put(AUTHOR, author);
 		obj.put(TIMESTAMP, date.toString());
+		obj.put(YEAR, Integer.toString( calendar.get(Calendar.YEAR) ));
+		obj.put(MONTH, Integer.toString( calendar.get(Calendar.MONTH) ));
+		obj.put(DAY, Integer.toString( calendar.get(Calendar.DAY_OF_MONTH) ));
 		obj.put(SOURCE, type.getName());
 		obj.put(MESSAGE, message);
 		obj.put(POLITICIAN, politician.getName());

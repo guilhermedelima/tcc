@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_HOME=/home/guilherme/FGA/TCC/Textos/tcc_latex/figuras/images
+IMAGE_HOME=/home/guilherme/FGA/TCC/git/figuras/images
 
 cd $IMAGE_HOME
 rm -f ../*.eps

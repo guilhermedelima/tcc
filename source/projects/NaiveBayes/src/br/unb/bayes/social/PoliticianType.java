@@ -34,6 +34,6 @@ public enum PoliticianType {
 	}
 	
 	public static PoliticianType getTypeFromID(String id){
-		return DILMA.equals(id) ? DILMA : AECIO;
+		return DILMA.getId().equals(id) ? DILMA : AECIO;
 	}
 }
