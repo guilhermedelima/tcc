@@ -37,7 +37,7 @@
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav navbar-right">
 	            <li><a href="https://github.com/guilhermedelima/tcc">Projeto Source Network Analysis</a></li>
-	            <li><a href="https://github.com/guilhermedelima/tcc/tree/master/source/projects">Código Fonte</a></li>
+	            <li><a href="https://github.com/guilhermedelima/tcc/tree/master/source/projects/social-interface">Código Fonte</a></li>
 	          </ul>
 	        </div>
 	      </div>
@@ -89,9 +89,11 @@
 	              <table class="table table-bordered table-striped">
 		              <thead>
 		                <tr>
+		                  <th></th>
 		                  <c:forEach items="${monthList}" var="month">
 		                  	<th>${month}</th>
 		                  </c:forEach>
+		                  <th>Total</th>
 		                </tr>
 		              </thead>
 		              <tbody>
@@ -107,6 +109,10 @@
 		              </tbody>
 	              </table>
 	          	</div>
+<%-- 	            <div id="Area-${table.year}"></div> --%>
+<!-- 	            <script type="text/javascript"> -->
+				
+<!--  	            </script> -->
 			  </c:forEach>
 	        </div>
 	      </div>

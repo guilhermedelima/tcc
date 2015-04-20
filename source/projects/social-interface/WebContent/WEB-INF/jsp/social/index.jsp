@@ -37,7 +37,7 @@
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav navbar-right">
 	            <li><a href="https://github.com/guilhermedelima/tcc">Projeto Source Network Analysis</a></li>
-	            <li><a href="https://github.com/guilhermedelima/tcc/tree/master/source/projects">Código Fonte</a></li>
+	            <li><a href="https://github.com/guilhermedelima/tcc/tree/master/source/projects/social-interface">Código Fonte</a></li>
 	          </ul>
 	        </div>
 	      </div>
@@ -70,61 +70,61 @@
 	          </ul>
 	        </div>
 	        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-	          <h1 class="page-header">Dashboard</h1>
+	          <h1 class="page-header">Análise de Sentimentos</h1>
 	
-	          <div class="row placeholders">
-	            <div class="col-xs-6 col-sm-3 placeholder">
-	              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-	              <h4>Label</h4>
-	              <span class="text-muted">Something else</span>
-	            </div>
-	            <div class="col-xs-6 col-sm-3 placeholder">
-	              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-	              <h4>Label</h4>
-	              <span class="text-muted">Something else</span>
-	            </div>
-	            <div class="col-xs-6 col-sm-3 placeholder">
-	              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail">
-	              <h4>Label</h4>
-	              <span class="text-muted">Something else</span>
-	            </div>
-	            <div class="col-xs-6 col-sm-3 placeholder">
-	              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail">
-	              <h4>Label</h4>
-	              <span class="text-muted">Something else</span>
-	            </div>
-	          </div>
+<!-- 	          <div class="row placeholders"> -->
+<!-- 	            <div class="col-xs-6 col-sm-3 placeholder"> -->
+<!-- 	              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail"> -->
+<!-- 	              <h4>Label</h4> -->
+<!-- 	              <span class="text-muted">Something else</span> -->
+<!-- 	            </div> -->
+<!-- 	            <div class="col-xs-6 col-sm-3 placeholder"> -->
+<!-- 	              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail"> -->
+<!-- 	              <h4>Label</h4> -->
+<!-- 	              <span class="text-muted">Something else</span> -->
+<!-- 	            </div> -->
+<!-- 	            <div class="col-xs-6 col-sm-3 placeholder"> -->
+<!-- 	              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail"> -->
+<!-- 	              <h4>Label</h4> -->
+<!-- 	              <span class="text-muted">Something else</span> -->
+<!-- 	            </div> -->
+<!-- 	            <div class="col-xs-6 col-sm-3 placeholder"> -->
+<!-- 	              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail"> -->
+<!-- 	              <h4>Label</h4> -->
+<!-- 	              <span class="text-muted">Something else</span> -->
+<!-- 	            </div> -->
+<!-- 	          </div> -->
 	
-	          <h2 class="sub-header">Section title</h2>
-	          <div class="table-responsive">
-	            <table class="table table-striped">
-	              <thead>
-	                <tr>
-	                  <th>#</th>
-	                  <th>Header</th>
-	                  <th>Header</th>
-	                  <th>Header</th>
-	                  <th>Header</th>
-	                </tr>
-	              </thead>
-	              <tbody>
-	                <tr>
-	                  <td>1,014</td>
-	                  <td>per</td>
-	                  <td>inceptos</td>
-	                  <td>himenaeos</td>
-	                  <td>Curabitur</td>
-	                </tr>
-	                <tr>
-	                  <td>1,015</td>
-	                  <td>sodales</td>
-	                  <td>ligula</td>
-	                  <td>in</td>
-	                  <td>libero</td>
-	                </tr>
-	              </tbody>
-	            </table>
-	          </div>
+<!-- 	          <h2 class="sub-header">Section title</h2> -->
+<!-- 	          <div class="table-responsive"> -->
+<!-- 	            <table class="table table-striped"> -->
+<!-- 	              <thead> -->
+<!-- 	                <tr> -->
+<!-- 	                  <th>#</th> -->
+<!-- 	                  <th>Header</th> -->
+<!-- 	                  <th>Header</th> -->
+<!-- 	                  <th>Header</th> -->
+<!-- 	                  <th>Header</th> -->
+<!-- 	                </tr> -->
+<!-- 	              </thead> -->
+<!-- 	              <tbody> -->
+<!-- 	                <tr> -->
+<!-- 	                  <td>1,014</td> -->
+<!-- 	                  <td>per</td> -->
+<!-- 	                  <td>inceptos</td> -->
+<!-- 	                  <td>himenaeos</td> -->
+<!-- 	                  <td>Curabitur</td> -->
+<!-- 	                </tr> -->
+<!-- 	                <tr> -->
+<!-- 	                  <td>1,015</td> -->
+<!-- 	                  <td>sodales</td> -->
+<!-- 	                  <td>ligula</td> -->
+<!-- 	                  <td>in</td> -->
+<!-- 	                  <td>libero</td> -->
+<!-- 	                </tr> -->
+<!-- 	              </tbody> -->
+<!-- 	            </table> -->
+<!-- 	          </div> -->
 	        </div>
 	      </div>
 	    </div>

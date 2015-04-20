@@ -33,7 +33,6 @@ public class SocialController {
 		this.validator = validator;
 		
 		this.MONTH_LIST = new ArrayList<String>();
-		this.MONTH_LIST.add("");
 		this.MONTH_LIST.add("Jan");
 		this.MONTH_LIST.add("Fev");
 		this.MONTH_LIST.add("Mar");
@@ -46,7 +45,6 @@ public class SocialController {
 		this.MONTH_LIST.add("Out");
 		this.MONTH_LIST.add("Nov");
 		this.MONTH_LIST.add("Dez");
-		this.MONTH_LIST.add("Total");
 		
 		this.YEAR_LIST = new ArrayList<Integer>();
 		
