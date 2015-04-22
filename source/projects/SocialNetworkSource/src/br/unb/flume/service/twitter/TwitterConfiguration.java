@@ -7,7 +7,6 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterConfiguration {
 	
-	public static final String PROPERTIES_FILE = "twitter.properties";
 	public static final String CONSUMER_KEY = "consumerKey";
 	public static final String CONSUMER_SECRET = "consumerSecret";
 	public static final String TOKEN = "accessToken";

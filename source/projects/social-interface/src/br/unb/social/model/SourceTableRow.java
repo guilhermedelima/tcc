@@ -3,27 +3,27 @@ package br.unb.social.model;
 public class SourceTableRow {
 	
 	private SourceType source;
-	private Integer allValue;
+	private Integer allValues;
 	
-	public SourceTableRow(SourceType source, Integer allValue) {
+	public SourceTableRow(SourceType source, Integer allValues) {
 		this.source = source;
-		this.allValue = allValue;
+		this.allValues = allValues;
 	}
 
 	public SourceType getSource() {
 		return source;
 	}
-	
+
 	public void setSource(SourceType source) {
 		this.source = source;
 	}
-	
-	public Integer getAllValue() {
-		return allValue;
+
+	public Integer getAllValues() {
+		return allValues;
 	}
-	
-	public void setAllValue(Integer allValue) {
-		this.allValue = allValue;
+
+	public void setAllValues(Integer allValues) {
+		this.allValues = allValues;
 	}
 
 }

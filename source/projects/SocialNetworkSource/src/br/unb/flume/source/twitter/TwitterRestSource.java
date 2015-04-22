@@ -35,11 +35,13 @@ public class TwitterRestSource extends AbstractSource implements EventDrivenSour
 	public void configure(Context context) {
 		PoliticianType politicianType;
 
+		this.context = context;
+		
 		since = context.getString(DATE_INIT, "");
 		until = context.getString(DATE_END, "");
 		limit = context.getInteger(LIMIT_TWEETS, DEFAULT_LIMIT);
 
-		keywords = context.getString(KEYWORDS_NAME).replaceAll(",", " OR ");
+		keywords = context.getString(KEYWORDS_NAME).replaceAll(",", " OR");
 
 		politicianType = PoliticianType.getTypeFromID( context.getString(POLITICIAN) );
 

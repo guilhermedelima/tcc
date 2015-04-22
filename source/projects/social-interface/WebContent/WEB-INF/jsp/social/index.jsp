@@ -7,7 +7,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="icon" href="<c:url value="/bootstrap/images/favicon.ico" />" />
+<%-- 		<link rel="icon" href="<c:url value="/bootstrap/images/favicon.ico" />" /> --%>
 		<title>Social Network Analysis</title>
 		
 		<link rel="stylesheet" href="<c:url value="/bootstrap/css/bootstrap.min.css" />" />
@@ -21,6 +21,9 @@
 
 		<script type="text/javascript" src="<c:url value="/bootstrap/js/raphael-min.js" />"></script>
 		<script type="text/javascript" src="<c:url value="/bootstrap/js/morris.min.js" />"></script>
+		
+		<link rel="stylesheet" href="<c:url value="/font-awesome/css/font-awesome.min.css" />" />
+		<link rel="stylesheet" href="<c:url value="/font-awesome/css/bootstrap-social.css" />" />
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -36,7 +39,7 @@
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav navbar-right">
-	            <li><a href="https://github.com/guilhermedelima/tcc">Projeto Source Network Analysis</a></li>
+	            <li><a href="https://github.com/guilhermedelima/tcc">Documentação</a></li>
 	            <li><a href="https://github.com/guilhermedelima/tcc/tree/master/source/projects/social-interface">Código Fonte</a></li>
 	          </ul>
 	        </div>
@@ -71,60 +74,25 @@
 	        </div>
 	        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 	          <h1 class="page-header">Análise de Sentimentos</h1>
-	
-<!-- 	          <div class="row placeholders"> -->
-<!-- 	            <div class="col-xs-6 col-sm-3 placeholder"> -->
-<!-- 	              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail"> -->
-<!-- 	              <h4>Label</h4> -->
-<!-- 	              <span class="text-muted">Something else</span> -->
-<!-- 	            </div> -->
-<!-- 	            <div class="col-xs-6 col-sm-3 placeholder"> -->
-<!-- 	              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail"> -->
-<!-- 	              <h4>Label</h4> -->
-<!-- 	              <span class="text-muted">Something else</span> -->
-<!-- 	            </div> -->
-<!-- 	            <div class="col-xs-6 col-sm-3 placeholder"> -->
-<!-- 	              <img data-src="holder.js/200x200/auto/sky" class="img-responsive" alt="Generic placeholder thumbnail"> -->
-<!-- 	              <h4>Label</h4> -->
-<!-- 	              <span class="text-muted">Something else</span> -->
-<!-- 	            </div> -->
-<!-- 	            <div class="col-xs-6 col-sm-3 placeholder"> -->
-<!-- 	              <img data-src="holder.js/200x200/auto/vine" class="img-responsive" alt="Generic placeholder thumbnail"> -->
-<!-- 	              <h4>Label</h4> -->
-<!-- 	              <span class="text-muted">Something else</span> -->
-<!-- 	            </div> -->
-<!-- 	          </div> -->
-	
-<!-- 	          <h2 class="sub-header">Section title</h2> -->
-<!-- 	          <div class="table-responsive"> -->
-<!-- 	            <table class="table table-striped"> -->
-<!-- 	              <thead> -->
-<!-- 	                <tr> -->
-<!-- 	                  <th>#</th> -->
-<!-- 	                  <th>Header</th> -->
-<!-- 	                  <th>Header</th> -->
-<!-- 	                  <th>Header</th> -->
-<!-- 	                  <th>Header</th> -->
-<!-- 	                </tr> -->
-<!-- 	              </thead> -->
-<!-- 	              <tbody> -->
-<!-- 	                <tr> -->
-<!-- 	                  <td>1,014</td> -->
-<!-- 	                  <td>per</td> -->
-<!-- 	                  <td>inceptos</td> -->
-<!-- 	                  <td>himenaeos</td> -->
-<!-- 	                  <td>Curabitur</td> -->
-<!-- 	                </tr> -->
-<!-- 	                <tr> -->
-<!-- 	                  <td>1,015</td> -->
-<!-- 	                  <td>sodales</td> -->
-<!-- 	                  <td>ligula</td> -->
-<!-- 	                  <td>in</td> -->
-<!-- 	                  <td>libero</td> -->
-<!-- 	                </tr> -->
-<!-- 	              </tbody> -->
-<!-- 	            </table> -->
-<!-- 	          </div> -->
+			  
+			  <div class="row placeholders">
+			  	<div class="col-sm-12 col-md-4 col-xs-4">
+			  		<div class="panel panel-primary">
+						<div class="panel-heading">Redes Sociais Avaliadas</div>
+				  		<ul class="list-group">
+				  			<c:forEach items="${sourceTable.rows}" var="row">
+				  				<li class="list-group-item" style="text-align: left;">
+				  					<a class="btn btn-social btn-${row.source.id}">
+				  						<i class="fa fa-${row.source.id}"></i>
+				  					</a>
+				  					${row.source.name}: ${row.allValues} publicações
+				  				</li>
+				  			</c:forEach>				  			
+			  			</ul>
+			  		</div>
+			  	</div>
+			  </div>
+
 	        </div>
 	      </div>
 	    </div>

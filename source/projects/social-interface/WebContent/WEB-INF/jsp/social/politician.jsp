@@ -7,7 +7,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="icon" href="<c:url value="/bootstrap/images/favicon.ico" />" />
+<%-- 		<link rel="icon" href="<c:url value="/bootstrap/images/favicon.ico" />" /> --%>
 		<title>Social Network Analysis</title>
 		
 		<link rel="stylesheet" href="<c:url value="/bootstrap/css/bootstrap.min.css" />" />
@@ -36,7 +36,7 @@
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav navbar-right">
-	            <li><a href="https://github.com/guilhermedelima/tcc">Projeto Source Network Analysis</a></li>
+	            <li><a href="https://github.com/guilhermedelima/tcc">Documentação</a></li>
 	            <li><a href="https://github.com/guilhermedelima/tcc/tree/master/source/projects/social-interface">Código Fonte</a></li>
 	          </ul>
 	        </div>
@@ -83,8 +83,8 @@
 	            </div>
 	          </div>
 	
-			  <c:forEach items="${tableList}" var="table">
-  	          	<h2 class="sub-header">${table.year}</h2>
+			  <c:forEach items="${infoList}" var="info">
+  	          	<h2 class="sub-header">${info.year}</h2>
 				<div class="table-responsive">
 	              <table class="table table-bordered table-striped">
 		              <thead>
@@ -97,7 +97,7 @@
 		                </tr>
 		              </thead>
 		              <tbody>
-			              <c:forEach items="${table.rows}" var="row">
+			              <c:forEach items="${info.simpleTable.rows}" var="row">
 				          	<tr>
 			                  <td>${row.classification.name}</td>
 			                  <c:forEach items="${row.monthCountList}" var="val">
@@ -109,10 +109,37 @@
 		              </tbody>
 	              </table>
 	          	</div>
-<%-- 	            <div id="Area-${table.year}"></div> --%>
-<!-- 	            <script type="text/javascript"> -->
-				
-<!--  	            </script> -->
+	          	
+          		<div class="panel panel-default">
+          			<div class="panel-heading"></div>
+          			<div class="panel-body">
+          				<div id="Area-${info.year}"></div>
+          			</div>
+	          	</div>
+	            <script type="text/javascript">
+					var months = [
+						<c:forEach items="${info.areaChart.rows}" var="row">
+							{ y: '${row.month}', a: '${row.positiveValues}', b: '${row.negativeValues}' },
+						</c:forEach>
+						{ y: '', a : 0, b : 0 }		
+					];
+					months.pop();
+
+					for(i=0; i<months.lenght; i++){
+						months[i].a = Number(months[i].a);
+						months[i].b = Number(months[i].b); 
+					}
+	            
+		            new Morris.Area({
+	            	  element: 'Area-${info.year}',
+	            	  data: months,
+	            	  xkey: 'y',
+	            	  ykeys: ['a', 'b'],
+	            	  labels: ['Positivo', 'Negativo'],
+	            	  resize: true
+		            });
+  	            </script>
+  	            <br></br>
 			  </c:forEach>
 	        </div>
 	      </div>

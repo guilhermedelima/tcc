@@ -9,12 +9,12 @@ import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
-import br.unb.social.data.DatabaseService;
-import br.unb.social.data.TableDAO;
+import br.unb.social.data.SourceDAO;
+import br.unb.social.data.YearInfoDAO;
 import br.unb.social.model.PoliticianType;
-import br.unb.social.model.Table;
+import br.unb.social.model.SourceTable;
 import br.unb.social.model.TableRow;
-import br.unb.social.util.PropertiesLoader;
+import br.unb.social.model.YearInformation;
 
 @Resource
 public class SocialController {
@@ -55,7 +55,15 @@ public class SocialController {
 
 	@Path("/")
 	public void index() {
+		SourceTable sourceTable;
+		SourceDAO dao;
+		
+		dao = new SourceDAO();
+		
+		sourceTable = dao.searchSourceTable();
+		
 		result.include("politician", null);
+		result.include("sourceTable", sourceTable);
 		result.include("enumList", Arrays.asList(PoliticianType.values()));
 	}
 	
@@ -64,11 +72,9 @@ public class SocialController {
 	public void politician(String politicianID){
 		
 		PoliticianType politician;
-		List<Table> politicianTables;
-		Table table;
-		TableDAO dao;
-		PropertiesLoader loader;
-		DatabaseService service;
+		List<YearInformation> politicianInfo;
+		YearInformation info;
+		YearInfoDAO dao;
 		Integer allPositive, allNegative;
 		
 		if( (politician = PoliticianType.getPoliticianByID(politicianID)) == null ){
@@ -79,18 +85,16 @@ public class SocialController {
 			return;
 		}
 		
-		loader = PropertiesLoader.getInstance();
-		service = new DatabaseService(loader);
-		dao = new TableDAO(service);
+		dao = new YearInfoDAO();
 		
-		politicianTables = new ArrayList<Table>();
+		politicianInfo = new ArrayList<YearInformation>();
 		allPositive = 0;
 		allNegative = 0;
 		
 		for(int i=START_YEAR; i<=END_YEAR; i++){
-			table = dao.seachTable(politician, i);
+			info = dao.seachYearInfo(politician, i);
 			
-			for(TableRow row : table.getRows()){
+			for(TableRow row : info.getSimpleTable().getRows()){
 				switch(row.getClassification()){
 				case POSITIVE:	allPositive += row.getSum();
 								break;
@@ -99,13 +103,13 @@ public class SocialController {
 				}
 			}
 			
-			politicianTables.add( dao.seachTable(politician, i) );
+			politicianInfo.add( info );
 		}
 		
 		result.include("monthList", MONTH_LIST);
 		result.include("politician", politician);
 		result.include("enumList", Arrays.asList(PoliticianType.values()));
-		result.include("tableList", politicianTables);
+		result.include("infoList", politicianInfo);
 		result.include("negativeSum", allNegative);
 		result.include("positiveSum", allPositive);
 	}
