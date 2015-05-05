@@ -1,0 +1,118 @@
+###### HELLO WORLD ########
+
+#Criar Tabela
+create table test(
+ name STRING,
+ age INT
+)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE ;
+
+#Carregar arquivo local para a tabela
+LOAD DATA LOCAL INPATH '/home/guilherme/Desktop/p.json' INTO TABLE test;
+
+#Carregar mysql com sqoop
+sqoop export --connect jdbc:mysql://localhost/social_network --username root --password root --table test --export-dir /guilherme/test.txt --columns name,age --fields-terminated-by ','
+
+
+
+####### SOCIAL MESSAGES ##############
+
+#Tabela de mensagens
+create table social_messages(
+  timestamp STRING,
+  year STRING,
+  month STRING,
+  day STRING,
+  message STRING,
+  author STRING,
+  politician STRING,
+  classification STRING,
+  type STRING
+)
+ROW FORMAT SERDE 'org.openx.data.jsonserde.JsonSerDe'
+STORED AS TEXTFILE;
+
+
+#Carregar tabela de mensagens
+LOAD DATA INPATH '/guilherme/flume/social/' INTO TABLE social_messages;
+
+
+#Select de resultados
+select politician, classification, type, year, month, count(*)
+from social_messages
+group by politician, classification, type, year, month;
+
+
+#Tabela de resultados
+create table analysis_result(
+  politician STRING,
+  classification STRING,
+  type STRING,
+  year STRING,
+  month STRING,
+  count BIGINT
+)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY ','
+STORED AS TEXTFILE ;
+
+
+#SOBRESCREVER TABELA | Após Recebimento de novos dados
+INSERT OVERWRITE TABLE analysis_result
+select politician, classification, type, year, month, count(*)
+from social_messages
+group by politician, classification, type, year, month;
+
+
+#Tabela de resultados no mysql
+create table analysis_result(
+  politician VARCHAR(100),
+  classification VARCHAR(100),
+  type VARCHAR(100),
+  year INT,
+  month INT,
+  count INT
+)
+
+#Exportar Hive -> Mysql
+sqoop export --connect jdbc:mysql://localhost/social_network --username root --password root --table analysis_result --export-dir /guilherme/hive/warehouse/analysis_result/ --columns politician,classification,type,year,month,count --fields-terminated-by ','
+
+
+
+################ INTERVALOS BUSCA #################
+./bin/flume-ng agent -n SocialNetworkAgent -c conf/ -f conf/flume.conf -Dflume.root.logger=INFO,console
+#Facebook
+Mes 1:
+	1-4
+	15-18
+	25 28
+
+Mes 2:
+      1-31
+
+Mes 3:
+	2/3 - 1/6 (Aecio OK | Dilma OK)
+
+Mes 6:
+	2/6 - 1/9 (Aecio OK | Dilma OK)
+
+Mes 9:
+	2/9 - 1/1/2015 (Aecio OK | Dilma OK)
+
+Mes 1:
+	2/1 - 10/4/2015 (Aecio OK* | Dilma OK)
+
+
+#Twitter
+
+Mes 4
+	14-15 ( Aecio OK | Dilma OK )
+
+Mes 4
+	16-17 ( Aecio OK | Dilma OK )
+
+Mes 4
+	23-24 ( Aecio OK | Dilma OK )
+
+Mes 4
+	25-26 ( Aecio OK | Dilma OK )

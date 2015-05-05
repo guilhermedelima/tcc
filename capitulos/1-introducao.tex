@@ -8,11 +8,11 @@ O grande problema consiste tornar processável toda esta gama de informações, 
 
 A análise realizada sobre petabytes de informações pode ser um fator determinante para a tomadas de decisões em vários contextos. A utilização desta tecnologia associada a algoritmos de aprendizagem de máquinas, por exemplo, pode revelar tendências de usuários, necessidades em determinadas áreas que não se imaginaria sem uso desta abordagem. Com isso fica claro que o termo Big Data não está relacionado a apenas o armazenamento em grande escala, mas também ao processamento destes dados para agregar valor ao contexto em que for aplicado.
 
-As tecnologias de Big Data descrevem uma nova geração de arquiteturas, projetadas para economicamente extrair valor de um grande volume, sobre uma grande variedade de dados, permitindo alta velocidade de captura, e/ou análise \cite{gantz2011}. Nesta definição é possível identificar os três pilares deste novo movimento: velocidade, volume e variedade. De acordo com \citeonline{ibm2011}, isto pode ser caracterizado com os três Vs presentes nas tecnologias Big Data.
+As tecnologias de Big Data descrevem uma nova geração de arquiteturas, projetadas para economicamente extrair valor de um grande volume, sobre uma grande variedade de dados, permitindo alta velocidade de captura, e/ou análise \cite{gantz2011}. Nesta definição, é possível identificar os três pilares deste novo movimento: velocidade, volume e variedade. De acordo com \citeonline{ibm2011}, isto pode ser caracterizado com os três Vs presentes nas tecnologias Big Data.
 
-O projeto Apache Hadoop\footnote{\url{http://hadoop.apache.org/}} é uma das soluções mais conhecidas para Big Data atualmente. Sua finalidade é oferecer uma infraestrutura para armazenamento e processamento de grande volume de dados, provendo escalabilidade linear e tolerância a falhas. Segundo \citeonline{white2012}, em abril de 2008 o Hadoop quebrou o recorde mundial e se tornou o sistema mais rápido a ordenar 1 terabyte, utilizando 910 máquinas essa marca foi atingida em 209 segundos. Em 2009 este valor foi reduzido para 62 segundos. 
+O projeto Apache Hadoop\footnote{\url{http://hadoop.apache.org/}} é uma das soluções mais conhecidas para Big Data atualmente. Sua finalidade é oferecer uma infraestrutura para armazenamento e processamento de grande volume de dados, provendo escalabilidade linear e tolerância a falhas. Segundo \citeonline{white2012}, em abril de 2008 o Hadoop quebrou o recorde mundial e se tornou o sistema mais rápido a ordenar 1 terabyte, utilizando 910 máquinas essa marca foi atingida em 209 segundos. Em 2009 este valor foi reduzido para 62 segundos.
 
-Neste trabalho será apresentado um estudo sobre a arquitetura e o modelo proposto por este software. Ao fim da etapa de pesquisa estes conceitos são aplicados em um estudo de caso real, onde será proposta uma arquitetura modelo para o cenário apresentado.
+Neste trabalho, será apresentando, inicialmente, um estudo sobre a arquitetura e o novo paradigma que caracteriza o projeto Hadoop, onde também serão mostradas as principais tecnologias que foram construídas em cima desta abordagem. Após essa etapa de pesquisa, estes conceitos serão aplicados em um estudo de caso real, onde será proposta e implementada uma arquitetura modelo responsável por coletar e processar publicações de redes sociais.
 
 %------------------------------------------------------------------------------%
  
@@ -20,7 +20,7 @@ Neste trabalho será apresentado um estudo sobre a arquitetura e o modelo propos
 
 \subsection{Objetivos Gerais}
  
-Para este trabalho de conclusão de curso, os principais objetivos são compreender as tecnologias que envolvem o projeto Hadoop, uma das principais soluções existentes para análise de dados dentro do contexto Big Data, e também aplicar estes conceitos em um estudo de caso voltado para políticas públicas abordadas em redes sociais.
+Para este trabalho de conclusão de curso, os principais objetivos são compreender as tecnologias que envolvem o projeto Hadoop, uma das principais soluções existentes para análise de dados dentro do contexto Big Data, e também aplicar estes conceitos em um estudo de caso voltado para análise de mensagens publicadas em redes sociais, com conteúdo relacionado a política brasileira.
  
  
 %------------------------------------------------------------------------------%
@@ -30,27 +30,31 @@ Para este trabalho de conclusão de curso, os principais objetivos são compreen
 Os objetivos específicos desse trabalho são apresentados a seguir:
  
 \begin{enumerate}
-  \item Analisar a arquitetura e funcionamento do núcleo do Hadoop.
-  \item Descrever os passos necessários para o desenvolvimento de aplicações utilizando o paradigma MapReduce.
+  \item Analisar a arquitetura e funcionamento do núcleo do Hadoop, composto pelo sistema de arquivos distribuídos HDFS e pelo modelo de processamento distribuído \textit{MapReduce}.
+  \item Descrever os passos necessários para o desenvolvimento de aplicações utilizando o paradigma \textit{MapReduce}.
   \item Analisar as ferramentas que fazem parte do ecossistema Hadoop e oferecem serviços executados no topo desta arquitetura.
   \item Construção de senso crítico para análise dos cenários Big Data e as soluções possíveis para estes diferentes contextos.
   \item Aplicar os conceitos absorvidos na etapa de pesquisa em um estudo de caso real.
-  \item Propor uma arquitetura modelo para o problema e definir próximos passos do trabalho.
+  \item Projetar e implementar uma arquitetura para análise de publicações de redes sociais, construindo um modelo capaz de prover escalabilidade linear.
+
 \end{enumerate}
  
 %------------------------------------------------------------------------------%
  
 \section{Organização do Trabalho}
  
-O primeiro passo para a construção deste trabalho ocorreu através de uma revisão bibliográfica sobre as tecnologias que se encaixam nesta nova abordagem Big Data. Com as pesquisas realizadas o Hadoop foi escolhido como objeto de estudo, pois é uma das ferramentas mais utilizadas e consolidadas para este contexto. Para compreender esta tecnologia selecionada foi realizada uma pesquisa para detalhar sua arquitetura e funcionamento. Em seguida foi realizada uma descrição dos passos necessários para o desenvolvimento para aplicações MapReduce e também dos projetos que compõe o ecossistema Hadoop.
+O primeiro passo para a construção deste trabalho ocorreu através de uma revisão bibliográfica sobre as tecnologias que se encaixam nesta nova abordagem Big Data. Com as pesquisas realizadas o Hadoop foi escolhido como objeto de estudo, pois é uma das ferramentas mais utilizadas e consolidadas para este contexto. Para compreender esta tecnologia selecionada foi realizada uma pesquisa para detalhar sua arquitetura e funcionamento. Em seguida foi realizada uma descrição dos passos necessários para o desenvolvimento para aplicações \textit{MapReduce} e também dos projetos que compõe o ecossistema Hadoop.
 
-Os capítulos subsequentes estão estruturados de acordo com a seguinte organização. O capítulo \ref{cap:hadoop} apresenta uma descrição detalhada sobre o Hadoop, onde o foco está no sistema de arquivos distribuídos HDFS e também no \textit{framework} para computação paralela MapReduce. 
+Os capítulos subsequentes estão estruturados de acordo com a seguinte organização. O capítulo \ref{cap:hadoop} apresenta uma descrição detalhada sobre o Hadoop, onde o foco está no sistema de arquivos distribuídos HDFS e também no \textit{framework} para computação paralela \textit{MapReduce}. 
 
-No capítulo \ref{cap:mapreduce-devel} são discutidos os passos necessários para o desenvolvimento de software utilizando o \textit{framework} MapReduce, onde são abordados aspectos técnicos e práticos que envolvem esta abordagem.
+No capítulo \ref{cap:mapreduce-devel}, são discutidos os passos necessários para o desenvolvimento de software utilizando o \textit{framework} \textit{MapReduce}, onde são abordados aspectos técnicos e práticos que envolvem esta abordagem.
 
 O capítulo \ref{cap:eco} apresenta os projetos que fazem parte do ecossistema Hadoop. O foco desta seção está nas ferramentes construídas no topo da arquitetura Hadoop, em específico o banco de dados NoSQL HBase e também o \textit{data warehouse} distribuído Hive.
 
-No capítulo \ref{cap:proposta} é apresentado o estudo de caso proposto para a continuação deste trabalho. Nesta seção a arquitetura modelo para o problema é definida.
+Após a etapa inicial de pesquisa, o esforço foi concentrado na especificação e implementação da arquitetura proposta para o estudo de caso. Além dessas atividades relacionadas ao desenvolvimento, também realizou-se uma investigação sobre o funcionamento das plataformas de redes sociais e sobre novas tecnologias ligadas ao ecossistema Hadoop.
 
-No capítulo \ref{cap:conclusao} são discutidos os resultados obtidos após o término deste trabalho, onde são apresentados os próximos passos para a conclusão do TCC 2.
+No capítulo \ref{cap:proposta}, é apresentado o estudo de caso proposto para esse trabalho. Nesta seção, a arquitetura modelo para o problema é definida e especificada.
 
+No capítulo \ref{cap:resultados}, são apresentados os resultados obtidos após a etapa de implementação da arquitetura definida no estudo de caso.
+
+No capítulo \ref{cap:conclusao}, são apresentadas as conclusões, considerações finais e sugestões para trabalhos futuros.

@@ -15,9 +15,11 @@ Esse trabalho utiliza o template desenvolvido e adaptado pelo professor Edson Al
 ## Instruções de compilação do texto
 
 Para compilar o texto através do Makefile digite:
+
 	$ make clean
+
 	$ make
 
-## Código Fonte
+## Código Fonte / Arquivos de Configuração
 
-Código fonte e arquivos de configuração estão no diretório "source".
+Código fonte e arquivos de configuração estão no diretório "implementacao".

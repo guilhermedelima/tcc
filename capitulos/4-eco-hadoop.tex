@@ -1,7 +1,7 @@
 \chapter{Ecossistema Hadoop}
 \label{cap:eco}
 
-Os capítulos anteriores abordaram os principais componentes do Hadoop: o sistema de arquivos distribuídos HDFS e o \textit{framework} MapReduce. Estes podem ser considerados o núcleo de todo o sistema, porém o Hadoop também é composto por um conglomerado de projetos que fornecem serviços relacionados a computação distribuída em larga escala, formando o ecossistema Hadoop. A tabela \ref{tab-eco} apresenta alguns projetos que estão envolvidos neste contexto.
+Os capítulos anteriores abordaram os principais componentes do Hadoop: o sistema de arquivos distribuídos HDFS e o \textit{framework} \textit{MapReduce}. Estes podem ser considerados o núcleo de todo o sistema, porém o Hadoop também é composto por um conglomerado de projetos que fornecem serviços relacionados a computação distribuída em larga escala, formando o ecossistema Hadoop. A tabela \ref{tab-eco} apresenta alguns projetos que estão envolvidos neste contexto.
 
 \begin{savenotes}
 \begin{table}[!ht]
@@ -12,38 +12,38 @@ Os capítulos anteriores abordaram os principais componentes do Hadoop: o sistem
 	\\ \hline
 	Common & Conjunto de componentes e interfaces para sistemas de arquivos distribuídos e operações de Entrada/Saída.
 	\\ \hline
-	Avro\footnote{\url{http://avro.apache.org/}} & Sistema para serialização de dados.
-	\\ \hline
 	HDFS & Sistema de arquivos distribuídos executado sobre clusters com máquinas de baixo custo
 	\\ \hline
-	MapReduce & Framework para processamento distribuído de dados, aplicado em clusters com máquinas de baixo custo.
+	\textit{MapReduce} & \textit{Framework} para processamento distribuído de dados, aplicado em \textit{clusters} com máquinas de baixo custo.
 	\\ \hline
-	Pig\footnote{\url{http://pig.apache.org/}} & Linguagem de procedimentos de alto nível para grandes bases de dados. Executada em clusters HDFS e MapReduce.
+	Pig\footnote{\url{http://pig.apache.org/}} & Linguagem de procedimentos de alto nível para grandes bases de dados. Executada em \textit{clusters} HDFS e \textit{MapReduce}.
 	\\ \hline
-	Hive\footnote{\url{http://hive.apache.org/}} & Um data warehouse distribuído. Gerencia arquivos no HDFS e provê linguagem de consulta baseada em SQL.
+	Hive\footnote{\url{http://hive.apache.org/}} & Um \textit{data warehouse} distribuído. Gerencia arquivos no HDFS e provê linguagem de consulta baseada em SQL.
 	\\ \hline
 	HBase\footnote{\url{http://hbase.apache.org/}} & Banco de dados distribuído orientado a colunas. Utiliza o HDFS para armazenamento dos dados.
 	\\ \hline
 	ZooKeeper\footnote{\url{http://zookeeper.apache.org/}} & Coordenador de serviços distribuídos.
+	\\ \hline
+	Flume\footnote{\url{https://flume.apache.org/}} & Ferramenta para transferência de dados entre diferentes fontes.
 	\\ \hline
 	Sqoop\footnote{\url{http://sqoop.apache.org/}} & Ferramenta para mover dados entre banco relacionais e o HDFS.
 	\\ \hline
   \end{tabular}
   \captionsetup{justification=centering}
   \caption[Ecossistema Hadoop]{Ecossistema Hadoop
-  \protect\linebreak Fonte: \cite{white2012} e \cite{shvachko2010}}
+  \protect\linebreak Fonte: Adaptado de \cite{white2012} e \cite{shvachko2010}}
 \label{tab-eco}
 \end{center}
 \end{table}
 \end{savenotes}
 
-Apesar do Hadoop apresentar uma boa alternativa para processamento em larga escala, ainda existem algumas limitações em seu uso. Como discutido anteriormente o HDFS foi projetado de acordo com o padrão \textit{write-once}, \textit{read-many-times}, desta forma não há acesso randômico para operações de leitura e escrita. Outro aspecto negativo se dá pelo baixo nível requerido para o desenvolvimento neste tipo de ambiente. Segundo \citeonline{thusoo2009}, a utilização do \textit{framework} MapReduce faz com que programadores implementem aplicações difíceis de realizar manutenção e reuso de código,
+Apesar do Hadoop apresentar uma boa alternativa para processamento em larga escala, ainda existem algumas limitações em seu uso. Como discutido anteriormente, o HDFS foi projetado de acordo com o padrão \textit{write-once}, \textit{read-many-times}, desta forma, não há acesso randômico para operações de leitura e escrita. Outro aspecto negativo se dá pelo baixo nível requerido para o desenvolvimento neste tipo de ambiente. Segundo \citeonline{thusoo2009}, a utilização do \textit{framework} \textit{MapReduce} faz com que programadores implementem aplicações difíceis de realizar manutenção e reuso de código,
 
-Alguns dos projetos do ecossistema citado na tabela \ref{tab-eco} foram criados justamente para resolver estes problemas. Desta forma utilizam-se do Hadoop para prover serviços com um nível de abstração maior para o usuário. Neste capítulo foi discutida a ferramenta de data warehouse distribuído Hive, e também sobre o banco de dados orientado a colunas HBase.
+Alguns dos projetos do ecossistema citado na tabela \ref{tab-eco} foram criados justamente para resolver estes problemas. Desta maneira, utilizam-se do Hadoop para prover serviços com um nível de abstração maior para o usuário. Neste capítulo, discute-se sobre a ferramenta de \textit{data warehouse} distribuído Hive e também sobre o banco de dados orientado a colunas HBase. No capítulo \ref{cap:proposta}, durante a especificação do estudo de caso, serão abordadas as ferramentas Flume e Sqoop, utilizadas, principalmente, para transferência de dados entre o \textit{cluster} Hadoop e outros ambientes.
 
 \section{Hive}
 
-Antes de iniciar a discussão proposta por esta seção será apresentado o conceito de \textit{data warehouse}. \citeonline{inmon2005} define \textit{data warehouse} como uma coleção de dados integrados, orientados por assuntos, não voláteis e variáveis com o tempo, na qual oferece suporte ao processo de tomada de decisões. Uma arquitetura deste tipo armazena, de forma centralizada, os dados granulares de uma determinada empresa e permite uma análise elaborada destas informações que são coletadas de diferentes fontes.
+Antes de iniciar a discussão proposta por esta seção, será apresentado o conceito de \textit{data warehouse}. \citeonline{inmon2005} define \textit{data warehouse} como uma coleção de dados integrados, orientados por assuntos, não voláteis e variáveis com o tempo, na qual oferece suporte ao processo de tomada de decisões. Uma arquitetura deste tipo armazena, de forma centralizada, os dados granulares de uma determinada empresa e permite uma análise elaborada destas informações que são coletadas de diferentes fontes.
 
 De acordo com \citeonline{kimball2013}, um dos principais objetivos de um \textit{data warehouse} é facilitar o acesso à informação contida nos dados armazenados, de forma que não apenas os desenvolvedores sejam capazes de interpretar, mas também usuários com uma visão voltada para o negócio e não para aspectos técnicos de implementação. Este tipo de solução estrutura os dados para auxiliar a realização de consultas e análises.
 
@@ -53,11 +53,11 @@ Além das aplicações de BI utilizadas internamente pelo Facebook, muitas funci
 
 Segundo \citeonline{thusoo2009}, para resolver este grave problema a equipe do Facebook optou por adotar o Hadoop como solução. A escalabilidade linear, capacidade de processamento distribuído e habilidade de ser executado em \textit{clusters} compostos por hardwares de baixo custo motivaram a migração de toda antiga infraestrutura para esta plataforma. O tempo de execução dos processos de análise que antes podiam levar dias foi reduzido para apenas algumas horas.
 
-Apesar desta solução encontrada o uso do Hadoop exigia que os usuário desenvolvessem programas MapReduce para realizar qualquer tipo de análise, até mesmo pequenas tarefas, por exemplo, contagem de linhas e cálculos de médias aritméticas. Esta situação prejudicava a produtividade da equipe, pois nem todos eram familiarizados com esse paradigma, e em muitos casos era necessário apenas realizar análises que seriam facilmente resolvidas com o uso de uma linguagem de consulta. De acordo com \citeonline{thusoo2009}, o Hive foi desenvolvido para facilitar este processo introduzindo os conceitos de tabelas, colunas e um subconjunto da linguagem SQL ao universo Hadoop, mantendo todas as vantagens oferecidas por esta arquitetura.
+Apesar desta solução encontrada, o uso do Hadoop exigia que os usuário desenvolvessem programas \textit{MapReduce} para realizar qualquer tipo de análise, até mesmo pequenas tarefas, por exemplo, contagem de linhas e cálculos de médias aritméticas. Esta situação prejudicava a produtividade da equipe, pois nem todos eram familiarizados com esse paradigma, e em muitos casos era necessário apenas realizar análises que seriam facilmente resolvidas com o uso de uma linguagem de consulta. De acordo com \citeonline{thusoo2009}, o Hive foi desenvolvido para facilitar este processo introduzindo os conceitos de tabelas, colunas e um subconjunto da linguagem SQL ao universo Hadoop, mantendo todas as vantagens oferecidas por esta arquitetura.
 
 \subsection{Características}
 
-Como dito anteriormente o Hive utiliza o conceito de tabelas para registrar as informações em sua base de dados. Cada coluna está associada a um tipo específico que pode ser primitivo ou complexo. Segundo \citeonline{thusoo2009}, quando um registro é inserido os dados não precisam ser convertidos para um formato customizado, como ocorre em bancos de dados convencionais, apenas utiliza-se a serialização padrão do Hive, desta forma economiza-se tempo em um contexto que envolve um grande volume de dados. \citeonline{white2012} afirma que esta abordagem pode ser denominada como \textit{schema on read}, pois não há verificação do esquema definido com os dados que estão sendo armazenados, apenas ocorrem operações de cópia ou deslocamento, diferentemente de como acontece em bancos de dados relacionais. Os tipos primitivos são apresentados na tabela \ref{tab-hive-types}.
+Como dito anteriormente, o Hive utiliza o conceito de tabelas para registrar as informações em sua base de dados. Cada coluna está associada a um tipo específico que pode ser primitivo ou complexo. Segundo \citeonline{thusoo2009}, quando um registro é inserido os dados não precisam ser convertidos para um formato customizado, como ocorre em bancos de dados convencionais, apenas utiliza-se a serialização padrão do Hive, desta forma, economiza-se tempo em um contexto que envolve um grande volume de dados. \citeonline{white2012} afirma que esta abordagem pode ser denominada como \textit{schema on read}, pois não há verificação do esquema definido com os dados que estão sendo armazenados, apenas ocorrem operações de cópia ou deslocamento, diferentemente de como acontece em bancos de dados relacionais. Os tipos primitivos são apresentados na tabela \ref{tab-hive-types}.
 
 \begin{table}[!ht]
 \begin{center}
@@ -69,14 +69,14 @@ Como dito anteriormente o Hive utiliza o conceito de tabelas para registrar as i
   & Inteiro 		& Permite a declaração de inteiros de 1 byte até 8 bytes \\ \cline{2-3} 
   & Ponto flutuante 	& Permite variáveis do tipo float ou de dupla precisão (double) \\ \cline{2-3}
   & Booleano		& Verdadeiro ou falso \\ \cline{2-3}
-  & String 		& Array de caracteres \\ \cline{2-3}
-  & Binário 		& Array de caracteres \\ \cline{2-3}
-  & Timestamp 		& Indica uma marcação temporal com precisão de nanosegundos \\
+  & String 		& \textit{Array} de caracteres \\ \cline{2-3}
+  & Binário 		& \textit{Array} de caracteres \\ \cline{2-3}
+  & \textit{Timestamp} 		& Indica uma marcação temporal com precisão de nanosegundos \\
   \hline
   \multirow{3}{*}{Complexo} 
-  & Array 		& Lista ordenada de elementos do mesmo tipo \\ \cline{2-3} 
-  & Map 		& Estrutura associativa que associa uma chave a um tipo especifico de valores \\ \cline{2-3}
-  & Struct		& Estrutura que é composta por um conjunto de campos associados a um tipo específico \\
+  & \textit{Array} 		& Lista ordenada de elementos do mesmo tipo \\ \cline{2-3} 
+  & \textit{Map} 		& Estrutura associativa que associa uma chave a um tipo especifico de valores \\ \cline{2-3}
+  & \textit{Struct}		& Estrutura que é composta por um conjunto de campos associados a um tipo específico \\
   \hline
   \end{tabular}
   \captionsetup{justification=centering}
@@ -87,29 +87,29 @@ Como dito anteriormente o Hive utiliza o conceito de tabelas para registrar as i
 \end{table}
 \FloatBarrier
 
-O Hive disponibiliza uma linguagem para consultas denominada HiveQL, na qual é composta por um subconjunto do padrão SQL com adaptações para grandes bases de dados. Segundo \citeonline{white2012}, esta abordagem foi fortemente influenciada pela linguagem de consulta presente no banco de dados relacional MySQL\footnote{\url{http://www.mysql.com/}}. Utilizando este recurso usuários podem realizar análises em grandes volumes de informações sem a necessidade de desenvolver aplicações MapReduce, apenas com o conhecimento em SQL. O código \ref{cod-hiveql} apresenta um exemplo de comando escrito em HiveQL para criar uma tabela, composta por colunas de tipos primitivos e complexos.
+O Hive disponibiliza uma linguagem para consultas denominada HiveQL, na qual é composta por um subconjunto do padrão SQL com adaptações para grandes bases de dados. Segundo \citeonline{white2012}, esta abordagem foi fortemente influenciada pela linguagem de consulta presente no banco de dados relacional MySQL\footnote{\url{http://www.mysql.com/}}. Utilizando este recurso usuários podem realizar análises em grandes volumes de informações sem a necessidade de desenvolver aplicações \textit{MapReduce}, apenas com o conhecimento em SQL. O quadro \ref{cod-hiveql} apresenta um exemplo de comando escrito em HiveQL para criar uma tabela, composta por colunas de tipos primitivos e complexos.
 
 \lstinputlisting[frame=single,
 		label=cod-hiveql,
 		style=abnt,
 		caption={[Comando HiveQL]Comando HiveQL
 		\protect\linebreak Fonte: Autor}]
-		{codigos/hiveql.sql}
+		{quadros/hiveql.sql}
 \FloatBarrier
 
 \subsection{Arquitetura}
 
-Na seção anterior foi apresentado o modelo de dados utilizado pelo Hive, onde a organização se dá pelo uso de tabelas compostas por colunas, onde os registros são incluídos em linhas. Estes itens são apenas uma representação lógica, o armazenamento físico dos dados é realizado no HDFS. De acordo com \citeonline{thusoo2009}, o mapeamento entre estas abordagens pode ser identificado a seguir:
+Na seção anterior, foi apresentado o modelo de dados utilizado pelo Hive, onde a organização se dá pelo uso de tabelas compostas por colunas, onde os registros são incluídos em linhas. Estes itens são apenas uma representação lógica, o armazenamento físico dos dados é realizado no HDFS. De acordo com \citeonline{thusoo2009}, o mapeamento entre estas abordagens pode ser identificado a seguir:
 
 \begin{itemize}
 
   \item \textbf{Tabelas:} Uma tabela representa um diretório no HDFS, todas as informações são registradas dentro deste ficheiro.
-  \item \textbf{Partições:} O usuário pode particionar uma tabela de acordo com uma ou mais colunas. Desta forma cada partição é registrada em um subdiretório do ficheiro onde está localizado a tabela.
+  \item \textbf{Partições:} O usuário pode particionar uma tabela de acordo com uma ou mais colunas. Assim, cada partição é registrada em um subdiretório do ficheiro onde está localizado a tabela.
   \item \textit{\textbf{Buckets:}} Um \textit{bucket} é o arquivo onde os registros da tabela de fato são armazenados. Estas estruturas representam o último nível desta árvore de diretórios de uma tabela no HDFS.
 
 \end{itemize}
 
-Como discutido no capítulo \ref{cap:mapreduce-devel}, o Hadoop permite armazenar aquivos de diversos formatos, que podem ser inclusive customizados através da interface \textit{InputFormat}. De acordo com \citeonline{thusoo2009}, o Hive não impõe nenhum restrição quanto ao formato escolhido para gravar os \textit{buckets} no HDFS, inclusive permite que no comando HiveQL o usuário especifique este parâmetro. Isto pode ser feito com o uso da cláusula \textit{STORED AS}. O código \ref{cod-hiveql-create} apresenta um comando para criação de uma tabela, na qual deve ser armazenada fisicamente como um arquivo binário, de acordo com as classes \textit{SequenceFileInputFormat} e \textit{SequenceFileOutputFormat}.
+Como discutido no capítulo \ref{cap:mapreduce-devel}, o Hadoop permite armazenar aquivos de diversos formatos, que podem ser inclusive customizados através da interface \textit{InputFormat}. De acordo com \citeonline{thusoo2009}, o Hive não impõe nenhum restrição quanto ao formato escolhido para gravar os \textit{buckets} no HDFS, inclusive permite que no comando HiveQL o usuário especifique este parâmetro. Isto pode ser feito com o uso da cláusula \textit{STORED AS}. O quadro \ref{cod-hiveql-create} apresenta um comando para criação de uma tabela, na qual deve ser armazenada fisicamente como um arquivo binário, de acordo com as classes \textit{SequenceFileInputFormat} e \textit{SequenceFileOutputFormat}.
 
 
 \lstinputlisting[frame=single,
@@ -117,7 +117,7 @@ Como discutido no capítulo \ref{cap:mapreduce-devel}, o Hadoop permite armazena
 		style=abnt,
 		caption={[Uso da cláusula STORED AS]Uso da cláusula STORED AS
 		\protect\linebreak Fonte: \cite{thusoo2009}}]
-		{codigos/hiveql-storeas.sql}
+		{quadros/hiveql-storeas.sql}
 \FloatBarrier
 
 O uso da ferramenta Hive é disponibilizado através de três serviços que permitem usuários executarem comandos no formato HiveQL. Uma das opções é o uso de uma interface em linha de comando, similar a um terminal Unix, assim como ocorrem em bancos de dados relacionais, como por exemplo, MySQL e PostgreSQL\footnote{\url{http://www.postgresql.org/}}. Segundo \citeonline{thusoo2009}, as consultas também podem ser submetidas através do uso de um serviço \textit{web} ou com a utilização de \textit{drivers} de conexão JDBC/ODBC\footnote{} para a interação com outras aplicações. Estes serviços estão presentes no topo pilha de tecnologias do Hive e podem ser observados na figura \ref{fig-hive}, onde é apresentada a arquitetura geral da plataforma.
@@ -132,12 +132,12 @@ O uso da ferramenta Hive é disponibilizado através de três serviços que perm
 \end{figure}
 \FloatBarrier
 
-O grande diferencial está no componente denominado \textit{driver}, o qual está presente no núcleo da arquitetura. Nesta etapa o comando HiveQL é compilado e convertido para um grafo acíclico, onde cada nó é representado por um MapReduce \textit{job}. São realizadas otimizações e a ordenação topológica, resultando em uma sequência de \textit{jobs} que serão executados no \textit{cluster} Hadoop. Um comando HiveQL pode gerar vários MapReduce \textit{jobs}, que são intercalados para se obter o resultado final.
+O grande diferencial está no componente denominado \textit{driver}, o qual está presente no núcleo da arquitetura. Nesta etapa, o comando HiveQL é compilado e convertido para um grafo acíclico, onde cada nó é representado por um \textit{MapReduce} \textit{job}. São realizadas otimizações e a ordenação topológica, resultando em uma sequência de \textit{jobs} que serão executados no \textit{cluster} Hadoop. Um comando HiveQL pode gerar vários \textit{MapReduce} \textit{jobs}, que são intercalados para se obter o resultado final.
 
 
 \section{HBase}
 
-Os bancos de dados relacionais sempre desempenharam um papel importante no \textit{design} e implementação dos negócios da maioria das empresas. As necessidades para este contexto sempre envolveram o registro de informações de usuários, produtos, entre inúmeros exemplos. Este tipo de arquitetura oferecida pelos SGBDs foram construídas de acordo com o modelo de transações definido pelas propriedades ACID. Segundo \citeonline{george2011}, desta forma é possível garantir que os dados sejam fortemente consistentes, o que parece ser um requisito bastante favorável. Esta abordagem funciona bem enquanto os dados armazenados são relativamente pequenos, porém o crescimento desta demanda pode ocasionar sérios problemas estruturais.
+Os bancos de dados relacionais sempre desempenharam um papel importante no \textit{design} e implementação dos negócios da maioria das empresas. As necessidades para este contexto sempre envolveram o registro de informações de usuários, produtos, entre inúmeros exemplos. Este tipo de arquitetura oferecida pelos SGBDs foram construídas de acordo com o modelo de transações definido pelas propriedades ACID. Segundo \citeonline{george2011}, desta forma, é possível garantir que os dados sejam fortemente consistentes, o que parece ser um requisito bastante favorável. Esta abordagem funciona bem enquanto os dados armazenados são relativamente pequenos, porém o crescimento desta demanda pode ocasionar sérios problemas estruturais.
 
 De acordo com \citeonline{george2011}, os bancos de dados relacionais não estão preparados para análise de grande volume de dados caracterizados pelo contexto Big Data. É possível encontrar soluções que se adaptem a esta necessidade, porém na maioria das vezes envolvem mudanças drásticas e complexas na arquitetura e também possuem um custo muito alto, já que em muitos casos a resposta está ligada diretamente ao uso de escalabilidade vertical, ou seja, ocorre com a compra de máquinas caras e computacionalmente poderosas. Contudo não há garantias de que com um aumento ainda maior da quantidade de dados todos os problemas inicias não voltem a acontecer, isso porque a relação entre o uso de transações e o volume de informações processadas não é linear.
 
@@ -189,7 +189,7 @@ A tabela \ref{tab-nosql} apresenta alguns exemplos de bancos de dados NoSQL de a
 
 \subsection{Hadoop Database}
 
-O HBase é um banco de dados orientado a colunas que foi desenvolvido para oferecer aos usuários do Hadoop uma solução para aplicações em tempo real, na qual os requisitos consistem em acesso randômico para operações de leitura e escrita em larga escala \cite{white2012}. O propósito desta ferramenta apresenta diferenças se comparado ao modelo MapReduce, e por consequência ao próprio Hive, onde o objetivo é realizar processamento em \textit{batch} sem a preocupação com latência.
+O HBase é um banco de dados orientado a colunas que foi desenvolvido para oferecer aos usuários do Hadoop uma solução para aplicações em tempo real, na qual os requisitos consistem em acesso randômico para operações de leitura e escrita em larga escala \cite{white2012}. O propósito desta ferramenta apresenta diferenças se comparado ao modelo \textit{MapReduce}, e por consequência ao próprio Hive, onde o objetivo é realizar processamento em \textit{batch} sem a preocupação com latência.
 
 Este projeto é uma solução \textit{open-source} para o Google BigTable, um sistema de armazenamento distribuído para dados estruturados publicado por \citeonline{chang2006}. Apesar de ser um banco de dados, o HBase não utiliza abordagem relacional e não tem suporte para linguagens de consulta SQL. Entretanto, de acordo com \citeonline{white2012}, oferece uma solução ao problema de espaço físico encontrado pelos SGBDs convencionais, estando apto a armazenar tabelas extremamente grandes, populadas ao longo de \textit{clusters} compostos por máquinas de baixo custo.
 
@@ -207,7 +207,7 @@ Esta representação pode ser traduzida para o contexto de linguagens de program
 SortedMap<RowKey, List<SortedMap<Column, List<Value, Timestamp>>>>
 \end{lstlisting}
 
-De acordo com esta representação uma tabela pode ser interpretada como um mapa ordenado, o qual é composto por uma lista de famílias de colunas associadas a uma chave única de uma linha específica. As famílias de colunas também são identificadas como um mapa ordenado, que representa as colunas e seus valores associados: o tipo de dado armazenado pela coluna e um \textit{timestamp} para identificar sua versão temporal. A figura \ref{fig-hbase-row} ilustra um exemplo desta representação. 
+De acordo com esta representação, uma tabela pode ser interpretada como um mapa ordenado, o qual é composto por uma lista de famílias de colunas associadas a uma chave única de uma linha específica. As famílias de colunas também são identificadas como um mapa ordenado, que representa as colunas e seus valores associados: o tipo de dado armazenado pela coluna e um \textit{timestamp} para identificar sua versão temporal. A figura \ref{fig-hbase-row} ilustra um exemplo desta representação. 
 
 \begin{figure}[ht!]
 	\centering

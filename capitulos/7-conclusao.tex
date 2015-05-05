@@ -1,0 +1,33 @@
+\chapter{Considerações Finais}
+\label{cap:conclusao}
+
+Ao término de todas as etapas realizadas ao longo deste trabalho, conclui-se que os objetivos almejados foram alcançados com êxito.
+
+Na etapa inicial, apresentou-se um estudo em torno da arquitetura e funcionamento do projeto Hadoop, uma das soluções mais conhecidas entre as alternativas existentes para análise de dados no contexto Big Data. A compreensão do novo paradigma proposto pelo modelo \textit{MapReduce} é o primeiro passo necessário para a inserção de um engenheiro de software no desenvolvimento de aplicações voltadas para processamento de dados em larga escala. Mesmo em situações onde são utilizadas ferramentas com um nível de abstração maior, como o Hive, o conhecimento deste modelo torna-se indispensável, pois grande parte dos projetos construídos no topo do Hadoop utilizam internamente o \textit{MapReduce}.
+
+Os principais pontos sobre a arquitetura e funcionamento do Hadoop foram elencados e detalhados exaustivamente, contribuindo para o amadurecimento sobre o uso desta tecnologia na resolução de problemas voltados para esse contexto. Também foram abordadas as ferramentas essenciais que compõe o ecossistema Hadoop, apresentando os possíveis cenários em que podem ser utilizadas.
+
+Com este trabalho foi possível perceber que os objetivos e necessidades do negócio impactam diretamente no tipo de arquitetura que deve ser escolhida para realizar análise de dados em larga escala. O \textit{framework} \textit{MapReduce} mostrou-se uma alternativa muito interessante para a construção de aplicações que exigem processamento em \textit{batch} de um grande volume de informações. Porém o grande ponto negativo deste modelo está na limitação para operações de escritas e leituras randômicas em arquivos, ou seja, para situações em que são exigidas interações com o usuário a melhor opção é a escolha de um banco de dados NoSQL, como o HBase.
+
+Em casos onde os requisitos se encaixam com as características propostas por uma ferramenta de \textit{data warehouse}, o software Hive é uma escolha a se considerar, pois através de uma linguagem baseada em SQL é possível elaborar consultas poderosas sem a necessidade de codificar \textit{MapReduce jobs}, pois esse processo é feito internamente.
+
+O período de especificação e implementação da arquitetura do estudo de caso possibilitou que fossem exploradas várias etapas na construção de um modelo de aplicação completo, permitindo a simulação de um ambiente real, iniciando na busca por mensagens em APIs de redes sociais, passando pelo processamento dessas informações e finalizando com a apresentação dos resultados por uma interface \textit{web}.
+
+A execução da fase de definição e construção do modelo descrito no capítulo 5 também foi acompanhada pela continuação da etapa de pesquisa, sendo necessária a investigação de novas ferramentas, tecnologias e métodos que incrementassem e viabilizassem a implementação do estudo de caso proposto. Portanto, a atividade de pesquisa se perpetuou por, praticamente, todo o trabalho, se diferenciando de ouras metodologias de desenvolvimento de software, onde a etapa de especificação segue um padrão mais rígido e detalhado, pois, geralmente, já existe o conhecimento teórico necessário para a etapa de construção.
+
+Outro aspecto importante foi identificado ao longo da etapa de implementação do estudo de caso. Durante o período de coleta de informações, não foi possível capturar um número expressivo de mensagens das redes sociais, quando comparado ao volume de dados que se espera de aplicações voltadas para o contexto Big Data. As limitações impostas pelas APIs de busca se tornaram o principal fator para que se alcançasse esses resultados. Este cenário revelou a dificuldade ao tentar obter informações em larga escala de companhias privadas e produtoras de conteúdo.
+
+\section{Trabalhos Futuros}
+
+Ao longo de todas as etapas deste trabalho, foram exploradas diversas áreas que, apesar de já terem sido abordadas, possibilitam a expansão dos resultados apresentados. A seguir, são listadas algumas sugestões para continuação da pesquisa iniciada neste trabalho.
+
+\begin{enumerate}
+
+  \item Ampliar a coleta de informações para que seja possível adquirir uma quantidade de dados próxima aos requisitos exigidos por aplicações voltadas para o contexto Big Data. Após esta etapa, verificar e validar a escalabilidade linear oferecida pelo Hadoop.
+  \item Incrementar a base de treinamento utilizada no algoritmo \textit{Naive Bayes}, definindo métodos de classificação mais sofisticados para as diferentes redes sociais existentes.
+  \item Alterar o agrupamento da tabela de mensagens na ferramenta Hive, de forma que seja possível identificar os resultados da análise de sentimentos em um pequeno espaço de tempo. Portanto, pode ser possível relacionar variações nos resultados obtidos, com fatos e acontecimentos no mesmo período.
+  \item Utilizar o HBase para permitir consultas a uma parcela das mensagens persistidas no \textit{cluster}, possibilitando a exibição através da interface \textit{web}.
+
+\end{enumerate}
+
+

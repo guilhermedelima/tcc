@@ -3,11 +3,11 @@
 \chapter{Manual de Instalação – Hadoop}
 \label{apd-hadoop}
 
-Este documento tem como objetivo apresentar os passos necessários para a instalação de um \textit{cluster} Hadoop versão 2.2.0. Este ambiente será constituído de uma máquina mestre, na qual estará localizado o \textit{namenode} do HDFS e o \textit{resource manager} do \textit{framework} MapReduce, e também de máquinas escravas representando os \textit{datanodes} e \textit{node managers}. O Hadoop pode ser instalado em sistemas operacionais Unix ou Windows. Neste manual o foco será a instalação em uma distribuição Linux, todas as máquinas utilizadas possuem Ubuntu versão 12.04 LTS.
+Este documento tem como objetivo apresentar os passos necessários para a instalação de um \textit{cluster} Hadoop versão 2.2.0. Este ambiente será constituído de uma máquina mestre, na qual estará localizado o \textit{namenode} do HDFS e o \textit{resource manager} do \textit{framework} \textit{MapReduce}, e também de máquinas escravas representando os \textit{datanodes} e \textit{node managers}. O Hadoop pode ser instalado em sistemas operacionais Unix ou Windows. Neste manual, o foco será a instalação em uma distribuição Linux, todas as máquinas utilizadas possuem Ubuntu versão 12.04 LTS.
 
-O Hadoop foi construído utilizando a linguagem de programação java, portanto o primeiro pré requisito consiste na instalação e configuração de uma JVM, versão 6 ou superior, em todas as máquinas. Segundo \citeonline{white2012}, a utilização da implementação da Sun é a mais comum neste contexto, portanto todas as máquinas foram configuradas com a JDK 7 da própria Sun.
+O Hadoop foi construído utilizando a linguagem de programação Java, portanto o primeiro pré requisito consiste na instalação e configuração de uma JVM, versão 6 ou superior, em todas as máquinas. Segundo \citeonline{white2012}, a utilização da implementação da Sun é a mais comum neste contexto, portanto todas as máquinas foram configuradas com a JDK 7 da própria Sun.
 
-O próximo passo é realizar o download do software Hadoop. A versão utilizada nesta instalação será a 2.2.0, caracterizada como uma versão estável. O programa pode ser obtido a partir do seguinte link disponibilizado pela documentação oficial \cite{hadoopSite}: \url{http://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-2.2.0/hadoop-2.2.0.tar.gz}. O arquivo compactado contendo o Hadoop deve ser extraído para o local de sua preferência, neste caso foi escolhido o diretório /opt.
+O próximo passo é realizar o download do software Hadoop. A versão utilizada nesta instalação será a 2.2.0, caracterizada como uma versão estável. O programa pode ser obtido a partir do seguinte \textit{link} disponibilizado pela documentação oficial \cite{hadoopSite}: \url{http://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-2.2.0/hadoop-2.2.0.tar.gz}. O arquivo compactado contendo o Hadoop deve ser extraído para o local de sua preferência, neste caso foi escolhido o diretório /opt.
 
 \begin{lstlisting}[style=abnt,frame=single]
 $ tar xzvf hadoop-2.2.0.tar.gz -C /opt
@@ -74,7 +74,7 @@ O próximo passo é no diretório \$HADOOP\_CONF\_DIR editar os arquivos de conf
 		label=xml-core,
 		style=abnt,
 		caption={Arquivo core-site.xml}]
-		{codigos/core-site.xml}
+		{quadros/core-site.xml}
 
 \newpage
 \lstinputlisting[frame=single,
@@ -82,16 +82,16 @@ O próximo passo é no diretório \$HADOOP\_CONF\_DIR editar os arquivos de conf
 		label=xml-hdfs,
 		style=abnt,
 		caption={Arquivo hdfs-site.xml}]
-		{codigos/hdfs-site.xml}
+		{quadros/hdfs-site.xml}
 
 \lstinputlisting[frame=single,
 		breaklines=true,
 		label=xml-map,
 		style=abnt,
 		caption={Arquivo mapred-site.xml}]
-		{codigos/mapred-site.xml}
+		{quadros/mapred-site.xml}
 
-O Hadoop 2.2.0 é constituído por uma versão mais atual do \textit{framework} MapReduce denominada MapReduce 2.0, também conhecida como YARN. A principal diferença está no \textit{jobtracker}, que foi dividido em dois \textit{daemons} distintos: \textit{resource manager} e \textit{application master}. O antigo \textit{tasktracker} foi substituído pelo \textit{node manager}. O \textit{resource manager} está presente no nó mestre e cada um dos escravos possui um \textit{node manager}. A configuração do YARN é descrita nas imagens a seguir.
+O Hadoop 2.2.0 é constituído por uma versão mais atual do \textit{framework} \textit{MapReduce} denominada \textit{MapReduce} 2.0, também conhecida como YARN. A principal diferença está no \textit{jobtracker}, que foi dividido em dois \textit{daemons} distintos: \textit{resource manager} e \textit{application master}. O antigo \textit{tasktracker} foi substituído pelo \textit{node manager}. O \textit{resource manager} está presente no nó mestre e cada um dos escravos possui um \textit{node manager}. A configuração do YARN é descrita nas imagens a seguir.
 
 \newpage
 \lstinputlisting[frame=single,
@@ -99,15 +99,15 @@ O Hadoop 2.2.0 é constituído por uma versão mais atual do \textit{framework} 
 		label=xml-yarn-master,
 		style=abnt,
 		caption={Arquivo yarn-site.xml para nó mestre}]
-		{codigos/yarn-site-master.xml}
+		{quadros/yarn-site-master.xml}
 
 \newpage
 \lstinputlisting[frame=single,
 		breaklines=true,
-		label=xml-yarn-master,
+		label=xml-yarn-escravo,
 		style=abnt,
 		caption={Arquivo yarn-site.xml para nó escravo}]
-		{codigos/yarn-site-slave.xml}
+		{quadros/yarn-site-slave.xml}
 
 
 O arquivo slaves do nó mestre é a última configuração a ser editada, ele está localizado no diretório \$HADOOP\_CONF\_DIR. Deve ser incluso o endereço IP de todas as máquinas escravas do \textit{cluster}. No ambiente montado para este manual a máquina mestre também é um escravo, portanto são inseridos os endereços \textit{master} e \textit{slave}.
@@ -152,7 +152,7 @@ $ hadoop-daemon.sh stop namenode
 
 A utilização de ferramentas de desenvolvimento é um fator que pode ser muito importante para prover uma maior produtividade e agilidade durante a construção de um software. O eclipse é uma das IDEs mais conhecidas entre os programadores java, uma das suas principais vantagens é a flexibilidade para adição de \textit{plugins}, os quais podem ser desenvolvidos por qualquer pessoa e compartilhados com a comunidade de desenvolvedores.
 
-A implementação de aplicações MapReduces pode ser facilitada com a utilização de um \textit{plugin} disponível em um dos repositórios da ferramenta github. Para sua instalação é necessário realizar o download do código fonte no seguinte endereço: \url{https://github.com/winghc/hadoop2x-eclipse-plugin}.
+A implementação de aplicações \textit{MapReduce} pode ser facilitada com a utilização de um \textit{plugin} disponível em um dos repositórios da ferramenta github. Para sua instalação é necessário realizar o download do código fonte no seguinte endereço: \url{https://github.com/winghc/hadoop2x-eclipse-plugin}.
 
 Após efetuar o download os arquivos devem ser extraídos e o código fonte compilado. Desta forma será gerado um arquivo jar que contém o \textit{plugin} para o Hadoop. Este arquivo deve ser inserido na pasta plugins/ dentro do diretório raiz do eclipse a ser instalado. Os comandos para compilar o código fonte são descritos a seguir.
 
