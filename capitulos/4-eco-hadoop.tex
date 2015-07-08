@@ -49,7 +49,7 @@ De acordo com \citeonline{kimball2013}, um dos principais objetivos de um \texti
 
 O Apache Hive é uma ferramenta \textit{open-source} para \textit{data warehousing} construída no topo da arquitetura  Hadoop \cite{thusoo2009}. Este projeto foi desenvolvido pela equipe do Facebook para atender as necessidades de análise do grande volume de informações geradas diariamente pelos usuários desta rede social. A motivação encontrada para a criação deste projeto se deu pelo crescimento exponencial da quantidade de dados processados pelas aplicações de BI, tornando as soluções tradicionais para \textit{data warehouse} inviáveis, tanto no aspecto financeiro, como computacional.
 
-Além das aplicações de BI utilizadas internamente pelo Facebook, muitas funcionalidades providas pela empresa utilizam processos de análise de dados. Até o ano de 2009 a arquitetura para este requisito era composta por um \textit{data warehouse} que utilizava uma versão comercial de um banco de dados relacional. Entre os anos de 2007 e 2009 a quantidade de dados armazenados cresceu de forma absurda, passando de 17 terabytes para 700 terabytes. Alguns processos de análise chegavam a demorar dias, quando executados nestas condições.
+Além das aplicações de BI utilizadas internamente pelo Facebook, muitas funcionalidades providas pela empresa utilizam processos de análise de dados. Até o ano de 2009, a arquitetura para este requisito era composta por um \textit{data warehouse} que utilizava uma versão comercial de um banco de dados relacional. Entre os anos de 2007 e 2009 a quantidade de dados armazenados cresceu de forma absurda, passando de 17 terabytes para 700 terabytes. Alguns processos de análise chegavam a demorar dias, quando executados nestas condições.
 
 Segundo \citeonline{thusoo2009}, para resolver este grave problema a equipe do Facebook optou por adotar o Hadoop como solução. A escalabilidade linear, capacidade de processamento distribuído e habilidade de ser executado em \textit{clusters} compostos por hardwares de baixo custo motivaram a migração de toda antiga infraestrutura para esta plataforma. O tempo de execução dos processos de análise que antes podiam levar dias foi reduzido para apenas algumas horas.
 
@@ -87,7 +87,7 @@ Como dito anteriormente, o Hive utiliza o conceito de tabelas para registrar as 
 \end{table}
 \FloatBarrier
 
-O Hive disponibiliza uma linguagem para consultas denominada HiveQL, na qual é composta por um subconjunto do padrão SQL com adaptações para grandes bases de dados. Segundo \citeonline{white2012}, esta abordagem foi fortemente influenciada pela linguagem de consulta presente no banco de dados relacional MySQL\footnote{\url{http://www.mysql.com/}}. Utilizando este recurso usuários podem realizar análises em grandes volumes de informações sem a necessidade de desenvolver aplicações \textit{MapReduce}, apenas com o conhecimento em SQL. O quadro \ref{cod-hiveql} apresenta um exemplo de comando escrito em HiveQL para criar uma tabela, composta por colunas de tipos primitivos e complexos.
+O Hive disponibiliza uma linguagem para consultas denominada HiveQL, na qual é composta por um subconjunto do padrão SQL com adaptações para grandes bases de dados. Segundo \citeonline{white2012}, esta abordagem foi fortemente influenciada pela linguagem de consulta presente no banco de dados relacional MySQL\footnote{\url{http://www.mysql.com/}}. Utilizando este recurso, usuários podem realizar análises em grandes volumes de informações sem a necessidade de desenvolver aplicações \textit{MapReduce}, apenas com o conhecimento em SQL. O quadro \ref{cod-hiveql} apresenta um exemplo de comando escrito em HiveQL para criar uma tabela, composta por colunas de tipos primitivos e complexos.
 
 \lstinputlisting[frame=single,
 		label=cod-hiveql,
@@ -149,7 +149,7 @@ Uma das principais características destes sistemas é descrita por \citeonline{
 
 De acordo com o trabalho realizado por \citeonline{cattell2011}, os bancos de dados NoSQL abrem mão das restrições impostas pelas propriedades ACID para proporcionar ganhos em performance e escalabilidade. Entretanto as soluções existentes diferem-se quanto ao nível de desistência na utilização deste modelo de transações.
 
-Ao contrário dos bancos de dados relacionais, os novos sistemas NoSQL diferem entre si quanto aos tipos de dados que são suportados, não havendo uma terminologia padrão. A pesquisa realizada por \citeonline{cattell2011} classifica estas novas tecnologias de acordo o modelo de dados utilizados por cada uma delas. As principais categorias são definidas a seguir:
+Ao contrário dos bancos de dados relacionais, os novos sistemas NoSQL diferem entre si quanto aos tipos de dados que são suportados, não havendo uma terminologia padrão. A pesquisa realizada por \citeonline{cattell2011} classifica estas novas tecnologias de acordo com o modelo de dados utilizados por cada uma delas. As principais categorias são definidas a seguir:
 
 \begin{itemize}
 
@@ -160,7 +160,7 @@ Ao contrário dos bancos de dados relacionais, os novos sistemas NoSQL diferem e
 
 \end{itemize}
 
-A tabela \ref{tab-nosql} apresenta alguns exemplos de bancos de dados NoSQL de acordo com as categorias citadas acima. Na próxima seção será discutido o banco de dados HBase.
+A tabela \ref{tab-nosql} apresenta alguns exemplos de bancos de dados NoSQL, de acordo com as categorias citadas acima. Na próxima seção, será discutido o banco de dados HBase.
 
 \begin{savenotes}
 \begin{table}[!ht]
@@ -195,7 +195,7 @@ Este projeto é uma solução \textit{open-source} para o Google BigTable, um si
 
 As colunas compõe a menor unidade lógica representada pelo HBase. Uma ou mais colunas podem formar uma linha, que é endereçada por uma chave única. Uma tabela é constituída por um conjunto de linhas, onde cada célula está sob controle versão, sendo representada por várias instâncias ao longo do tempo. Segundo \citeonline{george2011}, o HBase sempre mantém as células ordenadas de acordo com seu tipo dado, o que pode ser comparado com os índices de chave primária utilizados pelos bancos de dados relacionais.
 
-O HBase permite que as linhas de uma tabela sejam agrupadas por famílias de colunas. Este processo deve ser declarado pelo usuário durante a criação da tabela e é recomendável que esta informação não seja alterada posteriormente. Todas as colunas que fazem parte de uma mesma família devem ser declaradas com um prefixo comum, que deve obedecer o formato \textit{família:qualificador}, onde o termo qualificador se refere ao tipo de dado que representa a coluna \cite{white2012}. De acordo com \citeonline{george2011}, todas as colunas de uma mesma família são armazenadas fisicamente no HDFS em um arquivo chamado \textit{HFile}. Utilizando esta abstração o HBase é capaz de prover acesso randômico para escrita e leitura de arquivos no Hadoop. Utilizando estes conceitos os dados podem ser expressos da seguinte forma:
+O HBase permite que as linhas de uma tabela sejam agrupadas por famílias de colunas. Este processo deve ser declarado pelo usuário durante a criação da tabela e é recomendável que esta informação não seja alterada posteriormente. Todas as colunas que fazem parte de uma mesma família devem ser declaradas com um prefixo comum, que deve obedecer o formato \textit{família:qualificador}, onde o termo qualificador se refere ao tipo de dado que representa a coluna \cite{white2012}. De acordo com \citeonline{george2011}, todas as colunas de uma mesma família são armazenadas fisicamente no HDFS em um arquivo chamado \textit{HFile}. Utilizando esta abstração, o HBase é capaz de prover acesso randômico para escrita e leitura de arquivos no Hadoop. Utilizando estes conceitos, os dados podem ser expressos da seguinte forma:
 
 \begin{lstlisting}[style=abnt,frame=none]
 (Table, RowKey, Family, Column, Timestamp) -> Value

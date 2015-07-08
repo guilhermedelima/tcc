@@ -35,12 +35,12 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </button>	
-	          <a class="navbar-brand" href="#">Social Network Analysis</a>
+	          <a class="navbar-brand" href="<c:url value="/" />">Social Network Analysis</a>
 	        </div>
 	        <div id="navbar" class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav navbar-right">
 	            <li><a href="https://github.com/guilhermedelima/tcc">Documentação</a></li>
-	            <li><a href="https://github.com/guilhermedelima/tcc/tree/master/source/projects/social-interface">Código Fonte</a></li>
+	            <li><a href="https://github.com/guilhermedelima/tcc/tree/master/implementacao/projects/social-interface">Código Fonte</a></li>
 	          </ul>
 	        </div>
 	      </div>
