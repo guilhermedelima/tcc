@@ -131,7 +131,7 @@ Para cada bloco do arquivo, é realizado esse processo de \textit{pipeline}. Na 
 
 De acordo com \citeonline{ghemawatMapreduce2008}, o usuário deste modelo especifica uma função \textit{map}, que deverá processar um par \textit{\{chave, valor\}} gerando como produto conjuntos  intermediários de pares \textit{\{chave, valor\}}, e também define uma função \textit{reduce}, responsável por unir todos os valores intermediários associados a uma mesma chave.
 
-Este modelo é baseado nas primitivas \textit{map} e \textit{reduce} presentes na linguagem \textit{Lisp} e também em muitas outras linguagens de programação funcional. Este paradigma foi adotado pois percebeu-se que vários problemas consistiam em realizar o agrupamento das entradas de acordo com uma chave identificadora, para então processar cada um destes conjuntos \cite{ghemawatMapreduce2008}.
+Este modelo é baseado nas primitivas \textit{map} e \textit{reduce} presentes na linguagem \textit{Lisp} e também em muitas outras linguagens de programação funcional. Este paradigma foi adotado, pois percebeu-se que vários problemas consistiam em realizar o agrupamento das entradas de acordo com uma chave identificadora, para então processar cada um destes conjuntos \cite{ghemawatMapreduce2008}.
 
 Um programa \textit{MapReduce} separa arquivos de entrada em diversas partes independentes que servem de entrada para as funções \textit{map}. As saídas destas funções são ordenadas por \textit{\{chave, valor\}} e, posteriormente, transformadas em entradas do tipo \textit{\{chave, lista(valores)\}} para a função \textit{reduce}, onde o resultado final será salvo em um arquivo de saída. A quadro \ref{cod-mapreduce-io} apresenta de maneira genérica as entradas e saídas das funções \textit{map} e \textit{reduce}.
 
