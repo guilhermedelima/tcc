@@ -39,7 +39,7 @@ A arquitetura apresentada na figura \ref{fig-arq-projeto} é composta, principal
 \end{figure}
 \FloatBarrier
 
-A seguir é apresentada uma breve descrição sobre as atividades ilustradas na figura \ref{fig-atividades}:
+A seguir, é apresentada uma breve descrição sobre as atividades ilustradas na figura \ref{fig-atividades}:
 
 \begin{itemize}
 
@@ -94,7 +94,7 @@ Como mencionado anteriormente, a \textit{Graph} API é baseada apenas no protoco
 	\hline
 	Campo & Descrição
 	\\ \hline
-	\textit{id} &  Inteiro que identifica a página
+	\textit{id} &  Inteiro que identifica a página.
 	\\ \hline
 	\textit{about} & Informação da página.
 	\\ \hline
@@ -125,7 +125,7 @@ Uma página representa um vértice do grafo social montado pelo Facebook, assim 
 \end{figure}
 \FloatBarrier
 
-O resultado da requisição ilustrada na figura \ref{facebook-rest} também será um objeto JSON com diversos campos, incluindo os comentários públicos efetuados por usuários. Através dos comentários é possível identificar o autor, data da postagem e o corpo da mensagem. O Facebook utiliza o protocolo \textit{OAuth}\footnote{\url{http://en.wikipedia.org/wiki/OAuth}} para autorizar o uso dos recursos da \textit{Graph} API, portanto, todas as requisições submetidas devem utilizar um \textit{access token}, que pode ser obtido na página voltada aos desenvolvedores de aplicações.
+O resultado da requisição ilustrada na figura \ref{facebook-rest} também será um objeto JSON com diversos campos, incluindo os comentários públicos efetuados por usuários. Através dos comentários, é possível identificar o autor, data da postagem e o corpo da mensagem. O Facebook utiliza o protocolo \textit{OAuth}\footnote{\url{http://en.wikipedia.org/wiki/OAuth}} para autorizar o uso dos recursos da \textit{Graph} API, portanto, todas as requisições submetidas devem utilizar um \textit{access token}, que pode ser obtido na página voltada aos desenvolvedores de aplicações.
 
 \subsection{Twitter}
 
@@ -178,7 +178,7 @@ Inserido nesse contexto, o Apache Flume é um projeto com objetivo de oferecer s
 \end{figure}
 \FloatBarrier
 
-O agente Flume apresentado na figura X representa o processo executado pela ferramenta, o qual realiza todo procedimento de transferência de informações entre os dois ambientes. Um \textit{source} é uma \textit{thread} responsável por capturar os dados de uma determinada fonte, geralmente um serviço que caracteriza-se por produzir dados a todo instante, como registros de log, publicações de redes sociais, ou similares. Os dados coletados pelo \textit{source} são convertidos para um formato específico do Flume, denominado evento, o qual é composto apenas por um cabeçalho e o conteúdo da mensagem.
+O agente Flume apresentado na figura \ref{flume-arch} representa o processo executado pela ferramenta, o qual realiza todo procedimento de transferência de informações entre os dois ambientes. Um \textit{source} é uma \textit{thread} responsável por capturar os dados de uma determinada fonte, geralmente um serviço que caracteriza-se por produzir dados a todo instante, como registros de log, publicações de redes sociais, ou similares. Os dados coletados pelo \textit{source} são convertidos para um formato específico do Flume, denominado evento, o qual é composto apenas por um cabeçalho e o conteúdo da mensagem.
 
 Todos os eventos criados por um \textit{source} são escritos em uma área de espera chamada \textit{channel}, responsável pela ligação entre \textit{sources} e \textit{sinks}. Um \textit{channel} representa um \textit{buffer}, podendo armazenar seus dados em memória, ou também em arquivos. Segundo \citeonline{hoffmanFlume}, o uso de arquivos permite que um \textit{channel}, antes de disponibilizar os eventos para leitura, efetue todas as alterações no sistema de arquivos local, oferecendo maior espaço físico e tolerância a falhas. Por outro lado, \textit{channels} baseados em memória, apesar da escassez de recursos e volatilidade dos dados, possuem performance superior.
 
